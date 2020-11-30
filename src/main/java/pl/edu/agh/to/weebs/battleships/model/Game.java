@@ -1,6 +1,6 @@
-package model;
+package pl.edu.agh.to.weebs.battleships.model;
 
-import model.enums.GameStatus;
+import pl.edu.agh.to.weebs.battleships.model.enums.GameStatus;
 
 public class Game {
     HumanPlayer human;

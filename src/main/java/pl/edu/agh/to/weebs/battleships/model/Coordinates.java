@@ -1,4 +1,4 @@
-package model;
+package pl.edu.agh.to.weebs.battleships.model;
 
 public class Coordinates {
     private int x;

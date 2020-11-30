@@ -1,7 +1,7 @@
-package controller;
+package pl.edu.agh.to.weebs.battleships.controller;
 
 import javafx.fxml.FXML;
-import model.Game;
+import pl.edu.agh.to.weebs.battleships.model.Game;
 
 
 public class BoardController {

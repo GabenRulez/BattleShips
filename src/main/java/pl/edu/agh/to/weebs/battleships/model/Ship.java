@@ -1,13 +1,13 @@
-package model;
+package pl.edu.agh.to.weebs.battleships.model;
 
-import model.enums.ShipStatus;
+import pl.edu.agh.to.weebs.battleships.model.enums.ShipStatus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Ship {
+    enum Orientation {
+        VERTICAL, HORIZONTAL;
+    }
 
     private final ArrayList<Field> shipElements;
     ShipStatus status;

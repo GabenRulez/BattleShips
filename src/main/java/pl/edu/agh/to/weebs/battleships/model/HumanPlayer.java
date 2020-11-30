@@ -1,9 +1,4 @@
-package model;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.Thread.sleep;
+package pl.edu.agh.to.weebs.battleships.model;
 
 public class HumanPlayer extends Player{
 
