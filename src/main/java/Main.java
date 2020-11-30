@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.Game;
 
 import java.io.IOException;
 
@@ -11,6 +12,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
+            Game game = new Game();
+            Thread gameThread = new Thread(){
+                public void run(){
+                    game.start();
+                }
+            };
+            gameThread.start();
+
             // load layout from FXML file
             var loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/mainView.fxml"));
@@ -18,6 +27,9 @@ public class Main extends Application {
             // add layout to a scene and show them all
             configureStage(primaryStage, rootLayout);
             primaryStage.show();
+
+
+
 
         } catch (IOException e) {
             // don't do this in common apps
@@ -32,5 +44,4 @@ public class Main extends Application {
         primaryStage.minWidthProperty().bind(rootLayout.minWidthProperty());
         primaryStage.minHeightProperty().bind(rootLayout.minHeightProperty());
     }
-
 }
