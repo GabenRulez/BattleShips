@@ -1,4 +1,4 @@
-package pl.edu.agh.to.weebs.battleships.model;
+package model;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
