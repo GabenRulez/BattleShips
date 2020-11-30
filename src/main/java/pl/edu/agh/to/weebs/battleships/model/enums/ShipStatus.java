@@ -1,4 +1,4 @@
-package model.enums;
+package pl.edu.agh.to.weebs.battleships.model.enums;
 
 public enum ShipStatus {
     SHIP_ACTIVE,

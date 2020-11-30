@@ -1,9 +1,11 @@
+package pl.edu.agh.to.weebs.battleships;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.Game;
+import pl.edu.agh.to.weebs.battleships.model.Game;
 
 import java.io.IOException;
 

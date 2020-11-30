@@ -1,6 +1,6 @@
-package model;
+package pl.edu.agh.to.weebs.battleships.model;
 
-import model.enums.FieldStatus;
+import pl.edu.agh.to.weebs.battleships.model.enums.FieldStatus;
 
 public class Field {
     private final Coordinates position;

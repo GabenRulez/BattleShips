@@ -1,6 +1,4 @@
-package model;
-
-import java.util.concurrent.atomic.AtomicBoolean;
+package pl.edu.agh.to.weebs.battleships.model;
 
 public abstract class Player {
     private final Game game;
