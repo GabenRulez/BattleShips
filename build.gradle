@@ -12,7 +12,8 @@ repositories {
     mavenCentral()
     maven {
         url "https://dl.bintray.com/speljohan/rxjavafx-mirror"
-    }
+        }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 application {
@@ -34,4 +35,6 @@ dependencies {
     implementation group: 'io.reactivex.rxjava3', name: 'rxjavafx', version: '3.0.1'
     implementation group: 'org.apache.tika', name: 'tika-core', version: '1.4'
     implementation group: 'org.json', name: 'json', version: '20200518'
+    compile group: 'org.fxmisc.easybind', name: 'easybind', version: '1.0.4-SNAPSHOT'
+
 }

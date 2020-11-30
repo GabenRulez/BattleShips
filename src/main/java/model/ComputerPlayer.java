@@ -1,4 +1,4 @@
-package pl.edu.agh.to.weebs.battleships.model;
+package model;
 
 public class ComputerPlayer extends Player{
 
