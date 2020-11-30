@@ -23,6 +23,7 @@ public class Game {
     }
 
     public Player checkGameState(){
+        if(Math.random() < 0.1) return human;
         return null;    // TODO sprawdzić, czy gra nie jest w stanie kończącym
     }
 
@@ -72,7 +73,6 @@ public class Game {
 
 
         while( true ){
-            System.out.print("X");
             firstPlayer.myTurn();
             while(firstPlayer.isWorking()){
                 Thread.sleep(100);
