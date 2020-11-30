@@ -1,36 +1,40 @@
 package model;
 
+import model.enums.ShipStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Ship {
-    Map<Coordinates, Boolean> allCords; // wartość true oznacza że trafiony segment
-    boolean shotDown;
 
-    public Ship(){
-        this.allCords = new HashMap<>();
-        shotDown = false;
-    }
+    private final ArrayList<Field> shipElements;
+    ShipStatus status;
 
-    public void deleteCords(){
-        this.allCords = new HashMap<>();
-    }
-
-    public void setCords(List<Coordinates> allCords){
-        for (Coordinates cords: allCords) {
-            this.allCords.put(cords, false);
+    public Ship(ArrayList<Field> shipElements){
+        if(shipElements == null){
+            throw new IllegalArgumentException("Ship must consist of elements");
         }
+        this.shipElements = shipElements;
+        this.status = ShipStatus.SHIP_ACTIVE;
     }
 
-    public List<Coordinates> getCords(){
-        List<Coordinates> temp = new ArrayList<>();
-        temp.addAll(allCords.keySet());
-        return temp;
+
+    public Boolean isOnPosition(Coordinates position){
+        for (Field field: shipElements){
+            if(field.getPosition() == position){
+                return true;
+            }
+        }
+        return false;
+    }
+    public Integer getLength(){
+        return this.shipElements.size();
     }
 
-    public void getHit(Coordinates cords){
-        this.allCords.replace(cords, true);
+    public ArrayList<Field> getShipElements() {
+        return shipElements;
     }
+
 }
