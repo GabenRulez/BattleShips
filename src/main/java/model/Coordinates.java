@@ -1,4 +1,6 @@
-package pl.edu.agh.to.weebs.battleships.model;
+package model;
+
+import java.util.Objects;
 
 public class Coordinates {
     private int x;
@@ -30,5 +32,23 @@ public class Coordinates {
 
     public Boolean lessOrEqual(Coordinates second){
         return this.getX() <= second.getX() && this.getY() <= second.getY();
+    }
+
+    public Boolean less(Coordinates second){
+        return this.getX() < second.getX() && this.getY() < second.getY();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates that = (Coordinates) o;
+        return x == that.x &&
+                y == that.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

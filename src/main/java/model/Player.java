@@ -1,15 +1,20 @@
-package pl.edu.agh.to.weebs.battleships.model;
+package model;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public abstract class Player {
     private final Game game;
-    private final String name;
+
+
+    private final StringProperty name;
     private final Board myBoard;
 
     private Player enemy;
 
     public Player(Game game, String name){
         this.game = game;
-        this.name = name;
+        this.name = new SimpleStringProperty(name);
         this.myBoard = new Board(Config.BOARD_SIZE); // TODO tworzenie boarda powiązane z pozycjonowaniem statków
     }
 
@@ -29,8 +34,15 @@ public abstract class Player {
         this.enemy = enemy;
     }
 
+    public void setName(String name) {
+        this.name.set(name);
+    }
 
     public String getName(){
+        return this.name.getValue();
+    }
+
+    public StringProperty getNameProperty(){
         return this.name;
     }
 

@@ -1,6 +1,6 @@
-package pl.edu.agh.to.weebs.battleships.model;
+package model;
 
-import pl.edu.agh.to.weebs.battleships.model.enums.ShipStatus;
+import model.enums.ShipStatus;
 
 import java.util.ArrayList;
 

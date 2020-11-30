@@ -1,11 +1,12 @@
-package pl.edu.agh.to.weebs.battleships;
-
+import controller.BoardController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import pl.edu.agh.to.weebs.battleships.model.Game;
+import model.BoardCreator;
+import model.Game;
 
 import java.io.IOException;
 
@@ -15,22 +16,19 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         try {
             Game game = new Game();
-            Thread gameThread = new Thread(){
-                public void run(){
-                    game.start();
-                }
-            };
-            gameThread.start();
+            game.initialize();
+//
 
             // load layout from FXML file
             var loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/mainView.fxml"));
-            BorderPane rootLayout = loader.load();
+            VBox rootLayout = loader.load();
+            BoardController controller = loader.getController();
+            controller.setModel(game);
+            controller.controllerInit();
             // add layout to a scene and show them all
             configureStage(primaryStage, rootLayout);
             primaryStage.show();
-
-
 
 
         } catch (IOException e) {
@@ -39,11 +37,11 @@ public class Main extends Application {
         }
     }
 
-    private void configureStage(Stage primaryStage, BorderPane rootLayout) {
+    private void configureStage(Stage primaryStage, VBox rootLayout) {
         var scene = new Scene(rootLayout);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Battleships");
-        primaryStage.minWidthProperty().bind(rootLayout.minWidthProperty());
-        primaryStage.minHeightProperty().bind(rootLayout.minHeightProperty());
+//        primaryStage.minWidthProperty().bind(rootLayout.minWidthProperty());
+//        primaryStage.minHeightProperty().bind(rootLayout.minHeightProperty());
     }
 }
