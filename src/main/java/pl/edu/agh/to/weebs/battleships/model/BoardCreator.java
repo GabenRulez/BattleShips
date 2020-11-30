@@ -3,8 +3,10 @@ package pl.edu.agh.to.weebs.battleships.model;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class managing the process of placing ships on the board.
@@ -30,6 +32,16 @@ public class BoardCreator {
         lengthsOfShipsYetToBePlaced = PublishSubject.create();
         isUndoEnabled = PublishSubject.create();
         isRedoEnabled = PublishSubject.create();
+
+        var shipLengthsToBeCreated = shipCounts
+                .entrySet()
+                .stream()
+                .map(entry -> Collections.nCopies(entry.getValue(), entry.getKey()))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+        this.lengthsOfShipsYetToBePlaced.onNext(shipLengthsToBeCreated);
+
+        var board = new Board(new Coordinates(boardSize, boardSize));
     }
 
     /**

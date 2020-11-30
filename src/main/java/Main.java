@@ -1,5 +1,3 @@
-package pl.edu.agh.to.weebs.battleships;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
