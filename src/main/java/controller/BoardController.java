@@ -73,7 +73,7 @@ public class BoardController {
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.WHITE);
-                rec.setOnMouseClicked(this::clickGrid);
+//                rec.setOnMouseClicked(this::clickGrid);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
 //                Field field = this.game.getComputer().getBoard().getFieldOnPosition(new Coordinates(row, col));
@@ -88,7 +88,7 @@ public class BoardController {
                 return "Ustaw statki na planszy";
             }
             return String.format(
-                    "ustawiam %d %s",
+                    "Ustawiam %d-masztowiec %s",
                     shipLength.get(), isPlacingShipHorizontally.get() ? "poziomo" : "pionowo"
             );
         }, shipLength, isPlacingShipHorizontally));
