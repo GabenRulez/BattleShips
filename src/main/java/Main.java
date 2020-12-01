@@ -2,13 +2,13 @@ import controller.BoardController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.BoardCreator;
 import model.Game;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Main extends Application {
 
@@ -17,6 +17,14 @@ public class Main extends Application {
         try {
             Game game = new Game();
             game.initialize();
+
+            var shipCounts = Map.ofEntries(
+                Map.entry(1, 3),
+                Map.entry(2, 2),
+                Map.entry(3, 1),
+                Map.entry(4, 1)
+            );
+            var boardCreator = new BoardCreator(10, shipCounts);
 //
 
             // load layout from FXML file
@@ -24,7 +32,8 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/mainView.fxml"));
             VBox rootLayout = loader.load();
             BoardController controller = loader.getController();
-            controller.setModel(game);
+//            controller.setModel(game);
+            controller.setModel(boardCreator);
             controller.controllerInit();
             // add layout to a scene and show them all
             configureStage(primaryStage, rootLayout);

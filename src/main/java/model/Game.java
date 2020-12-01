@@ -8,11 +8,8 @@ public class Game {
     private Player winner;
     public GameStatus currentState;
 
-    private Integer currentlyPlacingShipLength;
-
     public Game(){
         this.currentState = GameStatus.GAME_NOT_STARTED;
-        this.currentlyPlacingShipLength = 0;
     }
 
     public HumanPlayer getHuman() {
@@ -41,15 +38,4 @@ public class Game {
     public void initializeAttack(Player target, Coordinates targetCoords){
 
     }
-
-    public Integer getCurrentlyPlacingShipLength() {
-        return currentlyPlacingShipLength;
-    }
-
-    public void setCurrentlyPlacingShipLength(Integer currentlyPlacingShipLength) {
-        if(this.getCurrentState() == GameStatus.GAME_SHIP_PLACEMENT) {
-            this.currentlyPlacingShipLength = currentlyPlacingShipLength;
-        }
-    }
-
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 <VBox prefHeight="600.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
@@ -50,7 +49,7 @@
                 </AnchorPane>
                 <AnchorPane fx:id="playersBoard">
                     <children>
-                        <Label alignment="CENTER" layoutX="45.0" layoutY="14.0" text="Ustaw statki na planszy:" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                        <Label fx:id="instruction" alignment="CENTER" layoutX="45.0" layoutY="14.0" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
                             <font>
                                 <Font size="15.0" fx:id="x1" />
                             </font>
@@ -62,10 +61,13 @@
                             </opaqueInsets>
                         </Label>
                         <Button fx:id="shipPlace1" layoutX="36.0" layoutY="59.0" mnemonicParsing="false" onAction="#place1Ship" prefHeight="25.0" prefWidth="116.0" text="1-masztowiec" />
-                        <Button layoutX="9.0" layoutY="496.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="188.0" text="Rozpocznij grę" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Button layoutX="36.0" layoutY="98.0" mnemonicParsing="false" onAction="#place2Ship" prefHeight="25.0" prefWidth="116.0" text="2-masztowiec" />
-                        <Button layoutX="36.0" layoutY="136.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-masztowiec" />
-                        <Button layoutX="36.0" layoutY="177.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-masztowiec" />
+                        <Button fx:id="startGame" layoutX="9.0" layoutY="496.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="188.0" text="Rozpocznij grę" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Button fx:id="shipPlace2" layoutX="36.0" layoutY="98.0" mnemonicParsing="false" onAction="#place2Ship" prefHeight="25.0" prefWidth="116.0" text="2-masztowiec" />
+                        <Button fx:id="shipPlace3" layoutX="36.0" layoutY="136.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-masztowiec" />
+                        <Button fx:id="shipPlace4" layoutX="36.0" layoutY="177.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-masztowiec" />
+                        <Button layoutX="36.0" layoutY="218.0" mnemonicParsing="false" onAction="#toggleOrientation" prefHeight="25.0" prefWidth="116.0" text="Toggle orientation" />
+                        <Button fx:id="undoBtn" layoutX="36.0" layoutY="259.0" mnemonicParsing="false" onAction="#undo" prefHeight="25.0" prefWidth="116.0" text="UNDO" />
+                        <Button fx:id="redoBtn" layoutX="36.0" layoutY="300.0" mnemonicParsing="false" onAction="#redo" prefHeight="25.0" prefWidth="116.0" text="REDO" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="550.0" prefWidth="550.0">
