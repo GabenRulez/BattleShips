@@ -1,42 +1,49 @@
 package controller;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import model.Board;
-import model.Coordinates;
-import model.Field;
-import model.Game;
+import model.*;
 import model.enums.FieldStatus;
-import model.enums.GameStatus;
 import org.fxmisc.easybind.EasyBind;
 
 
 public class BoardController {
-    private Game game;
+//    private Game game;
     private Board playersBoard;
+    private BoardCreator boardCreator;
 
+    private final IntegerProperty shipLength = new SimpleIntegerProperty(0);
+    private final BooleanProperty isPlacingShipHorizontally = new SimpleBooleanProperty(true);
 
+//    public void setModel(Game game){
+//        this.game = game;
+//        this.playersBoard = game.getHuman().getBoard();
+//    }
 
-
-    public void setModel(Game game){
-        this.game = game;
-        this.playersBoard = game.getHuman().getBoard();
+    public void setModel(BoardCreator boardCreator) {
+        this.boardCreator = boardCreator;
+        this.playersBoard = boardCreator.getBoard();
     }
-
 
     @FXML
     public void initialize() {
     }
 
     public void controllerInit(){
-        playerName.textProperty().bind(game.getHuman().getNameProperty());
+//        playerName.textProperty().bind(game.getHuman().getNameProperty());
 
         int rowNum = this.playersBoard.getLimit().getY();
         int colNum = this.playersBoard.getLimit().getX();
@@ -69,12 +76,28 @@ public class BoardController {
                 rec.setOnMouseClicked(this::clickGrid);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
-                Field field = this.game.getComputer().getBoard().getFieldOnPosition(new Coordinates(row, col));
-                rec.fillProperty().bind(
-                        EasyBind.map(field.fieldStatusProperty(), this::calculateFieldColor));
+//                Field field = this.game.getComputer().getBoard().getFieldOnPosition(new Coordinates(row, col));
+//                rec.fillProperty().bind(
+//                        EasyBind.map(field.fieldStatusProperty(), this::calculateFieldColor));
                 computerBoard.add(rec, row, col);
             }
         }
+
+        instruction.textProperty().bind(Bindings.createStringBinding(() -> {
+            if(shipLength.get() <= 0) {
+                return "Ustaw statki na planszy";
+            }
+            return String.format(
+                    "ustawiam %d %s",
+                    shipLength.get(), isPlacingShipHorizontally.get() ? "poziomo" : "pionowo"
+            );
+        }, shipLength, isPlacingShipHorizontally));
+
+        setupShipButtonEnabled(shipPlace1, 1);
+        setupShipButtonEnabled(shipPlace2, 2);
+        setupShipButtonEnabled(shipPlace3, 3);
+        setupShipButtonEnabled(shipPlace4, 4);
+        startGame.disableProperty().bind(Bindings.not(boardCreator.getCreationProcessFinishedProperty()));
     }
 
     private Paint calculateFieldColor(FieldStatus fieldStatus){
@@ -99,24 +122,32 @@ public class BoardController {
 
     @FXML
     public void place1Ship(){
-        this.game.setCurrentlyPlacingShipLength(1);
+        shipLength.setValue(1);
     }
 
     @FXML
     public void place2Ship(){
-        this.game.setCurrentlyPlacingShipLength(2);
+        shipLength.setValue(2);
     }
     @FXML
     public void place3Ship(){
-        this.game.setCurrentlyPlacingShipLength(3);
+        shipLength.setValue(3);
     }
     @FXML
     public void place4Ship(){
-        this.game.setCurrentlyPlacingShipLength(4);
+        shipLength.setValue(4);
+    }
+
+    @FXML
+    public void toggleOrientation() {
+        isPlacingShipHorizontally.setValue(!isPlacingShipHorizontally.get());
     }
 
     @FXML
     Label playerName;
+
+    @FXML
+    Label instruction;
 
     @FXML
     GridPane playerBoard;
@@ -125,7 +156,15 @@ public class BoardController {
     GridPane computerBoard;
 
     @FXML
-    Button ShipPlace1;
+    Button shipPlace1;
+    @FXML
+    Button shipPlace2;
+    @FXML
+    Button shipPlace3;
+    @FXML
+    Button shipPlace4;
+    @FXML
+    Button startGame;
 
     public void clickGrid(MouseEvent event) {
 
@@ -133,19 +172,33 @@ public class BoardController {
         Integer colIndex = GridPane.getColumnIndex(clickedNode);
         Integer rowIndex = GridPane.getRowIndex(clickedNode);
         System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
-        this.tryPlaceShip(colIndex, rowIndex);
-//        this.game.getHuman().getBoard().setFieldStatusOnPosition(new Coordinates(colIndex,rowIndex), FieldStatus.FIELD_SHIP_ACTIVE);
-    }
 
-    private void tryPlaceShip(Integer col, Integer row) {
-        if(this.game.getCurrentlyPlacingShipLength() > 0 && this.game.getCurrentState() == GameStatus.GAME_SHIP_PLACEMENT){
-            if(this.playersBoard.addShip(new Coordinates(col, row), true, this.game.getCurrentlyPlacingShipLength()) == true){
-                System.out.println("Dodano statek");
-                this.game.setCurrentlyPlacingShipLength(0);
+        var coords = new Coordinates(colIndex, rowIndex);
+        try {
+            if(event.getButton() == MouseButton.SECONDARY) {
+                boardCreator.removeShip(coords);
+            } else {
+                if(shipLength.get() > 0) {
+                    boardCreator.placeShip(
+                        coords,
+                        shipLength.get(),
+                        isPlacingShipHorizontally.get() ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL
+                    );
+                    if(boardCreator.getLengthsOfShipsYetToBePlaced().stream().noneMatch(it -> it == shipLength.get())) {
+                        shipLength.setValue(0);
+                    }
+                }
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-
+    private void setupShipButtonEnabled(Button button, int shipLength) {
+        button.disableProperty().bind(Bindings.createBooleanBinding(
+            () -> boardCreator.getLengthsOfShipsYetToBePlaced().stream().noneMatch(it -> it == shipLength),
+            boardCreator.getLengthsOfShipsYetToBePlaced()
+        ));
+    }
 }
 

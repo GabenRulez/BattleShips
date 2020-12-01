@@ -1,22 +1,29 @@
 package model;
 
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.enums.FieldStatus;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Class managing the process of placing ships on the board.
  */
 public class BoardCreator {
 
-    private final PublishSubject<Board> board;
-    private final PublishSubject<List<Integer>> lengthsOfShipsYetToBePlaced;
-    private final PublishSubject<Boolean> isUndoEnabled;
-    private final PublishSubject<Boolean> isRedoEnabled;
+    private final Board board;
+    private final ObservableList<Integer> lengthsOfShipsYetToBePlaced;
+    private final BooleanProperty isUndoEnabled;
+    private final BooleanProperty isRedoEnabled;
+    private final BooleanProperty isCreationProcessFinished;
 
     /**
      * Creates a BoardCreator managing placing the ships on a NxN board with specified ships
@@ -28,10 +35,9 @@ public class BoardCreator {
      *                   of length 2 will be created.
      */
     public BoardCreator(int boardSize, Map<Integer, Integer> shipCounts) {
-        board = PublishSubject.create();
-        lengthsOfShipsYetToBePlaced = PublishSubject.create();
-        isUndoEnabled = PublishSubject.create();
-        isRedoEnabled = PublishSubject.create();
+        board = new Board(new Coordinates(boardSize, boardSize));
+        isUndoEnabled = new SimpleBooleanProperty(false);
+        isRedoEnabled = new SimpleBooleanProperty(false);
 
         var shipLengthsToBeCreated = shipCounts
                 .entrySet()
@@ -39,36 +45,44 @@ public class BoardCreator {
                 .map(entry -> Collections.nCopies(entry.getValue(), entry.getKey()))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-        this.lengthsOfShipsYetToBePlaced.onNext(shipLengthsToBeCreated);
+        lengthsOfShipsYetToBePlaced = FXCollections.observableList(shipLengthsToBeCreated);
 
-        var board = new Board(new Coordinates(boardSize, boardSize));
+        isCreationProcessFinished = new SimpleBooleanProperty();
+        isCreationProcessFinished.bind(Bindings.isEmpty(lengthsOfShipsYetToBePlaced));
     }
 
     /**
-     * @return Board representation during creation.
+     * @return Board on which created ships will be placed on.
      */
-    public Observable<Board> getBoard() {
+    public Board getBoard() {
         return board;
     }
 
     /**
      * @return Lengths of the ships that have to be placed before creation process can be finalized.
      */
-    public Observable<List<Integer>> getLengthsOfShipsYetToBePlaced() {
+    public ObservableList<Integer> getLengthsOfShipsYetToBePlaced() {
         return lengthsOfShipsYetToBePlaced;
     }
 
-    public PublishSubject<Boolean> getIsUndoEnabled() {
+    public BooleanProperty getUndoEnabledProperty() {
         return isUndoEnabled;
     }
 
-    public PublishSubject<Boolean> getIsRedoEnabled() {
+    public BooleanProperty getRedoEnabledProperty() {
         return isRedoEnabled;
     }
 
     /**
+     * @return Property indicating whether all ships are already placed.
+     */
+    public BooleanProperty getCreationProcessFinishedProperty() {
+        return isCreationProcessFinished;
+    }
+
+    /**
      * Places a ship at the given position.
-     * @param coords Upper right tile of the ship to be placed.
+     * @param shipCoords Upper right tile of the ship to be placed.
      * @param length Length of the ship to be placed.
      * @param orientation Orientation of the ship to be placed.
      * @return True if the ship was placed successfully or false if placing the ship
@@ -77,10 +91,48 @@ public class BoardCreator {
      * or if all ships of given length have already been placed.
      */
     public boolean placeShip(
-        Coordinates coords,
+        Coordinates shipCoords,
         int length,
         Ship.Orientation orientation
     ) throws IllegalArgumentException {
+        if(lengthsOfShipsYetToBePlaced.stream().noneMatch(len -> len == length)) {
+            throw new IllegalArgumentException("All ships of this length are already placed.");
+        }
+
+        var shipFieldCoords = getFieldCoordsForShipAtPosition(shipCoords, length, orientation);
+
+        if(shipFieldCoords.stream().anyMatch(coords -> !board.areCoordsInRange(coords))) {
+            throw new IllegalArgumentException(String.format(
+                    "Ship of length %d at position %s and orientation %s would not fit in the board",
+                    length, shipCoords.toString(), orientation.toString()
+            ));
+        }
+
+        var shipFields = shipFieldCoords
+                .stream()
+                .map(board::getFieldOnPosition)
+                .collect(Collectors.toList());
+
+        var fieldsAroundShip = shipFields
+                .stream()
+                .map(board::getFieldsAround)
+                .flatMap(List::stream);
+
+        var isAnyShipFieldOrFieldAroundItOccupied =
+                Stream.concat(shipFields.stream(), fieldsAroundShip)
+                        .anyMatch(field -> field.getFieldStatus() == FieldStatus.FIELD_SHIP_ACTIVE);
+
+        if(isAnyShipFieldOrFieldAroundItOccupied) {
+            return false;
+        }
+
+        var newShip = new Ship(shipFields);
+        board.addShip(newShip);
+
+        var indexToRemoveAt = lengthsOfShipsYetToBePlaced.indexOf(length);
+        if(indexToRemoveAt >= 0) {
+            lengthsOfShipsYetToBePlaced.remove(indexToRemoveAt);
+        }
 
         return true;
     }
@@ -93,6 +145,20 @@ public class BoardCreator {
      * @throws IllegalArgumentException Thrown if given coords are not in range of the board.
      */
     public boolean removeShip(Coordinates coords) throws IllegalArgumentException {
+        if(!board.areCoordsInRange(coords)) {
+            throw new IllegalArgumentException(
+                    String.format("Given coords %s are not in board range", coords.toString())
+            );
+        }
+
+        var shipToBeRemoved = board.getShipAtPosition(coords);
+
+        if(shipToBeRemoved == null) {
+            return false;
+        }
+
+        board.removeShip(shipToBeRemoved);
+        lengthsOfShipsYetToBePlaced.add(shipToBeRemoved.getLength());
 
         return true;
     }
@@ -109,5 +175,22 @@ public class BoardCreator {
      */
     public void redo() {
 
+    }
+
+    private List<Coordinates> getFieldCoordsForShipAtPosition(
+            Coordinates coords,
+            int length,
+            Ship.Orientation orientation
+    ) {
+        var shipFieldsXPositions = orientation == Ship.Orientation.VERTICAL ?
+                Collections.nCopies(length, coords.getX()) :
+                IntStream.range(coords.getX(), coords.getX() + length).boxed().collect(Collectors.toList());
+        var shipFieldsYPositions = orientation == Ship.Orientation.HORIZONTAL ?
+                Collections.nCopies(length, coords.getY()) :
+                IntStream.range(coords.getY(), coords.getY() + length).boxed().collect(Collectors.toList());
+
+        return IntStream.range(0, length).mapToObj(i ->
+            new Coordinates(shipFieldsXPositions.get(i), shipFieldsYPositions.get(i))
+        ).collect(Collectors.toList());
     }
 }

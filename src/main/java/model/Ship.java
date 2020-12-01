@@ -2,17 +2,17 @@ package model;
 
 import model.enums.ShipStatus;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Ship {
-    enum Orientation {
+    public enum Orientation {
         VERTICAL, HORIZONTAL;
     }
 
-    private final ArrayList<Field> shipElements;
+    private final List<Field> shipElements;
     ShipStatus status;
 
-    public Ship(ArrayList<Field> shipElements){
+    public Ship(List<Field> shipElements){
         if(shipElements == null){
             throw new IllegalArgumentException("Ship must consist of elements");
         }
@@ -33,7 +33,7 @@ public class Ship {
         return this.shipElements.size();
     }
 
-    public ArrayList<Field> getShipElements() {
+    public List<Field> getShipElements() {
         return shipElements;
     }
 
