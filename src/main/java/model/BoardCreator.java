@@ -21,6 +21,9 @@ public class BoardCreator {
 
     private final Board board;
     private final ObservableList<Integer> lengthsOfShipsYetToBePlaced;
+
+    private final BoardCreatorCommandRegistry commandRegistry;
+
     private final BooleanProperty isUndoEnabled;
     private final BooleanProperty isRedoEnabled;
     private final BooleanProperty isCreationProcessFinished;
@@ -36,8 +39,9 @@ public class BoardCreator {
      */
     public BoardCreator(int boardSize, Map<Integer, Integer> shipCounts) {
         board = new Board(new Coordinates(boardSize, boardSize));
-        isUndoEnabled = new SimpleBooleanProperty(false);
-        isRedoEnabled = new SimpleBooleanProperty(false);
+        commandRegistry = new BoardCreatorCommandRegistry();
+        isUndoEnabled = commandRegistry.isIsUndoEnabled();
+        isRedoEnabled = commandRegistry.isIsRedoEnabled();
 
         var shipLengthsToBeCreated = shipCounts
                 .entrySet()
@@ -126,13 +130,8 @@ public class BoardCreator {
             return false;
         }
 
-        var newShip = new Ship(shipFields);
-        board.addShip(newShip);
-
-        var indexToRemoveAt = lengthsOfShipsYetToBePlaced.indexOf(length);
-        if(indexToRemoveAt >= 0) {
-            lengthsOfShipsYetToBePlaced.remove(indexToRemoveAt);
-        }
+        var command = new PlaceShipCommand(board, lengthsOfShipsYetToBePlaced, new Ship(shipFields));
+        commandRegistry.executeCommand(command);
 
         return true;
     }
@@ -157,8 +156,8 @@ public class BoardCreator {
             return false;
         }
 
-        board.removeShip(shipToBeRemoved);
-        lengthsOfShipsYetToBePlaced.add(shipToBeRemoved.getLength());
+        var command = new RemoveShipCommand(board, lengthsOfShipsYetToBePlaced, shipToBeRemoved);
+        commandRegistry.executeCommand(command);
 
         return true;
     }
@@ -167,14 +166,14 @@ public class BoardCreator {
      * Undoes last ship placement/removal action.
      */
     public void undo() {
-
+        commandRegistry.undo();
     }
 
     /**
      * Redoes previously undone action of ship placement/removal.
      */
     public void redo() {
-
+        commandRegistry.redo();
     }
 
     private List<Coordinates> getFieldCoordsForShipAtPosition(

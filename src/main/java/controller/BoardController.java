@@ -98,6 +98,8 @@ public class BoardController {
         setupShipButtonEnabled(shipPlace3, 3);
         setupShipButtonEnabled(shipPlace4, 4);
         startGame.disableProperty().bind(Bindings.not(boardCreator.getCreationProcessFinishedProperty()));
+        undoBtn.disableProperty().bind(Bindings.not(boardCreator.getUndoEnabledProperty()));
+        redoBtn.disableProperty().bind(Bindings.not(boardCreator.getRedoEnabledProperty()));
     }
 
     private Paint calculateFieldColor(FieldStatus fieldStatus){
@@ -144,6 +146,16 @@ public class BoardController {
     }
 
     @FXML
+    public void undo(){
+        boardCreator.undo();
+    }
+
+    @FXML
+    public void redo(){
+        boardCreator.redo();
+    }
+
+    @FXML
     Label playerName;
 
     @FXML
@@ -165,6 +177,10 @@ public class BoardController {
     Button shipPlace4;
     @FXML
     Button startGame;
+    @FXML
+    Button undoBtn;
+    @FXML
+    Button redoBtn;
 
     public void clickGrid(MouseEvent event) {
 

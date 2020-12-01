@@ -66,6 +66,8 @@
                         <Button fx:id="shipPlace3" layoutX="36.0" layoutY="136.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-masztowiec" />
                         <Button fx:id="shipPlace4" layoutX="36.0" layoutY="177.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-masztowiec" />
                         <Button layoutX="36.0" layoutY="218.0" mnemonicParsing="false" onAction="#toggleOrientation" prefHeight="25.0" prefWidth="116.0" text="Toggle orientation" />
+                        <Button fx:id="undoBtn" layoutX="36.0" layoutY="259.0" mnemonicParsing="false" onAction="#undo" prefHeight="25.0" prefWidth="116.0" text="UNDO" />
+                        <Button fx:id="redoBtn" layoutX="36.0" layoutY="300.0" mnemonicParsing="false" onAction="#redo" prefHeight="25.0" prefWidth="116.0" text="REDO" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="550.0" prefWidth="550.0">
