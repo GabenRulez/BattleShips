@@ -1,30 +1,49 @@
+# Szczegółowa dokumentacja - Statki - m1
 
-# Szczegółowa dokumentacja
-# Projekt Technologie Obiektowe
-## Gra statki - milestone 1
-### Skład zespołu : Wojciech Kosztyła, Jacek Nitychoruk, Maricn Kozubek, Paweł Kiełabsa
-
-
-
-## Ogólny plan
+## Plan projektu
 
 W naszym projekcie mamy zamiar stworzyć grę statki w języku Java z budowaniem projektu poprzez Gradle. Aplikacja będzie wolnostojąca.
 
-Ponieważ gra w statki ma wiele wariantów, sprecyzowaliśmy je i są one następujące:
+Domyślna konfiguracja rozgrywki przedstawia się następująco:
 
 * Plansza jest rozmiaru 10x10
 * W każdej turze atak wykonywany jest tylko na jedno pole przeciwnika
 * Gracz posiada 10 statków (1 czteromasztowy, 2 trójmasztowe, 3 dwumasztowe, 4 jednomasztowe)
 * Żadne statki nie mogą ze sobą się stykać
 
+
 ## Wykorzystane wzorce
 
-* Wzorzec MVC – główny wzorzec używany w naszym projekcie. Służy nam do odseparowania części związanych z modelem od widoku. Zmiany będą wprowadzane przez Controller. Podstawowy schemat wzorca znajduję się poniżej  
-* Wzorzec Command – wykorzystywany w widoku w celu cofania/powtarzania operacji wykonanych przez użytkownika  
+### GUI - Model-View-Controller
+
+Aplikację oparliśmy o Framework JavaFX do generowania interfejsu użytkownika.
+
+W konsekwencji tego, w aplikacji zastosowaliśmy wzorzec MVC, poprzez podział projektu na klasy stanowiące model aplikacji, widok - będący konfiguracją GUI generowaną na podstawie stanu modelu, oraaz kontroler reagujący na zdarzenia z widoku.
+
+Za wykonanie widoku GUI oraz większą część kontrolera odpowiedzialny był Jacek Nitychoruk
+
+
+![](ss02.png)
+
+
+### BoardCreator - Zastosowanie wzorca Command
+
+Tworzeniem planszy i generowaniem statków - obecnie działającą funkcjonalnością - zajmuje się obiekt `BoardCreator`, w którym zaimplementowany został wzorzecCommand. Dzięki temu dodawanie i usuwanie statków z planszy może być cofane/powtarzane za pomocą menu lub przycisków.
+
+Wyżej wymienionymi funkcjonalnościami dodawania statkó zajmował się Marcin Kozubek
+
+## Model 
+
+Modelem zajmowali się wszyscy uczestnicy projektu, z racji bardzo wczesnego jego etapu i trudności w odseparowaniu pracy poszczególnych osób. 
+
+
+W projekcie umieściliśmy następujący podział na klasy:
+
+![](classes.png)
+
 
 ## Kod programu
 
-### Model - odpowidzialny Wojciech Kosztyła
 
 #### Implementacja planszy wraz ze statkami
 
@@ -781,7 +800,7 @@ W przypadku stworzonego widoku dostępne jest menu z opcjami zakończenia gry, z
 
 W widoku wykorzystujemy kilka przycisków, w tym przyciski do wyboru statku do obecnego umieszczenia, cofania, powtarzania, zmiany orientacji statków jak i rozpoczynania gry. Przyciski te są aktywowane po spełnieniu wymagań określonych w modelu (np. przycisk "Rozpocznij grę" zosttanie aktywowany tylko wtedy gdy użykownik umieści wszystkie swoje statki na planszy).
 
-## Controller - odpowiedzialny Marcin Kozybek
+## Controller
 
 W związku z wykorzystaniem wzorca MVC stworzyliśmy klasę reprezentującą kontroler w naszym projekcie. Klasę tą nazwaliśmy BoardController. Na podstawie zdarzeń wykonanych w widoku będzie ona zmieniać model naszej gry, natomiast będzie ona również renderować staki na planszy.
 
@@ -1024,13 +1043,3 @@ W klasie tej zostaje uruchomiona gra z podanymi w mapie statkami
             primaryStage.setTitle("Battleships");
         }
     }
-    
-## Propozycje na m2
-
-- Pełny przebieg rozgrywki
-- Implementacja jednego rodzaju AI
-- Widok ustawień gry (zmiana nazwy gracza, poziomu trudności)
-- Uruchamianie/restartowanie rogrywki
-- Usprawnienia GUI (np. efekty na polach po najechaniu myszą przy ustawianiu statków)
-- Dodanie testów jednostkowych 
-
