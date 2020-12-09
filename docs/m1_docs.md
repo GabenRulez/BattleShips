@@ -18,7 +18,7 @@ Domyślna konfiguracja rozgrywki przedstawia się następująco:
 
 Aplikację oparliśmy o Framework JavaFX do generowania interfejsu użytkownika.
 
-W konsekwencji tego, w aplikacji zastosowaliśmy wzorzec MVC, poprzez podział projektu na klasy stanowiące model aplikacji, widok - będący konfiguracją GUI generowaną na podstawie stanu modelu, oraaz kontroler reagujący na zdarzenia z widoku.
+W konsekwencji tego, w aplikacji zastosowaliśmy wzorzec MVC, poprzez podział projektu na klasy stanowiące model aplikacji, widok - będący konfiguracją GUI generowaną na podstawie stanu modelu, oraz kontroler reagujący na zdarzenia z widoku.
 
 Za wykonanie widoku GUI oraz większą część kontrolera odpowiedzialny był Jacek Nitychoruk
 
@@ -28,9 +28,9 @@ Za wykonanie widoku GUI oraz większą część kontrolera odpowiedzialny był J
 
 ### BoardCreator - Zastosowanie wzorca Command
 
-Tworzeniem planszy i generowaniem statków - obecnie działającą funkcjonalnością - zajmuje się obiekt `BoardCreator`, w którym zaimplementowany został wzorzecCommand. Dzięki temu dodawanie i usuwanie statków z planszy może być cofane/powtarzane za pomocą menu lub przycisków.
+Tworzeniem planszy i generowaniem statków - obecnie działającą funkcjonalnością - zajmuje się obiekt `BoardCreator`, w którym zaimplementowany został wzorzec `Command`. Dzięki temu dodawanie i usuwanie statków z planszy może być cofane/powtarzane za pomocą menu lub przycisków.
 
-Wyżej wymienionymi funkcjonalnościami dodawania statkó zajmował się Marcin Kozubek
+Wyżej wymienionymi funkcjonalnościami dodawania statków zajmował się Marcin Kozubek
 
 ## Model 
 
@@ -75,7 +75,7 @@ Stan statku
         SHIP_SUNK
     }   
 
-Reprezentację współrzędnych w grze rozwiązaliśmy poprzez wprowadzenie klasy Coordinates
+Reprezentację współrzędnych w grze rozwiązaliśmy poprzez wprowadzenie klasy `Coordinates`
 
     public class Coordinates {
         private int x;
@@ -178,8 +178,9 @@ Na podstawie klasy Field jesteśmy w stanie stworzyć okręt. W naszym przypadku
             this.shipElements = shipElements;
             this.status = ShipStatus.SHIP_ACTIVE;
         }
-    
-    
+
+
+​    
         public Boolean isOnPosition(Coordinates position){
             for (Field field: shipElements){
                 if(field.getPosition() == position){
@@ -201,9 +202,9 @@ Na podstawie klasy Field jesteśmy w stanie stworzyć okręt. W naszym przypadku
 
 Orientacja statku mówi nam jak jest on ustawiony ( pionowo lub poziomo), natomiast status oznacza, czy dany statek został trafiony, zniszczony lub w ogóle nie trafiony.
 
-Metoda isOnPosition wskazuje nam czy jedn z elementów statku nie znajduję się na podanej jako parametr współrzędnej.
+Metoda `isOnPosition `wskazuje nam czy jeden z elementów statku nie znajduję się na podanej jako parametr współrzędnej.
 
-Wszytskie statki gracza przechowujemy w jednej klasie Borad wraz z limitem mapy oraz polami.
+Wszystkie statki gracza przechowujemy w jednej klasie `Board `wraz z limitem mapy oraz polami.
 
     public class Board {
     
@@ -273,12 +274,12 @@ Wszytskie statki gracza przechowujemy w jednej klasie Borad wraz z limitem mapy 
             return result;
         }
     }
-    
-Fukcja addShip() zmienia wszystkie pola zajmowane przez dany statek an zajętę i dodaje statek do listy, removeShip() zwalnia zajmowane pola i usuwa statek z listy, getShipAtPosition() szuka statku zajmującegodaną pozycję a następnie go zwraca natomiast  getFieldsAround() zwraca listę wszystkich pól będących na planszy wokół podanego jako parametr pola.
 
-### Implemenatcja gracza
+Funkcja `addShip() `zmienia wszystkie pola zajmowane przez dany statek na zajęte i dodaje statek do listy, `removeShip` zwalnia zajmowane pola i usuwa statek z listy, `getShipAtPosition`() szuka statku zajmującego daną pozycję a następnie go zwraca natomiast  `getFieldsAround()` zwraca listę wszystkich pól będących na planszy wokół podanego jako parametr pola.
 
-W celu implementacji gracza stworzyliśmy klasę abstarkcyjną Player którą będzie wykorzystywał użytkownik, jak i komputer.
+### Implementacja gracza
+
+W celu implementacji gracza stworzyliśmy klasę abstrakcyjną Player którą będzie wykorzystywał użytkownik, jak i komputer.
 
     public abstract class Player {
         private final Game game;
@@ -323,24 +324,24 @@ W celu implementacji gracza stworzyliśmy klasę abstarkcyjną Player którą b�
         }
     
     }
-Funkcja makeMove wysyła do gry komunikat o próbie strzału na daną pozycję na planszy przeciwnika.
+Funkcja `makeMove `wysyła do gry komunikat o próbie strzału na daną pozycję na planszy przeciwnika.
 
-Zarówno klasy HumanPlayer jak i ComputerPlayer rozszerzają klasę Player
+Zarówno klasy `HumanPlayer ` jak i `ComputerPlayer `rozszerzają klasę `Player`
 
     public class HumanPlayer extends Player{
         public HumanPlayer(Game game, String name){
             super(game, name);
         }
     }
-    
+
 
     public class ComputerPlayer extends Player{
         public ComputerPlayer(Game game, String name){
             super(game, name);
         }
     }
-    
-W póżniejszym czasie do klasy HumanPlayer zostanie dodany wybór pola na podstawie kliknięcia myszką, natomiast dla ComputerPlayer wybór będzie uzalezniony od pewnego algrotymu zależnego od wyboru trudności.
+
+W późniejszym czasie do klasy `HumanPlayer `zostanie dodany wybór pola na podstawie kliknięcia myszką, natomiast dla `ComputerPlayer `wybór będzie uzależniony od pewnego algorytmu zależnego od wyboru trudności.
 
 Klasa Game przechowuje graczy oraz status gry
 
@@ -381,19 +382,19 @@ Klasa Game przechowuje graczy oraz status gry
     
         }
     }
-Funkcja initialize tworzy nam nowych graczy, z czego w późniejszej implementacji imię będzie pobierane z formularza, oraz oczekuje na ustawienie przez obu graczy swoich statków.
+Funkcja `initialize ` tworzy nam nowych graczy, z czego w późniejszej implementacji imię będzie pobierane z formularza, oraz oczekuje na ustawienie przez obu graczy swoich statków.
 
 ### Wzorzec Command
 
-W związku z załączeniem wzorca Command w naszym projekcie konieczne było stworzenie interfejsu BoardCreatorCommand, w którym znajdowałyby się metody execute() i undo().
+W związku z załączeniem wzorca `Command `w naszym projekcie konieczne było stworzenie interfejsu `BoardCreatorCommand`, w którym znajdowałyby się metody `execute` i `undo`.
 
     public interface BoardCreatorCommand {
         void execute();
     
         void undo();
     }
-    
-Klay implementujące ten interfejs bęa miały za zadanie dodawać i usuwać obiekt z planszy. Pierwszą klasą jest PlaceShipCommand
+
+Klasy implementujące ten interfejs będą miały za zadanie dodawać i usuwać obiekt z planszy. Pierwszą klasą jest `PlaceShipCommand`
 
     public class PlaceShipCommand implements BoardCreatorCommand {
         private final Board board;
@@ -424,9 +425,9 @@ Klay implementujące ten interfejs bęa miały za zadanie dodawać i usuwać obi
     }
 
 
-Głównymi metodami są tu execute(), która dodaje statek do planszy i undo(), która go usuwa.
+Głównymi metodami są tu `execute`, która dodaje statek do planszy i `undo`, która go usuwa.
 
-W bardzo podobny sposób działa klasa RemoveShipCommand (przeciwnedziałanie w stosunku do kodu z PlaceShipCommand)
+W bardzo podobny sposób działa klasa `RemoveShipCommand `(przeciwne działanie w stosunku do kodu z `PlaceShipCommand`)
 
     public class RemoveShipCommand implements BoardCreatorCommand {
         private final Board board;
@@ -454,8 +455,8 @@ W bardzo podobny sposób działa klasa RemoveShipCommand (przeciwnedziałanie w 
                 lengthsOfShipsYetToBePlaced.remove(indexToRemoveAt);
             }
     }
-    
-W celu zarządzania kolekami operacji do cofania/powtarzania swtorzyliśmy klasę BoardCreatorCommandRegisrty, która zapiamiętuję w kopcach ostatnie operacje wykonane przez użytkownika.
+
+W celu zarządzania kolejkami operacji do cofania/powtarzania stworzyliśmy klasę `BoardCreatorCommandRegistry`, która zapamiętuje ostatnie operacje wykonane przez użytkownika.
 
     public class BoardCreatorCommandRegistry {
         private final ObservableList<BoardCreatorCommand> commandStack = FXCollections.observableArrayList();
@@ -503,11 +504,11 @@ W celu zarządzania kolekami operacji do cofania/powtarzania swtorzyliśmy klas�
             return isUndoEnabled;
         }
     }
-    
-Aby nie wystąbił błąd ponownego dodawania nowego elementu przy wykowywniu operacji undo() przy każdym wywołaniu operacji execute() stos undoStack musibyć czyszczony.
+
+Aby nie wystąpił błąd ponownego dodawania nowego elementu przy wykiwywaniu operacji `undo` przy każdym wywołaniu operacji `execute` stos `undoStack `musi być czyszczony.
 
 ### Tworzenie nowej planszy
-Ponieważ na starcie nie dostajemy zapełnionej statkami planszy stworzyliśmy klasę BoardCreator która na podstawie podanej do konstruktora ilości statków dla danej długości w formei mapy odpowiednio ustawi nalezyte wartości, jak również będzię dodawała i usuwała staki z planszy.
+Ponieważ na starcie nie dostajemy zapełnionej statkami planszy stworzyliśmy klasę `BoardCreator `która na podstawie podanej do konstruktora ilości statków dla danej długości w formie mapy odpowiednio ustawi należyte wartości, jak również będzie dodawała i usuwała statki z planszy.
 
     public class BoardCreator {
     
@@ -685,15 +686,15 @@ Ponieważ na starcie nie dostajemy zapełnionej statkami planszy stworzyliśmy k
             ).collect(Collectors.toList());
         }
     }
-    
+
 Funkcja addShip działa w następujący sposób: 
 1. Sprawdzenie czy brakuje statku o danej długości
 2. Sprawdzenie czy statek nie wystaje poza planszę
 3. Sprawdzenie czy statek nie styka sie z innym statkiem
 
-W przypadku dodawania nowego statku do planszy stworzyliśmy pomocniczą funkcję getFieldCoordsForShipAtPosition, która dla danej pozycji, orientacji statku i jego długości zwraca listę pól zamowanych przez tenże statek.
+W przypadku dodawania nowego statku do planszy stworzyliśmy pomocniczą funkcję `getFieldCoordsForShipAtPosition`, która dla danej pozycji, orientacji statku i jego długości zwraca listę pól zajmowanych przez tenże statek.
 
-## Widok - odpowiedzailny Jacek Nitychoruk
+## Widok - odpowiedzialny Jacek Nitychoruk
 Na podstawie listy wymagań skonstruowaliśmy następujący widok.
 
     <VBox prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardController">
@@ -794,7 +795,7 @@ Na podstawie listy wymagań skonstruowaliśmy następujący widok.
             </HBox>
         </children>
     </VBox>
-    
+
 W przypadku stworzonego widoku dostępne jest menu z opcjami zakończenia gry, zmiany poziomu trudności, powtarzania i cofania ruchów.
 
 
@@ -802,7 +803,7 @@ W widoku wykorzystujemy kilka przycisków, w tym przyciski do wyboru statku do o
 
 ## Controller
 
-W związku z wykorzystaniem wzorca MVC stworzyliśmy klasę reprezentującą kontroler w naszym projekcie. Klasę tą nazwaliśmy BoardController. Na podstawie zdarzeń wykonanych w widoku będzie ona zmieniać model naszej gry, natomiast będzie ona również renderować staki na planszy.
+W związku z wykorzystaniem wzorca MVC stworzyliśmy klasę reprezentującą kontroler w naszym projekcie. Klasę tą nazwaliśmy `BoardController`. Na podstawie zdarzeń wykonanych w widoku będzie ona zmieniać model naszej gry, natomiast będzie ona również generować statki na planszy.
 
     public class BoardController {
         private Board playersBoard;
@@ -990,12 +991,12 @@ W związku z wykorzystaniem wzorca MVC stworzyliśmy klasę reprezentującą kon
             ));
         }
     }
-    
-Funkcja controllerInit rysuje nam układ statków gracza i komputera korzystając z pola fieldStatus w klasie Field, jak również dodaję do każdego pola planszy gracza obsługę akcji kliknięcia. 
 
-W celu dodawiania statków poprzez klikniecie na planszę stworzyliśmy funkcję clickGrid, która jeśli potrzeba dodać statek o danej długości zainicjalizuję funkcję placeShip z klasy BoardCreator.
+Funkcja `controllerInit `rysuje nam układ statków gracza i komputera korzystając z pola `fieldStatus `w klasie `Field`, jak również dodaję do każdego pola planszy gracza obsługę akcji kliknięcia. 
 
-Aby umożliwić dezaktywację przycisków dodawania statków stworzyliśmy pomocniczą funkcję setupShipButtonEnabled, która dezaktywuje przycisk jeśli ilość statkó o danej długości jest prawidłowa.
+W celu dodawania statków poprzez klikniecie na planszę stworzyliśmy funkcję `clickGrid`, która jeśli potrzeba dodać statek o danej długości zainicjalizuję funkcję `placeShip `z klasy `BoardCreator`.
+
+Aby umożliwić dezaktywację przycisków dodawania statków stworzyliśmy pomocniczą funkcję `setupShipButtonEnabled`, która dezaktywuje przycisk jeśli ilość statków o danej długości jest prawidłowa.
 
 ## Klasa Main
 W klasie tej zostaje uruchomiona gra z podanymi w mapie statkami 
@@ -1016,7 +1017,8 @@ W klasie tej zostaje uruchomiona gra z podanymi w mapie statkami
                 );
                 var boardCreator = new BoardCreator(Config.BOARD_SIZE.getX(), shipCounts);
 
-    
+
+​    
                 // load layout from FXML file
                 var loader = new FXMLLoader();
                 loader.setLocation(Main.class.getResource("view/mainView.fxml"));
@@ -1029,8 +1031,9 @@ W klasie tej zostaje uruchomiona gra z podanymi w mapie statkami
                 configureStage(primaryStage, rootLayout);
                 primaryStage.setResizable(false);
                 primaryStage.show();
-    
-    
+
+
+​    
             } catch (IOException e) {
                 // don't do this in common apps
                 e.printStackTrace();
