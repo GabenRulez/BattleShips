@@ -1,9 +1,12 @@
-package model;
+package pl.edu.agh.iisg.to.battleships.model;
 
 public class ComputerPlayer extends Player{
 
-    public ComputerPlayer(Game game, String name){
-        super(game, name);
+    Integer difficultyLevel;
+
+    public ComputerPlayer(Game game, Integer difficultyLevel){
+        super(game);
+        this.difficultyLevel = difficultyLevel;
     }
 
 //    public void start() throws InterruptedException {

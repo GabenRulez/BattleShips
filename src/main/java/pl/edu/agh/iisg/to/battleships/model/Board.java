@@ -1,6 +1,6 @@
-package model;
+package pl.edu.agh.iisg.to.battleships.model;
 
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
