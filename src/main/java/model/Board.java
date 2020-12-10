@@ -1,5 +1,6 @@
 package model;
 
+import model.enums.Direction;
 import model.enums.FieldStatus;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class Board {
     }
 
     public List<Field> getFieldsAround(Field field){
-        ArrayList<Field> result = new ArrayList<Field>();
+        ArrayList<Field> result = new ArrayList<>();
         for(int x=-1; x<=1; x++){
             for(int y=-1; y<=1; y++){
                 if(x != 0 || y!= 0){
@@ -73,4 +74,80 @@ public class Board {
         }
         return result;
     }
+
+    public List<Field> getFieldsInCross(Field field){
+        ArrayList<Field> result = new ArrayList<>();
+        Coordinates toCheck;
+
+        toCheck = field.getPosition().add(new Coordinates(1, 0));
+        if(this.areCoordsInRange(toCheck)){
+            result.add(this.getFieldOnPosition(toCheck));
+        }
+
+        toCheck = field.getPosition().add(new Coordinates(-1, 0));
+        if(this.areCoordsInRange(toCheck)){
+            result.add(this.getFieldOnPosition(toCheck));
+        }
+
+        toCheck = field.getPosition().add(new Coordinates(0, 1));
+        if(this.areCoordsInRange(toCheck)){
+            result.add(this.getFieldOnPosition(toCheck));
+        }
+
+        toCheck = field.getPosition().add(new Coordinates(0, -1));
+        if(this.areCoordsInRange(toCheck)){
+            result.add(this.getFieldOnPosition(toCheck));
+        }
+
+        return result;
+    }
+
+    public Field getFieldInDirection(Field field, Direction direction){
+        switch(direction){
+            case TOP -> {
+                Coordinates toCheck = field.getPosition().add(new Coordinates(0, 1));
+                if(this.areCoordsInRange(toCheck)){
+                    return this.getFieldOnPosition(toCheck);
+                }
+            }
+            case BOTTOM -> {
+                Coordinates toCheck = field.getPosition().add(new Coordinates(0, -1));
+                if(this.areCoordsInRange(toCheck)){
+                    return this.getFieldOnPosition(toCheck);
+                }
+            }
+            case LEFT -> {
+                Coordinates toCheck = field.getPosition().add(new Coordinates(-1, 0));
+                if(this.areCoordsInRange(toCheck)){
+                    return this.getFieldOnPosition(toCheck);
+                }
+            }
+            case RIGHT -> {
+                Coordinates toCheck = field.getPosition().add(new Coordinates(1,  0));
+                if(this.areCoordsInRange(toCheck)){
+                    return this.getFieldOnPosition(toCheck);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Field getFieldWithShipHit(){ // returns the first field with ship, that was hit, but not already sunk
+        for( Field field : this.fields.values() ){
+            if(field.getFieldStatus() == FieldStatus.FIELD_SHIP_HIT){
+                boolean finished = true;    // so all positions in cross are already hit
+                for( Field crossField : getFieldsInCross(field) ){
+                    if( !crossField.wasShot() ){
+                        finished = false;
+                        break;
+                    }
+                }
+                if(!finished) return field;
+            }
+        }
+        return null;
+    }
+
+
+
 }
