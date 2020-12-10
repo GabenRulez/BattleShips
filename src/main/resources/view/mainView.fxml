@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardController">
+    <children>
+        <MenuBar VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Plik">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Nowa gra" />
+                        <MenuItem mnemonicParsing="false" text="Ustawienia" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Zamknij" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edycja">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#undo" text="Cofnij" />
+                        <MenuItem mnemonicParsing="false" onAction="#redo" text="Powtórz" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Pomoc">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="O aplikacji" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <AnchorPane prefHeight="550.0" prefWidth="550.0">
+                    <children>
+                        <Label fx:id="playerName" alignment="CENTER" layoutX="249.0" layoutY="1.0" style="&#10;" text="Gracz:" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="18.0" fx:id="x7" />
+                            </font>
+                            <textFill>
+                                <Color red="0.624" green="0.624" blue="0.624" fx:id="x8" />
+                            </textFill>
+                        </Label>
+                        <GridPane fx:id="playerBoard" gridLinesVisible="true" layoutX="14.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                        </GridPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="playersBoard" prefHeight="544.0" prefWidth="179.0">
+                    <children>
+                        <Label fx:id="instruction" alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
+                            <font>
+                                <Font size="15.0" fx:id="x1" />
+                            </font>
+                            <textFill>
+                                <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
+                            </textFill>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                        </Label>
+                        <Button fx:id="shipPlace1" layoutX="33.0" layoutY="72.0" mnemonicParsing="false" onAction="#place1Ship" prefHeight="25.0" prefWidth="116.0" text="1-masztowiec" />
+                        <Button fx:id="startGame" layoutX="9.0" layoutY="496.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="188.0" text="Rozpocznij grę" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Button fx:id="shipPlace2" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" onAction="#place2Ship" prefHeight="25.0" prefWidth="116.0" text="2-masztowiec" />
+                        <Button fx:id="shipPlace3" layoutX="33.0" layoutY="149.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-masztowiec" />
+                        <Button fx:id="shipPlace4" layoutX="33.0" layoutY="188.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-masztowiec" />
+                        <Button layoutX="32.0" layoutY="272.0" mnemonicParsing="false" onAction="#toggleOrientation" prefHeight="25.0" prefWidth="116.0" text="Obróć" />
+                        <Button fx:id="undoBtn" layoutX="32.0" layoutY="316.0" mnemonicParsing="false" onAction="#undo" prefHeight="25.0" prefWidth="116.0" text="UNDO" />
+                        <Button fx:id="redoBtn" layoutX="32.0" layoutY="348.0" mnemonicParsing="false" onAction="#redo" prefHeight="25.0" prefWidth="116.0" text="REDO" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="550.0" prefWidth="550.0">
+                    <children>
+                        <Label alignment="CENTER" layoutX="249.0" layoutY="1.0" style="&#10;" text="Komputer:" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="18.0" fx:id="x71" />
+                            </font>
+                            <textFill>
+                                <Color red="0.624" green="0.624" blue="0.624" fx:id="x81" />
+                            </textFill>
+                        </Label>
+                        <GridPane fx:id="computerBoard" gridLinesVisible="true" layoutX="14.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                        </GridPane>
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+            <children>
+                <Label maxHeight="1.7976931348623157E308" prefHeight="16.0" prefWidth="653.0" text="Oczekiwanie na ustawienie statków" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="11.0" fx:id="x3" />
+                    </font>
+                    <textFill>
+                        <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+                    </textFill>
+                </Label>
+                <Label alignment="CENTER_RIGHT" font="$x3" prefHeight="16.0" prefWidth="657.0" text="Pozostałych statków do zniszczenia: 10" textAlignment="RIGHT" textFill="$x4" HBox.hgrow="NEVER" />
+            </children>
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </padding>
+        </HBox>
+    </children>
+</VBox>
