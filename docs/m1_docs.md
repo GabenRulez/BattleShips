@@ -18,7 +18,7 @@ Domyślna konfiguracja rozgrywki przedstawia się następująco:
 
 Aplikację oparliśmy o Framework JavaFX do generowania interfejsu użytkownika.
 
-W konsekwencji tego, w aplikacji zastosowaliśmy wzorzec MVC, poprzez podział projektu na klasy stanowiące pl.edu.agh.iisg.to.battleships.model aplikacji, widok - będący konfiguracją GUI generowaną na podstawie stanu modelu, oraz kontroler reagujący na zdarzenia z widoku.
+W konsekwencji tego, w aplikacji zastosowaliśmy wzorzec MVC, poprzez podział projektu na klasy stanowiące model aplikacji, widok - będący konfiguracją GUI generowaną na podstawie stanu modelu, oraz kontroler reagujący na zdarzenia z widoku.
 
 Za wykonanie widoku GUI oraz większą część kontrolera odpowiedzialny był Jacek Nitychoruk
 
@@ -697,7 +697,7 @@ W przypadku dodawania nowego statku do planszy stworzyliśmy pomocniczą funkcj�
 ## Widok - odpowiedzialny Jacek Nitychoruk
 Na podstawie listy wymagań skonstruowaliśmy następujący widok.
 
-    <VBox prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:pl.edu.agh.iisg.to.battleships.controller="pl.edu.agh.iisg.to.battleships.controller.BoardController">
+    <VBox prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardController">
         <children>
             <MenuBar VBox.vgrow="NEVER">
                 <menus>
@@ -803,7 +803,7 @@ W widoku wykorzystujemy kilka przycisków, w tym przyciski do wyboru statku do o
 
 ## Controller
 
-W związku z wykorzystaniem wzorca MVC stworzyliśmy klasę reprezentującą kontroler w naszym projekcie. Klasę tą nazwaliśmy `BoardController`. Na podstawie zdarzeń wykonanych w widoku będzie ona zmieniać pl.edu.agh.iisg.to.battleships.model naszej gry, natomiast będzie ona również generować statki na planszy.
+W związku z wykorzystaniem wzorca MVC stworzyliśmy klasę reprezentującą kontroler w naszym projekcie. Klasę tą nazwaliśmy `BoardController`. Na podstawie zdarzeń wykonanych w widoku będzie ona zmieniać model naszej gry, natomiast będzie ona również generować statki na planszy.
 
     public class BoardController {
         private Board playersBoard;
@@ -998,10 +998,10 @@ W celu dodawania statków poprzez klikniecie na planszę stworzyliśmy funkcję 
 
 Aby umożliwić dezaktywację przycisków dodawania statków stworzyliśmy pomocniczą funkcję `setupShipButtonEnabled`, która dezaktywuje przycisk jeśli ilość statków o danej długości jest prawidłowa.
 
-## Klasa pl.edu.agh.iisg.to.battleships.Main
+## Klasa Main
 W klasie tej zostaje uruchomiona gra z podanymi w mapie statkami 
 
-    public class pl.edu.agh.iisg.to.battleships.Main extends Application {
+    public class Main extends Application {
     
         @Override
         public void start(Stage primaryStage) throws Exception {
@@ -1021,11 +1021,11 @@ W klasie tej zostaje uruchomiona gra z podanymi w mapie statkami
 ​    
                 // load layout from FXML file
                 var loader = new FXMLLoader();
-                loader.setLocation(pl.edu.agh.iisg.to.battleships.Main.class.getResource("view/mainView.fxml"));
+                loader.setLocation(Main.class.getResource("view/mainView.fxml"));
                 VBox rootLayout = loader.load();
-                BoardController pl.edu.agh.iisg.to.battleships.controller = loader.getController();
-                pl.edu.agh.iisg.to.battleships.controller.setModel(boardCreator);
-                pl.edu.agh.iisg.to.battleships.controller.controllerInit();
+                BoardController controller = loader.getController();
+                controller.setModel(boardCreator);
+                controller.controllerInit();
                 
                 // add layout to a scene and show them all
                 configureStage(primaryStage, rootLayout);
