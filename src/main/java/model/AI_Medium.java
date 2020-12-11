@@ -53,23 +53,10 @@ public class AI_Medium implements AI {
                 return possibleShipCords.get( (int)(Math.random() * possibleShipCords.size()) );
             }
 
-            return pickRandomSpot(enemyBoard);
+            return AI_Easy.getRandomCoordinates(enemyBoard, random);
         }
         else{
             return possibleShipCords.get( (int)(Math.random() * possibleShipCords.size()) );    // return random cords from the previously chosen
         }
-    }
-
-    private Coordinates pickRandomSpot(Board enemyBoard){
-        int randomX = random.nextInt(enemyBoard.limit.getX());
-        int randomY = random.nextInt(enemyBoard.limit.getY());
-        Coordinates chosenCords = new Coordinates(randomX,randomY);
-
-        while( enemyBoard.getFieldOnPosition(chosenCords).wasShot() ){
-            randomX = random.nextInt(enemyBoard.limit.getX());
-            randomY = random.nextInt(enemyBoard.limit.getY());
-            chosenCords.set(randomX, randomY);
-        }
-        return chosenCords;
     }
 }
