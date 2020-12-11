@@ -1,4 +1,4 @@
-package model.enums;
+package pl.edu.agh.iisg.to.battleships.model.enums;
 
 public enum FieldStatus {
     FIELD_EMPTY,

@@ -1,4 +1,4 @@
-package model;
+package pl.edu.agh.iisg.to.battleships.model;
 
 import model.enums.Direction;
 import model.enums.FieldStatus;

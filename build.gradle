@@ -3,7 +3,7 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
-group 'pl.edu.agh.to2.battleships'
+group 'pl.edu.agh.iisg.to.battleships'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'org.openjfx.javafxplugin'
@@ -17,7 +17,8 @@ repositories {
 }
 
 application {
-    mainClassName = 'Main'
+    applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+    mainClassName = 'pl.edu.agh.iisg.to.battleships.Main'
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_14
@@ -35,6 +36,13 @@ dependencies {
     implementation group: 'io.reactivex.rxjava3', name: 'rxjavafx', version: '3.0.1'
     implementation group: 'org.apache.tika', name: 'tika-core', version: '1.4'
     implementation group: 'org.json', name: 'json', version: '20200518'
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+    implementation 'org.xerial:sqlite-jdbc:3.8.11.2'
+    implementation 'org.hibernate:hibernate-core:5.2.2.Final'
+    implementation 'org.hibernate:hibernate-entitymanager:5.2.2.Final'
+    implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+    implementation 'org.xerial:sqlite-jdbc:3.8.11.2'
     compile group: 'org.fxmisc.easybind', name: 'easybind', version: '1.0.4-SNAPSHOT'
 
 }

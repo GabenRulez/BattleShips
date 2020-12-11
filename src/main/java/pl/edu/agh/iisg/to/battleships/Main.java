@@ -1,12 +1,17 @@
-import controller.BoardController;
+package pl.edu.agh.iisg.to.battleships;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.BoardCreator;
-import model.Config;
-import model.Game;
+import pl.edu.agh.iisg.to.battleships.controller.BoardController;
+import pl.edu.agh.iisg.to.battleships.dao.GameDao;
+import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
+import pl.edu.agh.iisg.to.battleships.model.BoardCreator;
+import pl.edu.agh.iisg.to.battleships.model.Config;
+import pl.edu.agh.iisg.to.battleships.model.Game;
+import pl.edu.agh.iisg.to.battleships.session.SessionService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,8 +21,17 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            Game game = new Game();
-            game.initialize();
+//            SessionService.openSession();
+//            HumanPlayerDao playerDao = new HumanPlayerDao();
+//            GameDao gameDao = new GameDao();
+//            Game testGame = new Game(null);
+//            playerDao.create("Test4", "a6@a.com", "aaa");
+//
+//            gameDao.saveToDb(testGame);
+//            SessionService.closeSession();
+
+            Game game = new Game(null);
+            game.start();
 
             var shipCounts = Map.ofEntries(
                 Map.entry(1, 4),
@@ -30,7 +44,7 @@ public class Main extends Application {
 
             // load layout from FXML file
             var loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/mainView.fxml"));
+            loader.setLocation(Main.class.getResource("/view/mainView.fxml"));
             VBox rootLayout = loader.load();
             BoardController controller = loader.getController();
 //            controller.setModel(game);

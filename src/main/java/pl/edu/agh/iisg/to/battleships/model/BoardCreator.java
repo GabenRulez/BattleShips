@@ -1,11 +1,11 @@
-package model;
+package pl.edu.agh.iisg.to.battleships.model;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 import java.util.Collections;
 import java.util.List;

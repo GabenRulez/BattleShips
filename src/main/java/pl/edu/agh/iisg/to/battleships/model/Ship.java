@@ -1,6 +1,6 @@
-package model;
+package pl.edu.agh.iisg.to.battleships.model;
 
-import model.enums.ShipStatus;
+import pl.edu.agh.iisg.to.battleships.model.enums.ShipStatus;
 
 import java.util.List;
 
