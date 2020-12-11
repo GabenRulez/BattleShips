@@ -5,11 +5,12 @@ import model.enums.FieldStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
 
 public class ComputerPlayer extends Player{
     String difficultyLevel;
     private static final String[] possibleDifficultyLevels = new String[]{"easy", "medium"};
+    private final Random random = new Random();
 
     public ComputerPlayer(Game game, String name){
         super(game, name);
@@ -39,8 +40,8 @@ public class ComputerPlayer extends Player{
         Coordinates chosenCords = new Coordinates(0,0);
 
         while( enemyBoard.getFieldOnPosition(chosenCords).wasShot() ){
-            int randomX = (int)(Math.random() * enemyBoard.limit.getX());
-            int randomY = (int)(Math.random() * enemyBoard.limit.getY());
+            int randomX = random.nextInt(enemyBoard.limit.getX());
+            int randomY = random.nextInt(enemyBoard.limit.getY());
             chosenCords.set(randomX, randomY);
         }
         return chosenCords;

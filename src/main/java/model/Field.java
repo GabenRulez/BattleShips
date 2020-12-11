@@ -35,7 +35,7 @@ public class Field {
     }
 
     public boolean wasShot(){
-        return this.fieldStatus.get() == FieldStatus.FIELD_EMPTY_BLOCKED || this.fieldStatus.get() == FieldStatus.FIELD_SHIP_HIT;
+        return !this.fieldStatus.get().isShootable();
     }
 
     public Direction getDirectionFrom(Field other){
@@ -43,8 +43,8 @@ public class Field {
         Coordinates otherPosition = other.getPosition();
 
         if( myPosition.getX() == otherPosition.getX() ){
-            if( myPosition.getY() < otherPosition.getY() ) return Direction.BOTTOM;
-            if( myPosition.getY() > otherPosition.getY() ) return Direction.TOP;
+            if( myPosition.getY() < otherPosition.getY() ) return Direction.TOP;
+            if( myPosition.getY() > otherPosition.getY() ) return Direction.BOTTOM;
         }
         else if( myPosition.getY() == otherPosition.getY() ){
             if( myPosition.getX() < otherPosition.getX() ) return Direction.LEFT;

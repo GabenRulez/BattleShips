@@ -76,58 +76,30 @@ public class Board {
     }
 
     public List<Field> getFieldsInCross(Field field){
+        int[][] crossFieldVectors = new int[][]{new int[]{1,0}, new int[]{0,1}, new int[]{-1,0}, new int[]{0,-1}};
         ArrayList<Field> result = new ArrayList<>();
         Coordinates toCheck;
 
-        toCheck = field.getPosition().add(new Coordinates(1, 0));
-        if(this.areCoordsInRange(toCheck)){
-            result.add(this.getFieldOnPosition(toCheck));
+        for(int[] vector : crossFieldVectors){
+            toCheck = field.getPosition().add(new Coordinates(vector[0], vector[1]));
+            if(this.areCoordsInRange(toCheck)){
+                result.add(this.getFieldOnPosition(toCheck));
+            }
         }
-
-        toCheck = field.getPosition().add(new Coordinates(-1, 0));
-        if(this.areCoordsInRange(toCheck)){
-            result.add(this.getFieldOnPosition(toCheck));
-        }
-
-        toCheck = field.getPosition().add(new Coordinates(0, 1));
-        if(this.areCoordsInRange(toCheck)){
-            result.add(this.getFieldOnPosition(toCheck));
-        }
-
-        toCheck = field.getPosition().add(new Coordinates(0, -1));
-        if(this.areCoordsInRange(toCheck)){
-            result.add(this.getFieldOnPosition(toCheck));
-        }
-
         return result;
     }
 
     public Field getFieldInDirection(Field field, Direction direction){
+        Coordinates toCheck;
         switch(direction){
-            case TOP -> {
-                Coordinates toCheck = field.getPosition().add(new Coordinates(0, 1));
-                if(this.areCoordsInRange(toCheck)){
-                    return this.getFieldOnPosition(toCheck);
-                }
-            }
-            case BOTTOM -> {
-                Coordinates toCheck = field.getPosition().add(new Coordinates(0, -1));
-                if(this.areCoordsInRange(toCheck)){
-                    return this.getFieldOnPosition(toCheck);
-                }
-            }
-            case LEFT -> {
-                Coordinates toCheck = field.getPosition().add(new Coordinates(-1, 0));
-                if(this.areCoordsInRange(toCheck)){
-                    return this.getFieldOnPosition(toCheck);
-                }
-            }
-            case RIGHT -> {
-                Coordinates toCheck = field.getPosition().add(new Coordinates(1,  0));
-                if(this.areCoordsInRange(toCheck)){
-                    return this.getFieldOnPosition(toCheck);
-                }
-            }
+            case TOP -> toCheck = field.getPosition().add(new Coordinates(0, -1));
+            case BOTTOM -> toCheck = field.getPosition().add(new Coordinates(0, 1));
+            case LEFT -> toCheck = field.getPosition().add(new Coordinates(-1, 0));
+            case RIGHT -> toCheck = field.getPosition().add(new Coordinates(1,  0));
+            default -> throw new IllegalStateException("Unexpected value of direction in 'getFieldInDirection': " + direction);
+        }
+        if(this.areCoordsInRange(toCheck)){
+            return this.getFieldOnPosition(toCheck);
         }
         return null;
     }
@@ -138,16 +110,11 @@ public class Board {
                 boolean finished = true;    // so all positions in cross are already hit
                 for( Field crossField : getFieldsInCross(field) ){
                     if( !crossField.wasShot() ){
-                        finished = false;
-                        break;
+                        return field;
                     }
                 }
-                if(!finished) return field;
             }
         }
         return null;
     }
-
-
-
 }
