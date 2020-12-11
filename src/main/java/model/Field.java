@@ -2,8 +2,6 @@ package model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import model.enums.Direction;
 import model.enums.FieldStatus;
 
@@ -43,8 +41,8 @@ public class Field {
         Coordinates otherPosition = other.getPosition();
 
         if( myPosition.getX() == otherPosition.getX() ){
-            if( myPosition.getY() < otherPosition.getY() ) return Direction.TOP;
-            if( myPosition.getY() > otherPosition.getY() ) return Direction.BOTTOM;
+            if( myPosition.getY() < otherPosition.getY() ) return Direction.UP;
+            if( myPosition.getY() > otherPosition.getY() ) return Direction.DOWN;
         }
         else if( myPosition.getY() == otherPosition.getY() ){
             if( myPosition.getX() < otherPosition.getX() ) return Direction.LEFT;

@@ -1,8 +1,8 @@
 package model.enums;
 
 public enum Direction {
-    TOP,
-    BOTTOM,
+    UP,
+    DOWN,
     LEFT,
     RIGHT,
     DIFFERENT

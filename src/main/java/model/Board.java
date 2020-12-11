@@ -92,8 +92,8 @@ public class Board {
     public Field getFieldInDirection(Field field, Direction direction){
         Coordinates toCheck;
         switch(direction){
-            case TOP -> toCheck = field.getPosition().add(new Coordinates(0, -1));
-            case BOTTOM -> toCheck = field.getPosition().add(new Coordinates(0, 1));
+            case UP -> toCheck = field.getPosition().add(new Coordinates(0, -1));
+            case DOWN -> toCheck = field.getPosition().add(new Coordinates(0, 1));
             case LEFT -> toCheck = field.getPosition().add(new Coordinates(-1, 0));
             case RIGHT -> toCheck = field.getPosition().add(new Coordinates(1,  0));
             default -> throw new IllegalStateException("Unexpected value of direction in 'getFieldInDirection': " + direction);
