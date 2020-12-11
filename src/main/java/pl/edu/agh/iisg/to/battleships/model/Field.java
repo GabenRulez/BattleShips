@@ -1,10 +1,8 @@
-package model;
+package pl.edu.agh.iisg.to.battleships.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 public class Field {
     private final Coordinates position;

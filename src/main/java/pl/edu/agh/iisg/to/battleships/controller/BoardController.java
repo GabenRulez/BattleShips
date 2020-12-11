@@ -1,4 +1,4 @@
-package controller;
+package pl.edu.agh.iisg.to.battleships.controller;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -15,8 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import model.*;
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.*;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import org.fxmisc.easybind.EasyBind;
 
 
