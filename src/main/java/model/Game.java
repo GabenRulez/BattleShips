@@ -1,5 +1,6 @@
 package model;
 
+import model.ai.MediumAI;
 import model.enums.GameStatus;
 
 public class Game {
@@ -26,7 +27,7 @@ public class Game {
 
     public void initialize() {
         human = new HumanPlayer(this, "Gracz 1"); // TODO get username
-        computer = new ComputerPlayer(this, "T-800");
+        computer = new ComputerPlayer(this, "T-800", new MediumAI());
         winner = null;
         this.currentState = GameStatus.GAME_SHIP_PLACEMENT;
     }

@@ -8,23 +8,10 @@ import java.util.Arrays;
 
 public class ComputerPlayer extends Player{
     AI ai;
-    private static final String[] possibleDifficultyLevels = new String[]{"easy", "medium"};
 
-    public ComputerPlayer(Game game, String name){
+    public ComputerPlayer(Game game, String name, AI ai){
         super(game, name);
-    }
-
-    public void setDifficultyLevel(String difficultyLevel) throws IllegalArgumentException {
-        if(Arrays.asList(possibleDifficultyLevels).contains(difficultyLevel)){
-            switch(difficultyLevel){
-                case "easy" -> ai = new EasyAI();
-                case "medium" -> ai = new MediumAI();
-                default -> throw new IllegalStateException("Unexpected value in difficultyLevel: " + difficultyLevel);
-            }
-        }
-        else{
-            throw new IllegalArgumentException("Tried to set ComputerPlayer's difficulty to non-existant value: '" + difficultyLevel + "' . Possible values are as follows: " + Arrays.toString(possibleDifficultyLevels));
-        }
+        this.ai = ai;
     }
 
     public Coordinates chooseSpotToAttack(){ // difficultyLevel is from {"easy", "medium", "hard"}
