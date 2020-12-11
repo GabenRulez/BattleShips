@@ -1,6 +1,7 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
+import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 import pl.edu.agh.iisg.to.battleships.session.SessionService;
 
@@ -46,7 +47,7 @@ public class Game {
         humanWon = false;
         isFinished = false;
 
-        computer = new ComputerPlayer(this, difficultyLevel);
+        computer = new ComputerPlayer(this, new EasyAI());
 
         this.human = player;
         this.human.setCurrentGame(this);

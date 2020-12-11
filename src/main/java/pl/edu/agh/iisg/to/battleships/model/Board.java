@@ -1,5 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
+import pl.edu.agh.iisg.to.battleships.model.enums.Direction;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class Board {
     }
 
     public List<Field> getFieldsAround(Field field){
-        ArrayList<Field> result = new ArrayList<Field>();
+        ArrayList<Field> result = new ArrayList<>();
         for(int x=-1; x<=1; x++){
             for(int y=-1; y<=1; y++){
                 if(x != 0 || y!= 0){
@@ -72,5 +73,48 @@ public class Board {
             }
         }
         return result;
+    }
+
+    public List<Field> getFieldsInCross(Field field){
+        int[][] crossFieldVectors = new int[][]{new int[]{1,0}, new int[]{0,1}, new int[]{-1,0}, new int[]{0,-1}};
+        ArrayList<Field> result = new ArrayList<>();
+        Coordinates toCheck;
+
+        for(int[] vector : crossFieldVectors){
+            toCheck = field.getPosition().add(new Coordinates(vector[0], vector[1]));
+            if(this.areCoordsInRange(toCheck)){
+                result.add(this.getFieldOnPosition(toCheck));
+            }
+        }
+        return result;
+    }
+
+    public Field getFieldInDirection(Field field, Direction direction){
+        Coordinates toCheck;
+        switch(direction){
+            case UP -> toCheck = field.getPosition().add(new Coordinates(0, -1));
+            case DOWN -> toCheck = field.getPosition().add(new Coordinates(0, 1));
+            case LEFT -> toCheck = field.getPosition().add(new Coordinates(-1, 0));
+            case RIGHT -> toCheck = field.getPosition().add(new Coordinates(1,  0));
+            default -> throw new IllegalStateException("Unexpected value of direction in 'getFieldInDirection': " + direction);
+        }
+        if(this.areCoordsInRange(toCheck)){
+            return this.getFieldOnPosition(toCheck);
+        }
+        return null;
+    }
+
+    public Field getFieldWithShipHit(){ // returns the first field with ship, that was hit, but not already sunk
+        for( Field field : this.fields.values() ){
+            if(field.getFieldStatus() == FieldStatus.FIELD_SHIP_HIT){
+                boolean finished = true;    // so all positions in cross are already hit
+                for( Field crossField : getFieldsInCross(field) ){
+                    if( !crossField.wasShot() ){
+                        return field;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

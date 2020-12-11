@@ -1,26 +1,16 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
+import pl.edu.agh.iisg.to.battleships.model.ai.AI;
+
 public class ComputerPlayer extends Player{
+    AI ai;
 
-    Integer difficultyLevel;
-
-    public ComputerPlayer(Game game, Integer difficultyLevel){
+    public ComputerPlayer(Game game, AI ai){
         super(game);
-        this.difficultyLevel = difficultyLevel;
+        this.ai = ai;
     }
 
-//    public void start() throws InterruptedException {
-//        while(true){
-//            while(this.isWorking() == false){
-//                sleep(100);
-//            }
-//
-//            System.out.println(getName() + ": Wykonuję ruch.");
-//
-//            // TODO get AI input
-//            makeMove(new Coordinates((int)Math.floor(Math.random()*10),(int)Math.floor(Math.random()*10)));
-//
-//            endOfMyTurn();
-//        }
-//    }
+    public Coordinates chooseSpotToAttack(){ // difficultyLevel is from {"easy", "medium", "hard"}
+        return this.ai.getNextAttackPosition(this.getEnemy().getBoard());
+    }
 }
