@@ -1,10 +1,10 @@
-package model.ai;
+package pl.edu.agh.iisg.to.battleships.model.ai;
 
-import model.Board;
-import model.Coordinates;
-import model.Field;
-import model.enums.Direction;
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.Board;
+import pl.edu.agh.iisg.to.battleships.model.Coordinates;
+import pl.edu.agh.iisg.to.battleships.model.Field;
+import pl.edu.agh.iisg.to.battleships.model.enums.Direction;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 import java.util.ArrayList;
 import java.util.Random;

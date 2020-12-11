@@ -1,7 +1,7 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
-import model.enums.Direction;
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.enums.Direction;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

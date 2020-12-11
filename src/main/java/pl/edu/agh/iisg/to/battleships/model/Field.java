@@ -2,8 +2,8 @@ package pl.edu.agh.iisg.to.battleships.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import model.enums.Direction;
-import model.enums.FieldStatus;
+import pl.edu.agh.iisg.to.battleships.model.enums.Direction;
+import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 public class Field {
     private final Coordinates position;

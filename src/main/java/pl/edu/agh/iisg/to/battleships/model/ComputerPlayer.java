@@ -1,10 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
-import model.ai.AI;
-import model.ai.EasyAI;
-import model.ai.MediumAI;
-
-import java.util.Arrays;
+import pl.edu.agh.iisg.to.battleships.model.ai.AI;
 
 public class ComputerPlayer extends Player{
     AI ai;

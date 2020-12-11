@@ -1,7 +1,7 @@
-package model.ai;
+package pl.edu.agh.iisg.to.battleships.model.ai;
 
-import model.Board;
-import model.Coordinates;
+import pl.edu.agh.iisg.to.battleships.model.Board;
+import pl.edu.agh.iisg.to.battleships.model.Coordinates;
 
 import java.util.Random;
 
