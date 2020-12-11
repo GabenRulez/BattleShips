@@ -1,12 +1,15 @@
-package model;
+package model.ai;
 
+import model.Board;
+import model.Coordinates;
+import model.Field;
 import model.enums.Direction;
 import model.enums.FieldStatus;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AI_Medium implements AI {
+public class MediumAI implements AI {
     Random random = new Random();
     private ArrayList<Coordinates> possibleShipCords = new ArrayList<>();
 
@@ -53,7 +56,7 @@ public class AI_Medium implements AI {
                 return possibleShipCords.get( (int)(Math.random() * possibleShipCords.size()) );
             }
 
-            return AI_Easy.getRandomCoordinates(enemyBoard, random);
+            return EasyAI.getRandomCoordinates(enemyBoard, random);
         }
         else{
             return possibleShipCords.get( (int)(Math.random() * possibleShipCords.size()) );    // return random cords from the previously chosen

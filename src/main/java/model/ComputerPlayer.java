@@ -1,7 +1,10 @@
 package model;
 
+import model.ai.AI;
+import model.ai.EasyAI;
+import model.ai.MediumAI;
+
 import java.util.Arrays;
-import java.util.Random;
 
 public class ComputerPlayer extends Player{
     AI ai;
@@ -14,8 +17,8 @@ public class ComputerPlayer extends Player{
     public void setDifficultyLevel(String difficultyLevel) throws IllegalArgumentException {
         if(Arrays.asList(possibleDifficultyLevels).contains(difficultyLevel)){
             switch(difficultyLevel){
-                case "easy" -> ai = new AI_Easy();
-                case "medium" -> ai = new AI_Medium();
+                case "easy" -> ai = new EasyAI();
+                case "medium" -> ai = new MediumAI();
                 default -> throw new IllegalStateException("Unexpected value in difficultyLevel: " + difficultyLevel);
             }
         }
@@ -28,18 +31,4 @@ public class ComputerPlayer extends Player{
         return this.ai.getNextAttackPosition(this.getEnemy().getBoard());
     }
 
-//    public void start() throws InterruptedException {
-//        while(true){
-//            while(this.isWorking() == false){
-//                sleep(100);
-//            }
-//
-//            System.out.println(getName() + ": Wykonuję ruch.");
-//
-//            // TODO get AI input
-//            makeMove(new Coordinates((int)Math.floor(Math.random()*10),(int)Math.floor(Math.random()*10)));
-//
-//            endOfMyTurn();
-//        }
-//    }
 }

@@ -1,8 +1,11 @@
-package model;
+package model.ai;
+
+import model.Board;
+import model.Coordinates;
 
 import java.util.Random;
 
-public class AI_Easy implements AI {
+public class EasyAI implements AI {
     Random random = new Random();
 
     @Override
@@ -11,13 +14,15 @@ public class AI_Easy implements AI {
     }
 
     static Coordinates getRandomCoordinates(Board enemyBoard, Random random) {
-        int randomX = random.nextInt(enemyBoard.limit.getX());
-        int randomY = random.nextInt(enemyBoard.limit.getY());
+        Coordinates enemyBoardLimit = enemyBoard.getLimit();
+
+        int randomX = random.nextInt(enemyBoardLimit.getX());
+        int randomY = random.nextInt(enemyBoardLimit.getY());
         Coordinates chosenCords = new Coordinates(randomX,randomY);
 
         while( enemyBoard.getFieldOnPosition(chosenCords).wasShot() ){
-            randomX = random.nextInt(enemyBoard.limit.getX());
-            randomY = random.nextInt(enemyBoard.limit.getY());
+            randomX = random.nextInt(enemyBoardLimit.getX());
+            randomY = random.nextInt(enemyBoardLimit.getY());
             chosenCords.set(randomX, randomY);
         }
         return chosenCords;
