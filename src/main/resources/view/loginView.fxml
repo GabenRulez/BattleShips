@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="247.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.iisg.to.battleships.controller.LoginController">
+   <children>
+
+      <TextField fx:id="login" layoutX="135.0" layoutY="89.0" />
+      <PasswordField id="password" fx:id="password" layoutX="136.0" layoutY="140.0" />
+      <Button fx:id="loginButton" layoutX="136.0" layoutY="176.0" mnemonicParsing="false" onAction="#loginClickHandle" prefHeight="25.0" prefWidth="149.0" text="Zaloguj się" />
+      <Label layoutX="176.0" layoutY="72.0" text="Adres e-mail" />
+      <Label layoutX="195.0" layoutY="123.0" text="Hasło" />
+      <Label layoutX="138.0" layoutY="14.0" text="Battleships" textAlignment="CENTER">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button layoutX="330.0" layoutY="212.0" mnemonicParsing="false" onAction="#register" text="Zarejestruj się">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Label fx:id="message" alignment="CENTER" layoutX="98.0" layoutY="215.0" prefHeight="17.0" prefWidth="226.0" textAlignment="CENTER" />
+
+   </children>
+</AnchorPane>

@@ -1,6 +1,13 @@
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.security:spring-security-bom:5.1.3.RELEASE'
+    }
 }
 
 group 'pl.edu.agh.iisg.to.battleships'
@@ -31,6 +38,7 @@ javafx {
 }
 
 dependencies {
+
     testImplementation group: 'junit', name: 'junit', version: '4.11'
     implementation group: 'io.reactivex.rxjava3', name: 'rxjava', version: '3.0.6'
     implementation group: 'io.reactivex.rxjava3', name: 'rxjavafx', version: '3.0.1'
@@ -44,5 +52,7 @@ dependencies {
     implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
     implementation 'org.xerial:sqlite-jdbc:3.8.11.2'
     compile group: 'org.fxmisc.easybind', name: 'easybind', version: '1.0.4-SNAPSHOT'
+    compile "org.springframework.security:spring-security-web"
+    compile "org.springframework.security:spring-security-config"
 
 }

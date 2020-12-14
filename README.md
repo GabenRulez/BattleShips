@@ -35,8 +35,12 @@ Do poprawnego działania wymagana jest wersja Java w wersji >= 14
 
 ## Zrzuty ekranu aplikacji:
 
+### Logowanie
+![](docs/ss05.png)
+### Rejestracja
+![](docs/ss06.png)
+## Główny ekran gry
 ![](docs/ss01.png)
-
 
 ## Autorzy:
 

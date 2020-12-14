@@ -15,6 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.model.*;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import org.fxmisc.easybind.EasyBind;
@@ -22,7 +24,10 @@ import org.fxmisc.easybind.EasyBind;
 
 public class BoardController {
 //    private Game game;
+    private Stage stage;
     private Board playersBoard;
+
+    private HumanPlayer humanPlayer;
     private BoardCreator boardCreator;
 
     private final IntegerProperty shipLength = new SimpleIntegerProperty(0);
@@ -39,7 +44,9 @@ public class BoardController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize(Stage stage, HumanPlayer humanPlayer) {
+        this.stage = stage;
+        this.humanPlayer = humanPlayer;
     }
 
     public void controllerInit(){
@@ -182,6 +189,20 @@ public class BoardController {
     @FXML
     Button redoBtn;
 
+    public void menuNewGame(){
+        this.stage.close();
+        Main.showBoard(this.stage, this.getHumanPlayer());
+    }
+
+    public void menuLogout(){
+        this.stage.close();
+        Main.showLoginDialog(new Stage());
+    }
+
+    public void menuClose(){
+        System.exit(0);
+    }
+
     public void clickGrid(MouseEvent event) {
 
         Node clickedNode = event.getPickResult().getIntersectedNode();
@@ -216,5 +237,11 @@ public class BoardController {
             boardCreator.getLengthsOfShipsYetToBePlaced()
         ));
     }
+
+
+    public HumanPlayer getHumanPlayer() {
+        return humanPlayer;
+    }
+
 }
 

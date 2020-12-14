@@ -12,10 +12,10 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Nowa gra" />
-                        <MenuItem mnemonicParsing="false" text="Ustawienia" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuNewGame" text="Nowa gra" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Zamknij" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuLogout" text="Wyloguj" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuClose" text="Zamknij" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edycja">
@@ -24,11 +24,11 @@
                         <MenuItem mnemonicParsing="false" onAction="#redo" text="Powtórz" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Pomoc">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="O aplikacji" />
-                    </items>
-                </Menu>
+<!--                <Menu mnemonicParsing="false" text="Pomoc">-->
+<!--                    <items>-->
+<!--                        <MenuItem mnemonicParsing="false" text="O aplikacji" />-->
+<!--                    </items>-->
+<!--                </Menu>-->
             </menus>
         </MenuBar>
         <HBox prefHeight="100.0" prefWidth="200.0">

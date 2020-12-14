@@ -56,6 +56,10 @@ public class HumanPlayer extends Player{
 
 
 
+    public String getPassword() {
+        return password;
+    }
+
 //
 //    public void start() throws InterruptedException {
 //        workingLoop();
