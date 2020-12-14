@@ -13,7 +13,7 @@ public class EasyAI implements AI {
         return getRandomCoordinates(enemyBoard, random);
     }
 
-    static Coordinates getRandomCoordinates(Board enemyBoard, Random random) {
+    public static Coordinates getRandomCoordinates(Board enemyBoard, Random random) {
         Coordinates enemyBoardLimit = enemyBoard.getLimit();
 
         int randomX = random.nextInt(enemyBoardLimit.getX());
