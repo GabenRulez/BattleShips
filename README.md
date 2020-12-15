@@ -39,8 +39,12 @@ Do poprawnego działania wymagana jest wersja Java w wersji >= 14
 ![](docs/ss05.png)
 ### Rejestracja
 ![](docs/ss06.png)
-## Główny ekran gry
+## Główny ekran przygotowania gry
 ![](docs/ss01.png)
+## Rozgrywka
+![](docs/ss07.png)
+## Zakończenie
+![](docs/ss08.png)
 
 ## Autorzy:
 

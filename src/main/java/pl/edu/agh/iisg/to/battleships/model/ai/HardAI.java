@@ -9,7 +9,7 @@ import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MediumAI implements AI {
+public class HardAI implements AI {
     Random random = new Random();
     private ArrayList<Coordinates> possibleShipCords = new ArrayList<>();
 

@@ -9,8 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -19,6 +21,9 @@ import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
 import org.fxmisc.easybind.EasyBind;
 import pl.edu.agh.iisg.to.battleships.model.*;
+import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
+import pl.edu.agh.iisg.to.battleships.model.ai.HardAI;
+import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 
@@ -28,12 +33,15 @@ public class BoardController implements Game.Callback {
     private Game game;
     private Board playersBoard;
 
-    private HumanPlayer humanPlayer;
+    private Player humanPlayer;
     private BoardCreator boardCreator;
 
     private final IntegerProperty shipLength = new SimpleIntegerProperty(0);
     private final BooleanProperty isPlacingShipHorizontally = new SimpleBooleanProperty(true);
 
+
+//    @FXML
+//    private AnchorPane playerBoard;
 //    public void setModel(Game game){
 //        this.game = game;
 //        this.playersBoard = game.getHuman().getBoard();
@@ -46,7 +54,7 @@ public class BoardController implements Game.Callback {
     }
 
     @FXML
-    public void initialize(Stage stage, HumanPlayer humanPlayer) {
+    public void initialize(Stage stage, Player humanPlayer) {
         this.stage = stage;
         this.humanPlayer = humanPlayer;
     }
@@ -184,6 +192,8 @@ public class BoardController implements Game.Callback {
 
     @FXML
     public void startGame() {
+        this.statusText.setText("W trakcie gry");
+        this.clearSettingsPanel();
         game.start(boardCreator.getBoard());
         game.setCallback(this);
     }
@@ -214,6 +224,24 @@ public class BoardController implements Game.Callback {
     Button undoBtn;
     @FXML
     Button redoBtn;
+    @FXML
+    Button rotateBtn;
+    @FXML
+    Label levelLabel;
+    @FXML
+    RadioButton easy;
+    @FXML
+    RadioButton medium;
+    @FXML
+    RadioButton hard;
+
+    @FXML
+    AnchorPane centerPanel;
+
+
+    @FXML
+    Label statusText;
+
 
     public void menuNewGame(){
         this.stage.close();
@@ -280,18 +308,46 @@ public class BoardController implements Game.Callback {
     }
 
 
-    public HumanPlayer getHumanPlayer() {
+    public Player getHumanPlayer() {
         return humanPlayer;
     }
 
     @Override
     public void onGameEnded(boolean hasPlayerWon) {
+        this.statusText.setText("Zakonczono");
+        String message = hasPlayerWon ? "Gratulacje "+this.getHumanPlayer().getName()+"! Wygrana!" :
+                "Niestety, tym razem komputer okazal sie byc lepszy od Ciebie, "+this.getHumanPlayer().getName()+".";
         System.out.println("Wynik: " + hasPlayerWon);
+        Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
     }
 
     @Override
     public void onError(String errorMessage) {
         System.out.println("Błąd: " + errorMessage);
+    }
+
+    private void clearSettingsPanel(){
+        this.centerPanel.setVisible(false);
+//        this.shipPlace2.setVisible(false);
+//        this.shipPlace3.setVisible(false);
+//        this.shipPlace4.setVisible(false);
+//        this.startGame.setVisible(false);
+//        this.redoBtn.setVisible(false);
+//        this.undoBtn.setVisible(false);
+//        this.undoBtn.setVisible(false);
+    }
+
+    @FXML
+    private void setEasy(){
+        this.game.setAI(new EasyAI());
+    }
+    @FXML
+    private void setMedium(){
+        this.game.setAI(new MediumAI());
+    }
+    @FXML
+    private void setHard(){
+        this.game.setAI(new HardAI());
     }
 }
 

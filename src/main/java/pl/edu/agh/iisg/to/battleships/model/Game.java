@@ -1,7 +1,11 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.ai.AI;
+import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
+import pl.edu.agh.iisg.to.battleships.model.ai.HardAI;
 import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 import pl.edu.agh.iisg.to.battleships.session.SessionService;
@@ -55,10 +59,9 @@ public class Game {
         }
 
         this.currentState = GameStatus.NOT_STARTED;
-        this.difficultyLevel = 1;
         humanWon = false;
 
-        this.ai = new MediumAI();
+        this.setAI(new MediumAI());
 
         this.player = player;
         this.aisBoard = BoardInitializer.getBoardWithRandomlyPlacedShips(boardSize, shipCounts);
@@ -111,6 +114,7 @@ public class Game {
             if(aisBoard.shoot(coordinates)) {
                 updateGameEnded();
             } else {
+//                TODO Make computer move in another thread with delay, to improve visual effects.
                 makeAiMove();
             }
         } catch (Exception e) {
@@ -138,7 +142,7 @@ public class Game {
         return aisBoard;
     }
 
-    private void makeAiMove() {
+    private void makeAiMove() throws InterruptedException {
         if(currentState != GameStatus.IN_PROGRESS) return;
         Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
         boolean hasHit = playersBoard.shoot(positionToBeShot);
@@ -159,5 +163,21 @@ public class Game {
                 callback.onGameEnded(hasPlayerWon);
             }
         }
+    }
+
+    public void setAI(AI ai){
+        if(ai instanceof EasyAI){
+            this.setDifficultyLevel(1);
+        }
+        else if(ai instanceof MediumAI){
+            this.setDifficultyLevel(2);
+        }
+        else if(ai instanceof HardAI){
+            this.setDifficultyLevel(3);
+        }
+        else throw new IllegalArgumentException("Invalid AI level!");
+
+        this.ai = ai;
+
     }
 }

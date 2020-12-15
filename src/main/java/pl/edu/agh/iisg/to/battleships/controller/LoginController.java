@@ -49,7 +49,7 @@ public class LoginController {
             return;
         }
 
-        Optional<HumanPlayer> player = new HumanPlayerDao().findByMail(this.login.getText());
+        Optional<Player> player = new HumanPlayerDao().findByMail(this.login.getText());
 
         if(player.isEmpty() || !this.isAuthenticated(player.get(), this.password.getText())){
             this.message.setText("Nieprawidlowe haslo lub adres e-mail!");
@@ -60,12 +60,12 @@ public class LoginController {
 
     }
 
-    private boolean isAuthenticated(HumanPlayer player, String password){
+    private boolean isAuthenticated(Player player, String password){
         return comparePassword(password, player.getPassword());
     }
 
 
-    private void login(HumanPlayer player){
+    private void login(Player player){
         this.stage.close();
         Main.showBoard(new Stage(), player);
     }

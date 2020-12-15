@@ -9,8 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
-import pl.edu.agh.iisg.to.battleships.model.HumanPlayer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pl.edu.agh.iisg.to.battleships.model.Player;
 
 import java.util.Optional;
 
@@ -55,7 +54,7 @@ public class RegisterController {
 
     @FXML
     public boolean register(String username, String mail, String password){
-        Optional<HumanPlayer> player = new HumanPlayerDao().create(username, mail, password);
+        Optional<Player> player = new HumanPlayerDao().create(username, mail, password);
         if(player.isPresent()) return true;
         else{
             return false;
