@@ -49,4 +49,10 @@ public class Player {
     public void setMail(String mail) {
         this.mail = mail;
     }
+    
+
+    public String getPassword() {
+        return password;
+    }
+
 }

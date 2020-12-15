@@ -7,7 +7,16 @@ Po uruchomieniu gry, tworzony jest obiekt gracza komputerowego w zależności od
 
 Wynik rozgrywki zapisywany jest do bazy danych i będzie uwzględniany w statystykach użytkownika.
 
-Osobą odpowiedzialną za połączenie fragmentów rozgrywki był **Marcin Kozubek**.
+Połączenie poszczególnych etapów rozgrywki zostało w największej części zrealizowane przez **Marcina Kozubka**.
+
+### Ustawianie statków
+![](ss01.png)
+
+### Rozgrywka w trakcie
+![](ss07.png)
+
+### Zakończenie gry
+![](ss08.png)
 
 ## Persystencja danych - Hibernate, SQLite, wzorzec DAO 
 
@@ -44,7 +53,7 @@ Rozgrywki natomiast możemy wyszukiwać korzystając z funkcji:
 Za część związaną z persystencją odpowiedzialny był **Jacek Nitychoruk**.
 
 
-## AI - implementacja poziomy trudności
+## AI - implementacja poziomów trudności
 
 Gracz komputerowy może wykonywać operacje działając w jednym z trzech poziomów trudności:
 
@@ -60,5 +69,15 @@ Implementacją logiki działania AI zajmował się **Wojciech Kosztyła**.
 
 Użytkownik po uruchomieniu aplikacji musi zalogować się, lub utworzyć nowe konto, aby uruchomić grę. W tym celu aplikacja łączy się z bazą danych i pobiera informacje o użytkowniku weryfikując podane hasło.
 
-Odpowiedzialny za mechanizm logowania i rejestracji był **Paweł Kiełbasa**
+Hasło haszowane jest w bazie bardzo silnym algorytmem **bcrypt** przy użyciu bibliotecznej funkcji z frameworka Spring, co zapewnia maksymalne bezpieczeństwo.
+
+W programie sprawdzane jest, czy użytkownik wprowadził wszystkie wymagane do rejestracji i logowania dane.
+
+### Logowanie użytkowników
+![](ss05.png)
+
+### Rejestracja użytkowników
+![](ss06.png)
+
+Odpowiedzialny za mechanizm logowania i rejestracji był **Jacek Nitychoruk**
 
