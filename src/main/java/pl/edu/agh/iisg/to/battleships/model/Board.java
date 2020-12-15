@@ -90,24 +90,21 @@ public class Board {
     }
 
     public Field getFieldInDirection(Field field, Direction direction){
-        Coordinates toCheck;
-        switch(direction){
-            case UP -> toCheck = field.getPosition().add(new Coordinates(0, -1));
-            case DOWN -> toCheck = field.getPosition().add(new Coordinates(0, 1));
-            case LEFT -> toCheck = field.getPosition().add(new Coordinates(-1, 0));
-            case RIGHT -> toCheck = field.getPosition().add(new Coordinates(1,  0));
-            default -> throw new IllegalStateException("Unexpected value of direction in 'getFieldInDirection': " + direction);
-        }
+        return getFieldInDirection(field, direction, 1);
+    }
+
+    public Field getFieldInDirection(Field field, Direction direction, int distance){
+        Coordinates toCheck = field.getPosition();
+        for(int i = 0; i < distance; i++) toCheck = toCheck.add(direction.getVector());
         if(this.areCoordsInRange(toCheck)){
             return this.getFieldOnPosition(toCheck);
         }
         return null;
     }
 
-    public Field getFieldWithShipHit(){ // returns the first field with ship, that was hit, but not already sunk
+    public Field getFirstFieldWithShipHit(){ // returns the first field with ship, that was hit, but not already sunk
         for( Field field : this.fields.values() ){
             if(field.getFieldStatus() == FieldStatus.FIELD_SHIP_HIT){
-                boolean finished = true;    // so all positions in cross are already hit
                 for( Field crossField : getFieldsInCross(field) ){
                     if( !crossField.wasShot() ){
                         return field;
@@ -154,5 +151,9 @@ public class Board {
             }
             return true;
         }
+    }
+
+    public List<Ship> getShips() {
+        return this.ships;
     }
 }
