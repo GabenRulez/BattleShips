@@ -55,7 +55,7 @@ public class Main extends Application {
                     Map.entry(4, 1)
             );
             var boardCreator = new BoardCreator(Config.BOARD_SIZE.getX(), shipCounts);
-//
+            var game = new Game(null, Config.BOARD_SIZE.getX(), shipCounts);
 
             // load layout from FXML file
             var loader = new FXMLLoader();
@@ -64,7 +64,7 @@ public class Main extends Application {
             BoardController controller = loader.getController();
 //            controller.setModel(game);
             controller.initialize(primaryStage, player);
-            controller.setModel(boardCreator);
+            controller.setModel(boardCreator, game);
             controller.controllerInit();
             // add layout to a scene and show them all
 //            configureStage(primaryStage, rootLayout);

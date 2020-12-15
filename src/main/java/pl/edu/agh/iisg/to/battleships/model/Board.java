@@ -117,4 +117,42 @@ public class Board {
         }
         return null;
     }
+
+    /**
+     * Marks the field at given position as shot; If the shot has sunk a ship it marks all fields
+     * around it as {@link FieldStatus#FIELD_EMPTY_BLOCKED}
+     * @param coords target
+     * @return true if the shot had any target; false otherwise
+     * @throws IllegalArgumentException when given coords are out of the board range or the field
+     * was already shot
+     */
+    public boolean shoot(Coordinates coords) throws IllegalArgumentException {
+        if(!areCoordsInRange(coords)) {
+            throw new IllegalArgumentException("Coords " + coords + " are out of range " + limit);
+        }
+        var field = getFieldOnPosition(coords);
+        if(field.wasShot()) {
+            throw new IllegalArgumentException("Field on position " + coords + " was already shot");
+        }
+
+        var ship = getShipAtPosition(coords);
+        if(ship == null) {
+            field.setFieldStatus(FieldStatus.FIELD_EMPTY_BLOCKED);
+            return false;
+        } else {
+            field.setFieldStatus(FieldStatus.FIELD_SHIP_HIT);
+            if(ship.isSunk()) {
+                ship.getShipElements()
+                    .stream()
+                    .map(this::getFieldsAround)
+                    .flatMap(List::stream)
+                    .forEach(fieldAroundShip -> {
+                        if(fieldAroundShip.getFieldStatus() == FieldStatus.FIELD_EMPTY) {
+                            fieldAroundShip.setFieldStatus(FieldStatus.FIELD_EMPTY_BLOCKED);
+                        }
+                    });
+            }
+            return true;
+        }
+    }
 }

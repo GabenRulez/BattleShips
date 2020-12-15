@@ -17,14 +17,15 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
+import org.fxmisc.easybind.EasyBind;
 import pl.edu.agh.iisg.to.battleships.model.*;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
-import org.fxmisc.easybind.EasyBind;
+import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 
 
-public class BoardController {
-//    private Game game;
+public class BoardController implements Game.Callback {
     private Stage stage;
+    private Game game;
     private Board playersBoard;
 
     private HumanPlayer humanPlayer;
@@ -38,9 +39,10 @@ public class BoardController {
 //        this.playersBoard = game.getHuman().getBoard();
 //    }
 
-    public void setModel(BoardCreator boardCreator) {
+    public void setModel(BoardCreator boardCreator, Game game) {
         this.boardCreator = boardCreator;
         this.playersBoard = boardCreator.getBoard();
+        this.game = game;
     }
 
     @FXML
@@ -62,7 +64,7 @@ public class BoardController {
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.WHITE);
-                rec.setOnMouseClicked(this::clickGrid);
+                rec.setOnMouseClicked(this::onPlayersBoardClick);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
                 Field field = this.playersBoard.getFieldOnPosition(new Coordinates(row, col));
@@ -74,18 +76,19 @@ public class BoardController {
 
         computerBoard.setHgap(3);
         computerBoard.setVgap(3);
+        var computersBoard = game.getOpponentsBoard();
         for(int row = 0; row < rowNum; row++){
             for(int col = 0; col < colNum; col++){
                 Rectangle rec = new Rectangle();
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.WHITE);
-//                rec.setOnMouseClicked(this::clickGrid);
+                rec.setOnMouseClicked(this::onOpponentsBoardClick);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
-//                Field field = this.game.getComputer().getBoard().getFieldOnPosition(new Coordinates(row, col));
-//                rec.fillProperty().bind(
-//                        EasyBind.map(field.fieldStatusProperty(), this::calculateFieldColor));
+                Field field = computersBoard.getFieldOnPosition(new Coordinates(row, col));
+                rec.fillProperty().bind(
+                        EasyBind.map(field.fieldStatusProperty(), this::calculateComputersFieldColor));
                 computerBoard.add(rec, row, col);
             }
         }
@@ -119,6 +122,23 @@ public class BoardController {
             }
             case FIELD_SHIP_ACTIVE -> {
                 return Color.GREEN;
+            }
+            case FIELD_SHIP_HIT -> {
+                return Color.DARKRED;
+            }
+            default -> {
+                return Color.WHITE;
+            }
+        }
+    }
+
+    private Paint calculateComputersFieldColor(FieldStatus fieldStatus) {
+        switch (fieldStatus) {
+            case FIELD_EMPTY, FIELD_SHIP_ACTIVE -> {
+                return Color.LIGHTBLUE;
+            }
+            case FIELD_EMPTY_BLOCKED -> {
+                return Color.GREY;
             }
             case FIELD_SHIP_HIT -> {
                 return Color.DARKRED;
@@ -163,6 +183,12 @@ public class BoardController {
     }
 
     @FXML
+    public void startGame() {
+        game.start(boardCreator.getBoard());
+        game.setCallback(this);
+    }
+
+    @FXML
     Label playerName;
 
     @FXML
@@ -203,7 +229,8 @@ public class BoardController {
         System.exit(0);
     }
 
-    public void clickGrid(MouseEvent event) {
+    public void onPlayersBoardClick(MouseEvent event) {
+        if(this.game.getCurrentState() != GameStatus.NOT_STARTED) return;
 
         Node clickedNode = event.getPickResult().getIntersectedNode();
         Integer colIndex = GridPane.getColumnIndex(clickedNode);
@@ -231,6 +258,20 @@ public class BoardController {
         }
     }
 
+    public void onOpponentsBoardClick(MouseEvent event) {
+        if(this.game.getCurrentState() != GameStatus.IN_PROGRESS) return;
+
+        Node clickedNode = event.getPickResult().getIntersectedNode();
+        Integer colIndex = GridPane.getColumnIndex(clickedNode);
+        Integer rowIndex = GridPane.getRowIndex(clickedNode);
+        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+
+        var coords = new Coordinates(colIndex, rowIndex);
+        try {
+            this.game.shoot(coords);
+        } catch (Exception ignored) {}
+    }
+
     private void setupShipButtonEnabled(Button button, int shipLength) {
         button.disableProperty().bind(Bindings.createBooleanBinding(
             () -> boardCreator.getLengthsOfShipsYetToBePlaced().stream().noneMatch(it -> it == shipLength),
@@ -243,5 +284,14 @@ public class BoardController {
         return humanPlayer;
     }
 
+    @Override
+    public void onGameEnded(boolean hasPlayerWon) {
+        System.out.println("Wynik: " + hasPlayerWon);
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        System.out.println("Błąd: " + errorMessage);
+    }
 }
 

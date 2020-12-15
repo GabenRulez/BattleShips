@@ -14,7 +14,7 @@
         <property name="show_sql">false</property>
         <property name="format_sql">true</property>
 
-        <mapping class="pl.edu.agh.iisg.to.battleships.model.HumanPlayer"></mapping>
+        <mapping class="pl.edu.agh.iisg.to.battleships.model.Player"></mapping>
         <mapping class="pl.edu.agh.iisg.to.battleships.model.Game"></mapping>
     </session-factory>
 </hibernate-configuration>
