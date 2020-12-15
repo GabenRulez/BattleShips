@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class MediumAI implements AI {
     Random random = new Random();
-    private ArrayList<Field> possibleShipFields = new ArrayList<>();
+    protected ArrayList<Field> possibleShipFields = new ArrayList<>();
 
     @Override
     public Coordinates getNextAttackPosition(Board enemyBoard) {
@@ -25,7 +25,7 @@ public class MediumAI implements AI {
 
     }
 
-    private void addToPossibleFields(Board enemyBoard, Field field){
+    protected void addToPossibleFields(Board enemyBoard, Field field){
         /*  Adds coordinates if the are compliant with the requirements. Which are as follows:
             - is it in bounds of the board
             - if it was shot before, it's not compliant
@@ -38,7 +38,7 @@ public class MediumAI implements AI {
         }
     }
 
-    private void updatePossibleShipFields(Board enemyBoard){
+    protected void updatePossibleShipFields(Board enemyBoard){
         /*  Iterates over all fields that are in the ArrayList<Field> possibleShipFields.
             Looks for position, that was shot last round. When it finds it, then:
                 -   checks, whether it was a ship or just sea tile.
@@ -81,7 +81,7 @@ public class MediumAI implements AI {
         }
     }
 
-    private void addNewPossibleFields(Board enemyBoard){
+    protected void addNewPossibleFields(Board enemyBoard){
         /*  Gets first spot from enemyBoard that has:
             -   ship part, that was hit
             -   fields around, that weren't all hit

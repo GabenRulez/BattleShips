@@ -4,6 +4,7 @@ import pl.edu.agh.iisg.to.battleships.model.enums.Direction;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -155,5 +156,9 @@ public class Board {
 
     public List<Ship> getShips() {
         return this.ships;
+    }
+
+    public Collection<Field> getAllFields(){
+        return this.fields.values();
     }
 }
