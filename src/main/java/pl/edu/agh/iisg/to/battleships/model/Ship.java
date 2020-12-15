@@ -37,4 +37,7 @@ public class Ship {
         return shipElements;
     }
 
+    public boolean isSunk() {
+        return shipElements.stream().noneMatch(f -> f.getFieldStatus().isShootable());
+    }
 }

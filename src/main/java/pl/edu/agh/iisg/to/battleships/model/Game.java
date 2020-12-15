@@ -1,11 +1,13 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
-import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
+import pl.edu.agh.iisg.to.battleships.model.ai.AI;
+import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 import pl.edu.agh.iisg.to.battleships.session.SessionService;
 
 import javax.persistence.*;
+import java.util.Map;
 import java.util.Optional;
 
 @Entity
@@ -13,16 +15,21 @@ import java.util.Optional;
 public class Game {
     public static final String TABLE_NAME = "games";
 
+    public interface Callback {
+        void onGameEnded(boolean hasPlayerWon);
+        void onError(String errorMessage);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne
-    private HumanPlayer human;
+    private Player player;
 
     @Transient
-    private ComputerPlayer computer;
+    private AI ai;
 
     @Column(name = "playerWon")
     private Boolean humanWon;
@@ -30,37 +37,45 @@ public class Game {
     @Transient
     private GameStatus currentState;
 
-    @Transient
-    private Boolean isFinished;
-
-
     @Column(name = "difficulty")
     private Integer difficultyLevel;
 
-    public Game(HumanPlayer player){
+    @Transient
+    private Callback callback;
+
+    @Transient
+    private Board playersBoard;
+
+    @Transient
+    private Board aisBoard;
+
+    public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
         if(player == null){
             player = getDefaultPlayer();
         }
 
-        this.currentState = GameStatus.GAME_NOT_STARTED;
+        this.currentState = GameStatus.NOT_STARTED;
         this.difficultyLevel = 1;
         humanWon = false;
-        isFinished = false;
 
-        computer = new ComputerPlayer(this, new EasyAI());
+        this.ai = new MediumAI();
 
-        this.human = player;
-        this.human.setCurrentGame(this);
+        this.player = player;
+        this.aisBoard = BoardInitializer.getBoardWithRandomlyPlacedShips(boardSize, shipCounts);
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 
     public Game(){};
 
-    private HumanPlayer getDefaultPlayer(){
+    private Player getDefaultPlayer(){
 
         SessionService.openSession();
         HumanPlayerDao playerDao = new HumanPlayerDao();
-        HumanPlayer player;
-        Optional<HumanPlayer> defaultPlayer = playerDao.findByMail("a@a.com");
+        Player player;
+        Optional<Player> defaultPlayer = playerDao.findByMail("a@a.com");
         if(defaultPlayer.isEmpty()){
             defaultPlayer = playerDao.create("testowy", "a@a.com", "test");
             player = defaultPlayer.orElseThrow(() -> new PersistenceException("Cannot create default player!"));
@@ -74,18 +89,13 @@ public class Game {
     }
 
 
-    public HumanPlayer getHuman() {
-        return human;
+    public Player getPlayer() {
+        return player;
     }
 
-    public ComputerPlayer getComputer() {
-        return computer;
-    }
-
-
-    public void start() {
-        // TODO: Handle authentication and database fetch
-        this.currentState = GameStatus.GAME_SHIP_PLACEMENT;
+    public void start(Board playersBoard) {
+        this.currentState = GameStatus.IN_PROGRESS;
+        this.playersBoard = playersBoard;
     }
 
     public void setCurrentState(GameStatus currentState) {
@@ -95,8 +105,21 @@ public class Game {
         return this.currentState;
     }
 
-    public void initializeAttack(Player target, Coordinates targetCoords){
-
+    public void shoot(Coordinates coordinates) {
+        if(currentState != GameStatus.IN_PROGRESS) return;
+        try {
+            if(aisBoard.shoot(coordinates)) {
+                updateGameEnded();
+            } else {
+                makeAiMove();
+            }
+        } catch (Exception e) {
+            if(callback != null) {
+                callback.onError(e.getMessage());
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Long getId() {
@@ -111,4 +134,30 @@ public class Game {
         this.difficultyLevel = difficultyLevel;
     }
 
+    public Board getOpponentsBoard() {
+        return aisBoard;
+    }
+
+    private void makeAiMove() {
+        if(currentState != GameStatus.IN_PROGRESS) return;
+        Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
+        boolean hasHit = playersBoard.shoot(positionToBeShot);
+        updateGameEnded();
+        if(hasHit) {
+            makeAiMove();
+        }
+    }
+
+    private void updateGameEnded() {
+        var hasPlayerWon = aisBoard.ships.stream().allMatch(Ship::isSunk);
+        var hasAiWon = playersBoard.ships.stream().allMatch(Ship::isSunk);
+
+        if(hasPlayerWon || hasAiWon) {
+            this.currentState = GameStatus.FINISHED;
+            this.humanWon = hasPlayerWon;
+            if(callback != null) {
+                callback.onGameEnded(hasPlayerWon);
+            }
+        }
+    }
 }

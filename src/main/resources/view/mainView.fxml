@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 <VBox prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.iisg.to.battleships.controller.BoardController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
@@ -61,7 +60,7 @@
                             </opaqueInsets>
                         </Label>
                         <Button fx:id="shipPlace1" layoutX="33.0" layoutY="72.0" mnemonicParsing="false" onAction="#place1Ship" prefHeight="25.0" prefWidth="116.0" text="1-masztowiec" />
-                        <Button fx:id="startGame" layoutX="9.0" layoutY="496.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="188.0" text="Rozpocznij grę" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Button fx:id="startGame" onAction="#startGame" layoutX="9.0" layoutY="496.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="188.0" text="Rozpocznij grę" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                         <Button fx:id="shipPlace2" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" onAction="#place2Ship" prefHeight="25.0" prefWidth="116.0" text="2-masztowiec" />
                         <Button fx:id="shipPlace3" layoutX="33.0" layoutY="149.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-masztowiec" />
                         <Button fx:id="shipPlace4" layoutX="33.0" layoutY="188.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-masztowiec" />

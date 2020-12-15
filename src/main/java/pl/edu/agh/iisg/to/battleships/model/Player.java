@@ -1,44 +1,52 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
-public abstract class Player {
+import javax.persistence.*;
 
-    private Game currentGame;
-    private final Board myBoard;
+@Entity
+@Table(name = Player.TABLE_NAME)
+public class Player {
+    public static final String TABLE_NAME = "players";
 
-    private Player enemy;
+    @Column(name ="name")
+    private String name;
 
-    public Player(){
-        this.myBoard = new Board(Config.BOARD_SIZE); // TODO tworzenie boarda powiązane z pozycjonowaniem statków
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name="ID")
+    private int id;
+
+
+    @Column(name ="mail")
+    private String mail;
+
+    public String getName(){
+        return this.name;
     }
 
-    public Player(Game currentGame){
-        this();
-        this.currentGame = currentGame;
-    }
-
-    public void makeMove(Coordinates cords){
-        this.currentGame.initializeAttack(enemy, cords);
-    }
-
-    public Board getBoard() {
-        return myBoard;
-    }
-
-    public Player getEnemy() {
-        return enemy;
-    }
-
-    public void setEnemy(Player enemy) {
-        this.enemy = enemy;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
-    public Game getCurrentGame() {
-        return currentGame;
+    @Column(name ="password")
+    private String password;
+
+
+    public Player(String name, String mail, String password){
+        super();
+        this.mail = mail;
+        this.password = password;
+        this.name = name;
     }
 
-    public void setCurrentGame(Game currentGame) {
-        this.currentGame = currentGame;
+    public Player(){}
+
+    public String getMail() {
+        return mail;
     }
 
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 }

@@ -84,6 +84,10 @@ public class BoardCreator {
         return isCreationProcessFinished;
     }
 
+    public boolean isCreationProcessFinished() {
+        return isCreationProcessFinished.getValue();
+    }
+
     /**
      * Places a ship at the given position.
      * @param shipCoords Upper right tile of the ship to be placed.
