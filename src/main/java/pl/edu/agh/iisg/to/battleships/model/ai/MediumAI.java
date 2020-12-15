@@ -38,7 +38,7 @@ public class MediumAI implements AI {
         }
     }
 
-    protected void updatePossibleShipFields(Board enemyBoard){
+    private void updatePossibleShipFields(Board enemyBoard){
         /*  Iterates over all fields that are in the ArrayList<Field> possibleShipFields.
             Looks for position, that was shot last round. When it finds it, then:
                 -   checks, whether it was a ship or just sea tile.
@@ -81,7 +81,7 @@ public class MediumAI implements AI {
         }
     }
 
-    protected void addNewPossibleFields(Board enemyBoard){
+    private void addNewPossibleFields(Board enemyBoard){
         /*  Gets first spot from enemyBoard that has:
             -   ship part, that was hit
             -   fields around, that weren't all hit
