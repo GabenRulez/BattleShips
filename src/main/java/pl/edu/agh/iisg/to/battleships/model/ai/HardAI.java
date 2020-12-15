@@ -10,9 +10,10 @@ import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class HardAI extends MediumAI {
+public class HardAI implements AI{
 
-    @Override
+    private ArrayList<Field> possibleShipFields = new ArrayList<>();
+
     public Coordinates getNextAttackPosition(Board enemyBoard) {
 
         updatePossibleShipFields(enemyBoard);
@@ -179,6 +180,20 @@ public class HardAI extends MediumAI {
             }
         }
     }
+
+    protected void addToPossibleFields(Board enemyBoard, Field field){
+        /*  Adds coordinates if the are compliant with the requirements. Which are as follows:
+            - is it in bounds of the board
+            - if it was shot before, it's not compliant
+        */
+
+        if(enemyBoard.areCoordsInRange(field.getPosition())){
+            if(!field.wasShot()){
+                this.possibleShipFields.add(field);
+            }
+        }
+    }
+
 
 
 }

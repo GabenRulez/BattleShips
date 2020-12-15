@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class MediumAI implements AI {
     Random random = new Random();
-    protected ArrayList<Field> possibleShipFields = new ArrayList<>();
+    private ArrayList<Field> possibleShipFields = new ArrayList<>();
 
     @Override
     public Coordinates getNextAttackPosition(Board enemyBoard) {
