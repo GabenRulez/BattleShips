@@ -62,7 +62,7 @@ public class EasyConfigParser {
     }
 
     private String[] parseNormalLine(String dataLine){
-        String[] strings = dataLine.strip().split("=");
+        String[] strings = dataLine.strip().split("#")[0].split("=");
         if(strings.length > 2) System.out.println("W linijce '" + dataLine + "' pojawilo sie wiecej znakow '=' niz powinno. Pomijam wszystko po drugim takim znaku.");
         if(strings.length < 2){
             throw new IllegalArgumentException("Can't read config line '" + dataLine + "'. Reason: can't find '=' sign.");
