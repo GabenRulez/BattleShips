@@ -1,4 +1,5 @@
 # Email properties for the app to send emails with notifications
-[Email_data]=
+#To make it work you need to fill those properties
+[Email_data]
 email = teststst@sasd.pl
 password = lubieGrażynkę
