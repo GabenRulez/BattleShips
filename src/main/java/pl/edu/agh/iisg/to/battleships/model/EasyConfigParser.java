@@ -51,9 +51,6 @@ public class EasyConfigParser {
             System.out.println("Nie odnaleziono pliku o sciezce " + filepath);
             e.printStackTrace();
         }
-
-        listConfig();
-
     }
 
     private String parseSectionName(String sectionDataLine){
@@ -102,6 +99,7 @@ public class EasyConfigParser {
     }
 
     public void listConfig(){
+        System.out.println("Listing config parser current values...");
         for(String sectionName : configMap.keySet()){
             System.out.println("Section: " + sectionName);
 
