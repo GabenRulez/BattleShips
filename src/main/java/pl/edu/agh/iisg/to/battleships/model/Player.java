@@ -81,7 +81,7 @@ public class Player {
             ratingChangeFactor = -0.95;
         }
         else if (ratingChangeFactor > 1){
-            ratingChangeFactor = 0.095;
+            ratingChangeFactor = 0.95;
         }
         Integer ratingChange = Math.toIntExact(Math.round((ratingChangeFactor + resultInt) * 40.0));
         this.setRating(oldRating+ratingChange);
