@@ -310,6 +310,8 @@ public class BoardController implements Game.Callback {
         try {
             if(event.getButton() == MouseButton.SECONDARY) {
                 boardCreator.removeShip(coords);
+                this.refreshAllBoards();
+                this.onPlayersBoardHover(event);
             }
             else if(event.getButton() == MouseButton.MIDDLE){
                 this.toggleOrientation();
