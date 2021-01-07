@@ -178,8 +178,11 @@ public class BoardController implements Game.Callback {
 
     private Paint calculateComputersFieldColor(FieldStatus fieldStatus) {
         switch (fieldStatus) {
-            case FIELD_EMPTY, FIELD_SHIP_ACTIVE -> {
+            case FIELD_EMPTY -> {
                 return Color.LIGHTBLUE;
+            }
+            case FIELD_SHIP_ACTIVE -> {
+                return Color.GREEN;     //TODO: Change to GREY; Debug only
             }
             case FIELD_EMPTY_BLOCKED -> {
                 return Color.GREY;
@@ -401,6 +404,7 @@ public class BoardController implements Game.Callback {
     public void onOpponentsBoardHoverExit(MouseEvent event) {
         this.onPlayersBoardHoverExit(event);
         this.stage.getScene().setCursor(Cursor.DEFAULT);
+        this.stage.getScene().setCursor(Cursor.DEFAULT);
     }
 
     public void onOpponentsBoardClick(MouseEvent event) {
@@ -433,8 +437,13 @@ public class BoardController implements Game.Callback {
     @Override
     public void onGameEnded(boolean hasPlayerWon) {
         this.statusText.setText("Zakonczono");
+        Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
+
         String message = hasPlayerWon ? "Gratulacje "+this.getHumanPlayer().getName()+"! Wygrana!" :
                 "Niestety, tym razem komputer okazal sie byc lepszy od Ciebie, "+this.getHumanPlayer().getName()+".";
+        message += ("\nRanking: "+this.humanPlayer.getRating());
+        message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
+        this.game.updatePlayerInDb();
         System.out.println("Wynik: " + hasPlayerWon);
         Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
     }
@@ -474,6 +483,7 @@ public class BoardController implements Game.Callback {
         this.boardCreator = BoardInitializer.getBoardCreatorWithRandomlyPlacedShips(this.playersBoard.getLimit().getX(), this.game.getShipCounts());
         this.playersBoard = boardCreator.getBoard();
         this.bindButtons();
+        this.shipLength.setValue(0);
         this.refreshAllBoards();
 //        List<Ship> ships = newBoardSetting.getShips();
 //        this.boardCreator.getBoard().getShips().forEach(ship -> this.boardCreator.getBoard().removeShip(ship));

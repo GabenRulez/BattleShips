@@ -14,46 +14,27 @@ import javax.persistence.*;
 import java.util.Map;
 import java.util.Optional;
 
-@Entity
-@Table(name = Game.TABLE_NAME)
 public class Game {
-    public static final String TABLE_NAME = "games";
 
     public interface Callback {
         void onGameEnded(boolean hasPlayerWon);
         void onError(String errorMessage);
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
-    @ManyToOne
     private Player player;
 
-    @Transient
     private AI ai;
 
-    @Column(name = "playerWon")
-    private Boolean humanWon;
-
-    @Transient
     private GameStatus currentState;
 
-    @Column(name = "difficulty")
     private Integer difficultyLevel;
 
-    @Transient
     private Callback callback;
 
-    @Transient
     private Board playersBoard;
 
-    @Transient
     private Board aisBoard;
 
-    @Transient
     private Map<Integer, Integer> shipCounts;
 
     public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
@@ -62,7 +43,6 @@ public class Game {
         }
 
         this.currentState = GameStatus.NOT_STARTED;
-        humanWon = false;
 
         this.setAI(new MediumAI());
 
@@ -79,8 +59,6 @@ public class Game {
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
-
-    public Game(){};
 
     private Player getDefaultPlayer(){
 
@@ -103,6 +81,11 @@ public class Game {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void updatePlayerInDb(){
+        HumanPlayerDao playerDao = new HumanPlayerDao();
+        playerDao.updatePlayer(this.player);
     }
 
     public void start(Board playersBoard) {
@@ -135,10 +118,6 @@ public class Game {
         }
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Integer getDifficultyLevel() {
         return difficultyLevel;
     }
@@ -167,7 +146,6 @@ public class Game {
 
         if(hasPlayerWon || hasAiWon) {
             this.currentState = GameStatus.FINISHED;
-            this.humanWon = hasPlayerWon;
             if(callback != null) {
                 callback.onGameEnded(hasPlayerWon);
             }
