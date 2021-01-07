@@ -12,6 +12,8 @@ import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.Player;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterController {
 
@@ -61,8 +63,21 @@ public class RegisterController {
         }
     }
 
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validateEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
     @FXML
     public void registerClickHandle(ActionEvent event) {
+        if(!validateEmail(this.mail.getText())){
+            this.message.setText("Niepoprawna postac adresu e-mail!");
+            return;
+        }
+
         if(this.mail.getText().equals("") || this.password.getText().equals("") || this.username.getText().equals("") ){
             this.message.setText("Wszystkie pola musza byc wypelnione!");
             return;

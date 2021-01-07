@@ -26,7 +26,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-//        showBoard(primaryStage);
+//        showBoard(primaryStage, );
         showLoginDialog(primaryStage);
 
     }
@@ -62,7 +62,7 @@ public class Main extends Application {
             VBox rootLayout = loader.load();
 
             var boardCreator = new BoardCreator(Config.BOARD_SIZE.getX(), shipCounts);
-            var game = new Game(null, Config.BOARD_SIZE.getX(), shipCounts);
+            var game = new Game(player, Config.BOARD_SIZE.getX(), shipCounts);
             BoardController controller = loader.getController();
 //            controller.setModel(game);
             controller.initialize(primaryStage, player);
@@ -87,6 +87,12 @@ public class Main extends Application {
 
     public static void showLoginDialog(Stage primaryStage){
         try {
+            primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    System.exit(0);
+                }
+            });
             var loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/view/loginView.fxml"));
             AnchorPane rootLayout = loader.load();

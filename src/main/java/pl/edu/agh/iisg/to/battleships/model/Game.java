@@ -53,6 +53,9 @@ public class Game {
     @Transient
     private Board aisBoard;
 
+    @Transient
+    private Map<Integer, Integer> shipCounts;
+
     public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
         if(player == null){
             player = getDefaultPlayer();
@@ -64,8 +67,14 @@ public class Game {
         this.setAI(new MediumAI());
 
         this.player = player;
+        this.shipCounts = shipCounts;
         this.aisBoard = BoardInitializer.getBoardWithRandomlyPlacedShips(boardSize, shipCounts);
     }
+
+    public Map<Integer, Integer> getShipCounts() {
+        return shipCounts;
+    }
+
 
     public void setCallback(Callback callback) {
         this.callback = callback;
@@ -80,7 +89,7 @@ public class Game {
         Player player;
         Optional<Player> defaultPlayer = playerDao.findByMail("a@a.com");
         if(defaultPlayer.isEmpty()){
-            defaultPlayer = playerDao.create("testowy", "a@a.com", "test");
+            defaultPlayer = playerDao.create("testowy", "a@a.com", "test"); //TODO: Debug Only. To delete later.
             player = defaultPlayer.orElseThrow(() -> new PersistenceException("Cannot create default player!"));
         }
         else{
