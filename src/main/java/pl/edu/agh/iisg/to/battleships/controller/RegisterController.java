@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.Player;
+import pl.edu.agh.iisg.to.battleships.model.email.EmailSender;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -57,10 +58,7 @@ public class RegisterController {
     @FXML
     public boolean register(String username, String mail, String password){
         Optional<Player> player = new HumanPlayerDao().create(username, mail, password);
-        if(player.isPresent()) return true;
-        else{
-            return false;
-        }
+        return player.isPresent();
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -101,6 +99,12 @@ public class RegisterController {
     }
 
 
+    @FXML
+    public void sendRegistrationConfirmation(){
+        EmailSender.sendEmail(this.mail.getText(), "Battleships App Registration", EmailSender.createTemplateHtmlEmail("Your registration was succesful.", this.username.getText()));
+    }
+
+
     private void registerSuccessful(){
         this.message.setVisible(false);
         this.registerButton.setVisible(false);
@@ -114,5 +118,7 @@ public class RegisterController {
 
         this.registerSuccessful.setVisible(true);
         this.returnButton.setVisible(true);
+
+        this.sendRegistrationConfirmation();
     }
 }

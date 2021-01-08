@@ -14,14 +14,14 @@ public class EmailSender {
 
     static EasyConfigParser parser = new EasyConfigParser( Main.class.getResource(emailConfigPathResource).getPath().replace("%20", " ") );
 
-    public EmailSender(){
+    /*public EmailSender(){
         // Serwisy SMTP w darmowych pakietach umożliwiają wysyłać maile jedynie do zatwierdzonych adresów email
         // Musicie mi je podać, żebym je dodał, żeby możliwe było wysyłanie na nie maili
 
         sendEmail("kubakub2@wp.pl", "BattleShips App Notification", createTemplateHtmlEmail("Zostałeś pokonany przez takeshi69", "Wojciech"));
-    }
+    }*/
 
-    public void sendEmail(String recipient_address, String subject, String data){
+    public static void sendEmail(String recipient_address, String subject, String data){
         System.out.println("Sending an email to '" + recipient_address + "'.");
         Properties session_properties = System.getProperties();
 
@@ -57,7 +57,7 @@ public class EmailSender {
         }
     }
 
-    public String createTemplateHtmlEmail(String content, String username){
+    public static String createTemplateHtmlEmail(String content, String username){
         /*
         * You pass both recipient name (username) and the content of the message.
         * Everything will be packed in nice and tidy HTML template that is compliant with most email services.
@@ -68,7 +68,7 @@ public class EmailSender {
         return filled_HTML_String;
     }
 
-    public String deletePolishCharacters(String stringToDePolify){
+    public static String deletePolishCharacters(String stringToDePolify){
         return stringToDePolify.replace("ę","e").replace("ó","o").replace("ą","a").replace("ś","s").replace("ł","l").replace("ż","z").replace("ź","z").replace("ć","c").replace("ń","n");
     }
 
