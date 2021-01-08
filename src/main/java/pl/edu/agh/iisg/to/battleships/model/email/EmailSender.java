@@ -12,6 +12,8 @@ public class EmailSender {
 
     static private final String emailConfigPathResource = "/emailConfig";
 
+    static int sentEmails = 0;
+
     static EasyConfigParser parser = new EasyConfigParser( Main.class.getResource(emailConfigPathResource).getPath().replace("%20", " ") );
 
     /*public EmailSender(){
@@ -22,7 +24,7 @@ public class EmailSender {
     }*/
 
     public static void sendEmail(String recipient_address, String subject, String data){
-        System.out.println("Sending an email to '" + recipient_address + "'.");
+        System.out.println("Email nr. " + (++sentEmails) + ": Sending an email to '" + recipient_address + "'.");
         Properties session_properties = System.getProperties();
 
         String smtp_host = parser.getFromKey("smtp_server");
@@ -53,6 +55,7 @@ public class EmailSender {
 
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+            System.out.println("Email nr. " + (sentEmails) + ": Sent successfully.");
         } catch (MessagingException | IllegalStateException e) {
             e.printStackTrace();
         }

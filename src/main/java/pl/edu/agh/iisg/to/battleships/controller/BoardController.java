@@ -436,9 +436,9 @@ public class BoardController implements Game.Callback {
     @Override
     public void onGameEnded(boolean hasPlayerWon) {
         this.statusText.setText("Zakonczono");
-        Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
 
         int oldPlayerRating = this.humanPlayer.getRating();
+        Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
 
         String message = hasPlayerWon ? "Gratulacje "+this.getHumanPlayer().getName()+"! Wygrana!" :
                 "Niestety, tym razem komputer okazal sie byc lepszy od Ciebie, "+this.getHumanPlayer().getName()+".";
@@ -446,12 +446,10 @@ public class BoardController implements Game.Callback {
         message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
         this.game.updatePlayerInDb();
 
-        HashMap<Player,Integer> newRatings = getCurrentPlayersRatings();
-        int newPlayerRating = this.humanPlayer.getRating();
-        sendEmailsToLosers(newRatings, oldPlayerRating, newPlayerRating, this.humanPlayer.getName());
-
         System.out.println("Wynik: " + hasPlayerWon);
         Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
+
+        sendEmailsToLosers( getCurrentPlayersRatings(), oldPlayerRating, oldPlayerRating + ratingChange, this.humanPlayer.getName() );
     }
 
     private HashMap<Player, Integer> getCurrentPlayersRatings(){
@@ -461,6 +459,8 @@ public class BoardController implements Game.Callback {
         return ratings;
     }
 
+
+    @FXML
     private void sendEmailsToLosers(HashMap<Player,Integer> newRatings, int oldRating, int newRating, String playingPlayerName){
         if(newRating <= oldRating) return;  // As player didn't get any points, thus noone could be dethroned.
 
@@ -470,10 +470,12 @@ public class BoardController implements Game.Callback {
                 );
 
         for(Player dethronedPlayer : newRatings.keySet()){
+            System.out.println("Debug: Dethroned player " + dethronedPlayer.getName() + " , rating: " + dethronedPlayer.getRating() + " is more than " + oldRating + " and less than " + newRating);
             String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
             EmailSender.sendEmail(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
         }
     }
+
 
     @Override
     public void onError(String errorMessage) {
