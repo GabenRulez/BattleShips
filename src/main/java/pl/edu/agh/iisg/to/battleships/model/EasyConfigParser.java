@@ -83,14 +83,14 @@ public class EasyConfigParser {
         sectionHashMap.put(key, value);
     }
 
-    private String getFromKey(String key){
+    public String getFromKey(String key){
         for(HashMap<String, String> sectionHashMap : configMap.values()){
             if(sectionHashMap.containsKey(key)) return sectionHashMap.get(key);
         }
         return null;
     }
 
-    private String getFromSectionAndKey(String section, String key){
+    public String getFromSectionAndKey(String section, String key){
         HashMap<String, String> sectionHashMap = configMap.get(section);
         if(sectionHashMap != null){
             return sectionHashMap.get(key);
