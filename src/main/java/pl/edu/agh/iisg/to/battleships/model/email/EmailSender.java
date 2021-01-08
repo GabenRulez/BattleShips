@@ -1,6 +1,5 @@
 package pl.edu.agh.iisg.to.battleships.model.email;
 
-
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.model.EasyConfigParser;
 
@@ -18,7 +17,8 @@ public class EmailSender {
     public EmailSender(){
         // Serwisy SMTP w darmowych pakietach umożliwiają wysyłać maile jedynie do zatwierdzonych adresów email
         // Musicie mi je podać, żebym je dodał, żeby możliwe było wysyłanie na nie maili
-        sendEmail("wojtex1221@gmail.com", "BattleShips App Notification", createTemplateHtmlEmail("Zostałeś pokonany przez pokojówkę", "Paweł"));
+
+        sendEmail("kubakub2@wp.pl", "BattleShips App Notification", createTemplateHtmlEmail("Zostałeś pokonany przez takeshi69", "Wojciech"));
     }
 
     public void sendEmail(String recipient_address, String subject, String data){
