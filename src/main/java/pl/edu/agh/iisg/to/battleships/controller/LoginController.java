@@ -13,6 +13,7 @@ import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public class LoginController {
@@ -50,11 +51,6 @@ public class LoginController {
                 if (this.login.getText().equals("") || this.password.getText().equals("")) {
                     this.message.setText("Podaj adres e-mail i haslo!");
                     return;
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 Optional<Player> player = new HumanPlayerDao().findByMail(this.login.getText());
 

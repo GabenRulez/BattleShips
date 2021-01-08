@@ -119,7 +119,7 @@ public class Main extends Application {
             controller.init(primaryStage, player, message, gameStage);
             var scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Logowanie");
+            primaryStage.setTitle("Zakonczono rozgrywke");
             primaryStage.setResizable(false);
             primaryStage.show();
 
