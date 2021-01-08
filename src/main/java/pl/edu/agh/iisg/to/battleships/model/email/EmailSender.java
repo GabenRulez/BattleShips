@@ -16,6 +16,8 @@ public class EmailSender {
     static EasyConfigParser parser = new EasyConfigParser( Main.class.getResource(emailConfigPathResource).getPath().replace("%20", " ") );
 
     public EmailSender(){
+        // Serwisy SMTP w darmowych pakietach umożliwiają wysyłać maile jedynie do zatwierdzonych adresów email
+        // Musicie mi je podać, żebym je dodał, żeby możliwe było wysyłanie na nie maili
         sendEmail("wojtex1221@gmail.com", "BattleShips App Notification", createTemplateHtmlEmail("Zostałeś pokonany przez pokojówkę", "Paweł"));
     }
 
