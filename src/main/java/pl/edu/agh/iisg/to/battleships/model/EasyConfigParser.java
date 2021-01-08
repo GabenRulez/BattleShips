@@ -31,12 +31,14 @@ public class EasyConfigParser {
             while(scanner.hasNextLine()){
                 String dataLine = scanner.nextLine();
 
-                if(dataLine.charAt(0) == '#') continue; // Skip comments
-
-                if(dataLine.charAt(0) == ' '){
+                if(dataLine.length() == 0 || dataLine.charAt(0) == ' ') {
                     active_section = "default";
                     continue;
                 }
+
+                if(dataLine.charAt(0) == '#') continue; // Skip comments
+
+
 
                 if(dataLine.charAt(0) == '['){
                     active_section = parseSectionName(dataLine);
