@@ -10,6 +10,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -31,6 +32,7 @@ import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class BoardController implements Game.Callback {
@@ -232,9 +234,14 @@ public class BoardController implements Game.Callback {
     }
 
     @FXML
+    Menu editMenu;
+
+    @FXML
     public void startGame() {
         this.statusText.setText("W trakcie gry");
         this.clearSettingsPanel();
+        this.editMenu.setDisable(true);
+
         game.start(boardCreator.getBoard());
         game.setCallback(this);
     }
@@ -437,6 +444,8 @@ public class BoardController implements Game.Callback {
     public void onGameEnded(boolean hasPlayerWon) {
         this.statusText.setText("Zakonczono");
 
+        HashMap<Player,Integer> oldRatings = getCurrentPlayersRatings();
+
         int oldPlayerRating = this.humanPlayer.getRating();
         Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
 
@@ -449,7 +458,7 @@ public class BoardController implements Game.Callback {
         System.out.println("Wynik: " + hasPlayerWon);
         Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
 
-        sendEmailsToLosers( getCurrentPlayersRatings(), oldPlayerRating, oldPlayerRating + ratingChange, this.humanPlayer.getName() );
+        sendEmailsToLosers( oldRatings, oldPlayerRating, oldPlayerRating + ratingChange, this.humanPlayer.getName() );
     }
 
     private HashMap<Player, Integer> getCurrentPlayersRatings(){
@@ -460,20 +469,29 @@ public class BoardController implements Game.Callback {
     }
 
 
-    @FXML
-    private void sendEmailsToLosers(HashMap<Player,Integer> newRatings, int oldRating, int newRating, String playingPlayerName){
+    private void sendEmailsToLosers(HashMap<Player,Integer> oldRatings, int oldRating, int newRating, String playingPlayerName){
         if(newRating <= oldRating) return;  // As player didn't get any points, thus noone could be dethroned.
+        Optional<Integer> maxOldRating = oldRatings.values().stream().max(Comparator.naturalOrder());
+        if(maxOldRating.isEmpty() || maxOldRating.get().equals(Config.DEFAULT_RATING)) return;
+        Integer prevMaxRating = maxOldRating.get();
 
-        newRatings.entrySet()
-                .removeIf(
-                    entry -> (entry.getValue() <= oldRating || entry.getValue() >= newRating)
-                );
+        if(newRating > prevMaxRating && oldRating <= prevMaxRating ){
 
-        for(Player dethronedPlayer : newRatings.keySet()){
-            System.out.println("Debug: Dethroned player " + dethronedPlayer.getName() + " , rating: " + dethronedPlayer.getRating() + " is more than " + oldRating + " and less than " + newRating);
-            String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
-            EmailSender.sendEmail(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
+            List<Player> previouslyFirst = oldRatings.keySet().stream().filter(e -> e.getRating().equals(prevMaxRating)).collect(Collectors.toList());
+            for(Player dethronedPlayer : previouslyFirst){
+                if(dethronedPlayer.getName().equals(playingPlayerName)) continue;
+                System.out.println("Debug: Dethroned player " + dethronedPlayer.getName() + " , rating: " + dethronedPlayer.getRating() + " is more than " + oldRating + " and less than " + newRating);
+                String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
+                EmailSender.sendEmail(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
+            }
         }
+
+//        oldRatings.entrySet()
+//                .removeIf(
+//                    entry -> (entry.getValue() < oldRating || entry.getValue() >= newRating || entry.getValue().equals(Config.DEFAULT_RATING))
+//                );
+
+
     }
 
 
