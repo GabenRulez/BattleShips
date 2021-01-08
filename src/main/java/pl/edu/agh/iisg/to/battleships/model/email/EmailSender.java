@@ -35,6 +35,7 @@ public class EmailSender {
         session_properties.put("mail.smtp.password", sender_password);
         session_properties.put("mail.smtp.port", smtp_port);
         session_properties.put("mail.smtp.auth", "true");
+        session_properties.put("mail.smtp.starttls.enable", "true");
         session_properties.put("mail.imap.ssl.enable", "true");
 
         try {
