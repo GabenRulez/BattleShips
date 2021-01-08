@@ -18,17 +18,17 @@ public class EmailSender {
         sendEmail("kubakub2@wp.pl", "title", "testowy");
     }
 
-    public void sendEmail(String recipient_adress, String subject, String data){
-        System.out.println("Sending an email to '" + recipient_adress + "'.");
+    public void sendEmail(String recipient_address, String subject, String data){
+        System.out.println("Sending an email to '" + recipient_address + "'.");
         Properties session_properties = System.getProperties();
 
         String smtp_host = parser.getFromKey("smtp_server");
-        String sender_adress = parser.getFromKey("email");
+        String sender_address = parser.getFromKey("email");
         String sender_password = parser.getFromKey("password");
         String smtp_port = parser.getFromKey("smtp_port");
 
         session_properties.put("mail.smtp.host", smtp_host);
-        session_properties.put("mail.smtp.user", sender_adress);
+        session_properties.put("mail.smtp.user", sender_address);
         session_properties.put("mail.smtp.password", sender_password);
         session_properties.put("mail.smtp.port", smtp_port);
         session_properties.put("mail.smtp.auth", "true");
@@ -40,10 +40,10 @@ public class EmailSender {
 
             Transport transport = session.getTransport("smtp");
             transport.close();
-            transport.connect(smtp_host, sender_adress, sender_password);
+            transport.connect(smtp_host, sender_address, sender_password);
 
-            message.setFrom(new InternetAddress(sender_adress));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient_adress));
+            message.setFrom(new InternetAddress(sender_address));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient_address));
             message.setSubject(subject);
             message.setText(data);
 
