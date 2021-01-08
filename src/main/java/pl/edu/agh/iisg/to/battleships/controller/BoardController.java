@@ -21,17 +21,16 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
 import org.fxmisc.easybind.EasyBind;
+import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.*;
 import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
 import pl.edu.agh.iisg.to.battleships.model.ai.HardAI;
 import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
+import pl.edu.agh.iisg.to.battleships.model.email.EmailSender;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class BoardController implements Game.Callback {
@@ -439,13 +438,41 @@ public class BoardController implements Game.Callback {
         this.statusText.setText("Zakonczono");
         Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
 
+        int oldPlayerRating = this.humanPlayer.getRating();
+
         String message = hasPlayerWon ? "Gratulacje "+this.getHumanPlayer().getName()+"! Wygrana!" :
                 "Niestety, tym razem komputer okazal sie byc lepszy od Ciebie, "+this.getHumanPlayer().getName()+".";
         message += ("\nRanking: "+this.humanPlayer.getRating());
         message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
         this.game.updatePlayerInDb();
+
+        HashMap<Player,Integer> newRatings = getCurrentPlayersRatings();
+        int newPlayerRating = this.humanPlayer.getRating();
+        sendEmailsToLosers(newRatings, oldPlayerRating, newPlayerRating, this.humanPlayer.getName());
+
         System.out.println("Wynik: " + hasPlayerWon);
         Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
+    }
+
+    private HashMap<Player, Integer> getCurrentPlayersRatings(){
+        List<Player> players = new HumanPlayerDao().getPlayersWithRating();
+        HashMap<Player, Integer> ratings = new HashMap<>();
+        for(Player player : players) if(player.getRating() != null) ratings.put(player, player.getRating());
+        return ratings;
+    }
+
+    private void sendEmailsToLosers(HashMap<Player,Integer> newRatings, int oldRating, int newRating, String playingPlayerName){
+        if(newRating <= oldRating) return;  // As player didn't get any points, thus noone could be dethroned.
+
+        newRatings.entrySet()
+                .removeIf(
+                    entry -> (entry.getValue() <= oldRating || entry.getValue() >= newRating)
+                );
+
+        for(Player dethronedPlayer : newRatings.keySet()){
+            String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
+            EmailSender.sendEmail(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
+        }
     }
 
     @Override
