@@ -56,7 +56,9 @@ public class EmailSender {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
             System.out.println("Email nr. " + (sentEmails) + ": Sent successfully.");
-        } catch (MessagingException | IllegalStateException e) {
+        } catch (javax.mail.SendFailedException e){
+            System.out.println("Email nr. " + (sentEmails) + ": " + recipient_address + " is not a valid email address.");
+        }catch (MessagingException | IllegalStateException e) {
             e.printStackTrace();
         }
     }
