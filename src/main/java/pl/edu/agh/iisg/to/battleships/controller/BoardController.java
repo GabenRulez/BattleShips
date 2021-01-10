@@ -482,7 +482,7 @@ public class BoardController implements Game.Callback {
                 if(dethronedPlayer.getName().equals(playingPlayerName)) continue;
                 System.out.println("Debug: Dethroned player " + dethronedPlayer.getName() + " , rating: " + dethronedPlayer.getRating() + " is more than " + oldRating + " and less than " + newRating);
                 String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
-                EmailSender.sendEmail(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
+                EmailSender.sendEmailLater(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
             }
         }
 
