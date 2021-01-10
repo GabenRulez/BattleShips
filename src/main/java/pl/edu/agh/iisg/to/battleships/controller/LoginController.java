@@ -33,6 +33,9 @@ public class LoginController {
 
     public void init(Stage stage){
         this.stage = stage;
+      Tooltip tooltip = new Tooltip();
+        tooltip.setText("Loguje uzytkownika z podanym agresem e-mail oraz haslem jesli uzykownik istnieje w bazie");
+        loginButton.setTooltip(tooltip);
 
     }
 
