@@ -499,7 +499,7 @@ public class BoardController implements Game.Callback {
     }
 
     @Override
-    public void onShootMade() {
+    public void onShotMade() {
         this.refreshAllBoards();
     }
 

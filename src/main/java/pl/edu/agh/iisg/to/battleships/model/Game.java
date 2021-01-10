@@ -18,7 +18,7 @@ public class Game {
     public interface Callback {
         void onGameEnded(boolean hasPlayerWon);
         void onError(String errorMessage);
-        void onShootMade();
+        void onShotMade();
     }
 
     private static final int AI_MOVE_DELAY = 300;
@@ -109,7 +109,7 @@ public class Game {
             } else {
                 makeAiMove();
             }
-            callback.onShootMade();
+            callback.onShotMade();
     }
 
     public Integer getDifficultyLevel() {
@@ -133,7 +133,7 @@ public class Game {
                     Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
                     boolean hasHit = playersBoard.shoot(positionToBeShot);
                     updateGameEnded();
-                    callback.onShootMade();
+                    callback.onShotMade();
                     if(hasHit) {
                         try {
                             makeAiMove();
