@@ -101,7 +101,7 @@ public class RegisterController {
 
     @FXML
     public void sendRegistrationConfirmation(){
-        EmailSender.sendEmail(this.mail.getText(), "Battleships App Registration", EmailSender.createTemplateHtmlEmail("Your registration was succesful.", this.username.getText()));
+        EmailSender.sendEmailLater(this.mail.getText(), "Battleships App Registration", EmailSender.createTemplateHtmlEmail("Your registration was succesful.", this.username.getText()));
     }
 
 
