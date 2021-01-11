@@ -1,5 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.model.email;
 
+import javafx.application.Platform;
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.model.EasyConfigParser;
 
@@ -23,6 +24,14 @@ public class EmailSender {
         sendEmail("kubakub2@wp.pl", "BattleShips App Notification", createTemplateHtmlEmail("Zostałeś pokonany przez takeshi69", "Wojciech"));
     }*/
 
+    public static void sendEmailLater(String recipient_address, String subject, String data){
+        new Thread(() -> {
+            Platform.runLater(() -> {
+                sendEmail(recipient_address, subject, data);
+            });
+        }).start();
+    }
+
     public static void sendEmail(String recipient_address, String subject, String data){
         System.out.println("Email nr. " + (++sentEmails) + ": Sending an email to '" + recipient_address + "'.");
         Properties session_properties = System.getProperties();
@@ -40,6 +49,7 @@ public class EmailSender {
         session_properties.put("mail.smtp.starttls.enable", "true");
         session_properties.put("mail.imap.ssl.enable", "true");
 
+
         try {
             Session session = Session.getDefaultInstance(session_properties);
             MimeMessage message = new MimeMessage(session);
@@ -56,7 +66,10 @@ public class EmailSender {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
             System.out.println("Email nr. " + (sentEmails) + ": Sent successfully.");
-        } catch (MessagingException | IllegalStateException e) {
+
+        } catch (javax.mail.SendFailedException e){
+            System.out.println("Email nr. " + (sentEmails) + ": " + recipient_address + " is not a valid email address.");
+        }catch (MessagingException | IllegalStateException e) {
             e.printStackTrace();
         }
     }
