@@ -3,13 +3,13 @@
 
 ## Wprowadzenie rankingu
 
-Po zakończeniu gry, przedstawiany jest ekran podsumuwujący rozgrywkę, na którym zamieszczono obecną ilość punktów, ich zmianę oraz ranking.
+Po zakończeniu gry, przedstawiany jest ekran podsumowujący rozgrywkę, na którym zamieszczono obecną ilość punktów, ich zmianę oraz ranking.
 
-Ponieważ przy porażce punkty gracza są odejmowane postanowiliśmy, że początko każdy gracz będzie miał 1000 punktów. Oprócz tego dodaliśmy możliwość resetowania liczby punktów dla wszystkich graczy.
+Ponieważ przy porażce punkty gracza są odejmowane postanowiliśmy, że początkowo każdy gracz będzie miał 1000 punktów. Oprócz tego dodaliśmy możliwość resetowania liczby punktów dla wszystkich graczy. Ranking jest zmieniany w podobny sposób do rankingu ELO.
 
-Ranking każdego gracza jest przechowwywany w tabeli Player w bazie danych.
+Ranking każdego gracza jest przechowywany w tabeli Player w bazie danych.
 
-Obsługa rankingu została zrealizowanan przez przez **Jacka Nitychoruka**.
+Obsługa rankingu została zrealizowana przez przez **Jacka Nitychoruka**.
 
 ### Widok po zakończeniu gry
 ![](ss09.png)
@@ -19,12 +19,6 @@ Obsługa rankingu została zrealizowanan przez przez **Jacka Nitychoruka**.
 
 ### Zakończenie gry na poziomie łatwym
 ![](ss11.png)
-
-### Zakończenie gry na poziomie średnim
-![](ss12.png)
-
-### Zakończenie gry na poziomie trudnym
-![](ss12.png)
 
 ## Dodanie tooltipów z pomocą kontekstową
 
@@ -48,9 +42,9 @@ Za tą część odpowiedzialny był **Paweł Kiełbasa**.
 ### Tooltip do uruchomienia gry
 ![](ss16.png)
 
-## Stworzanie usługi wysyłania maily do użytkownika
+## Stworzenie usługi wysyłania maile do użytkownika
 
-W naszej grze przyjeliśmy założenie, że mail zostaje wysłany do wszystkich użytkowników, którzy zostali pobici przez danego gracza w rozegranej grze. Do wysyłania maili wykorzystaliśmy protokół SMTP. Ze wzgledu na mocne spowolnienie działania programu przez tą funkcję postanowiliśmy wykonywać ją w osobnym watku. Oprócz tego usunęliśmy wszystkie polskie znaki ze względu na brak obsługi ich.
+Do wysyłania maili wykorzystaliśmy protokół SMTP oraz bibliotekę JavaMail. Maile wysyłane są każdorazowo przy rejestracji nowego użytkownika oraz przy byciu pobitym przez innego gracza. Ze względu na mocne spowolnienie działania programu przez tą funkcję postanowiliśmy wykonywać ją w osobnym wątku. Oprócz tego usunęliśmy wszystkie polskie znaki ze względu na brak obsługi ich.
 
 Za stworzenie kodu do wysyłania maili odpowiedzialny był **Wojciech Kosztyła**.
 
@@ -59,21 +53,37 @@ Za stworzenie kodu do wysyłania maili odpowiedzialny był **Wojciech Kosztyła*
 
 ## Dodanie możliwości losowego wybrania położenia statków
 
-Do głownego ekranu gry dodaliśmy przycisk generujący nam losowe rozmieszczenie statków gracza na planszy. W tym przypadku główne metody znajdują się w klasie BoardInitializer, która pozwala nam na storzenie statku o dostępnej i losowej długości w dostępnym miejscu.
+Do głównego ekranu gry dodaliśmy przycisk generujący nam losowe rozmieszczenie statków gracza na planszy. W tym przypadku główne metody znajdują się w klasie BoardInitializer, która pozwala nam na stworzenie statku o dostępnej i losowej długości w dostępnym miejscu.
 
 Odpowiedzialny za te funkcje był **Jacek Nitychoruk**.
 
 ### Przykładowo wygenerowana losowa plansza
 ![](ss22.png)
 
+## Wprowadzenie mechanizmu uprawnień
+
+W grze dodaliśmy mechanizm uprawnień, w którym to admin będzie miał możliwość resetowania listy rankingowej. Pozostali gracze nie będą mieli dostępnej tej funkcji.
+
+Odpowiedzialny za tę funkcje był **Marcin Kozubek**. 
+
 ## Dodanie obsługi gry myszką
 
-Aby ułatwić korzystanie z gry, do przycisków na myszcze dodaliśmy dwie funkcje: środkowy przycisk powoduje obrócenie wybranego staku natomiast prawy przycisk usuwa statek na który najechaliśmy.
+W widoku początkowym gry dodaliśmy nowe opcje sterowania myszką:
+
+- LPM : umieszcza statek na wskazanej pozycji
+- ŚPM: zmienia orientację umieszczanego statku
+- PPM: usuwa statek zajmujący konkretną pozycję 
 
 Odpowiedzialny za te funkcje był **Jacek Nitychoruk**.
 
 ## Dodanie wizualizacji obecnie umieszczanego statku
 
-Aby poprawić identyfikację, gdzie stawiany jest statek dodaliśmy wyświetlanie pozycji statku. Aby to wykonać musieliśmy stworzyć funcję odświeżającą planszę gracza.
+Aby poprawić identyfikację, gdzie stawiany jest statek dodaliśmy wyświetlanie pozycji statku. Aby to wykonać musieliśmy stworzyć funkcję odświeżającą planszę gracza.
 
 Odpowiedzialny za te funkcje był **Jacek Nitychoruk**.
+
+## Efekt końcowy
+
+![image-20210112222353762](C:\Users\PK\Documents\GitHub\sr-1250-weebs\docs\ss25.png)
+
+![image-20210112222531824](C:\Users\PK\Documents\GitHub\sr-1250-weebs\docs\ss26.png)

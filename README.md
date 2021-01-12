@@ -2,7 +2,7 @@
 
 - [Szczegółowa dokumentacja M1](docs/m1_docs.md)
 - [Szczegółowa dokumentacja M2](docs/m2_docs.md)
-- [Szczegółowa dokumentacja M3](dosc/m3_dosc.md)
+- [Szczegółowa dokumentacja M3](dosc/m3_docs.md)
 
 ## M1:
 
@@ -29,6 +29,7 @@ Zostały zrealizowane następujące elementy:
 
 - Dodanie listy rankingowej graczy
 - Wysyłanie podwiadomień e-mailem o utraceniu swojej pozycji w rankingu
+- Utworzono mechanizm autoryzacji użytkowników
 - Dodanie tooltipów do wybranych akcji
 - Generacja losowych plansz dla gracza
 - Drobne usprawnienia
