@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -145,8 +146,33 @@ public class BoardController implements Game.Callback {
 
         this.bindButtons();
         this.refreshAllBoards();
+     	this.addTooltips();
     }
-
+    private void addTooltips(){
+        Tooltip randTooltip = new Tooltip();
+        randTooltip.setText("Generuje losowe ustawienie statkow na planszy");
+        randomize.setTooltip(randTooltip);
+        Tooltip rotateTooltip = new Tooltip();
+        rotateTooltip.setText("Pozwala na obrocenie statku");
+        rotateBtn.setTooltip(rotateTooltip);
+        Tooltip redoTooltip = new Tooltip();
+        redoTooltip.setText("Powtarza ostatnia usunieta operacje");
+        redoBtn.setTooltip(redoTooltip);
+        Tooltip undoTooltip = new Tooltip();
+        undoTooltip.setText("Cofa ostatnia operacje");
+        undoBtn.setTooltip(undoTooltip);
+        Tooltip easyTt = new Tooltip();
+        easyTt.setText("Ustawia niski poziom trudonosci");
+        easy.setTooltip(easyTt);
+        Tooltip mediumTt = new Tooltip();
+        mediumTt.setText("Ustawia sredni poziom trudnosci");
+        medium.setTooltip(mediumTt);
+        Tooltip hardTt = new Tooltip();
+        hardTt.setText("Ustawia wysoki poziom trudnosci");
+        hard.setTooltip(hardTt);
+        Tooltip start = new Tooltip();
+        start.setText("Uruchamia gre z podanymi przez uzytkownika poziomem trudnosci ");
+    }
     private void bindButtons(){
         setupShipButtonEnabled(shipPlace1, 1);
         setupShipButtonEnabled(shipPlace2, 2);
