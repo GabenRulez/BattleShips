@@ -2,9 +2,10 @@ package pl.edu.agh.iisg.to.battleships.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.Config;
@@ -12,11 +13,12 @@ import pl.edu.agh.iisg.to.battleships.model.Player;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FinishedController {
 
+    @FXML
+    public Button resetButton;
     private Player player;
     private Stage stage;
     private Stage gameStage;
@@ -31,6 +33,7 @@ public class FinishedController {
         this.message.setText(message);
         this.gameStage = gameStage;
         this.loadRatingList();
+        this.resetButton.setVisible(this.player.isAdmin());
     }
 
     @FXML

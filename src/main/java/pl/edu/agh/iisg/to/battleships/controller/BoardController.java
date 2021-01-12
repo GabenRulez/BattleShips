@@ -22,7 +22,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
-import org.fxmisc.easybind.EasyBind;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.*;
 import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
@@ -452,7 +451,6 @@ public class BoardController implements Game.Callback {
         try {
             this.game.shoot(coords);
         } catch (Exception ignored) {}
-        this.refreshAllBoards();
     }
 
     private void setupShipButtonEnabled(Button button, int shipLength) {
@@ -525,6 +523,11 @@ public class BoardController implements Game.Callback {
     @Override
     public void onError(String errorMessage) {
         System.out.println("Błąd: " + errorMessage);
+    }
+
+    @Override
+    public void onShotMade() {
+        this.refreshAllBoards();
     }
 
     private void clearSettingsPanel(){
