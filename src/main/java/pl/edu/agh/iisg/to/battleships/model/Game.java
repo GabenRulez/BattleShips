@@ -39,6 +39,8 @@ public class Game {
 
     private Map<Integer, Integer> shipCounts;
 
+    private boolean isWaitingForPlayersMove = true;
+
     public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
         if(player == null){
             player = getDefaultPlayer();
@@ -104,9 +106,11 @@ public class Game {
 
     public void shoot(Coordinates coordinates) {
         if(currentState != GameStatus.IN_PROGRESS) return;
+        if(!isWaitingForPlayersMove) return;
             if(aisBoard.shoot(coordinates)) {
                 updateGameEnded();
             } else {
+                isWaitingForPlayersMove = false;
                 makeAiMove();
             }
             callback.onShotMade();
@@ -130,21 +134,25 @@ public class Game {
             try {
                 Thread.sleep(AI_MOVE_DELAY);
                 Platform.runLater(() -> {
-                    Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
-                    boolean hasHit = playersBoard.shoot(positionToBeShot);
-                    updateGameEnded();
-                    callback.onShotMade();
-                    if(hasHit) {
-                        try {
+                    try {
+                        Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
+                        boolean hasHit = playersBoard.shoot(positionToBeShot);
+                        updateGameEnded();
+                        callback.onShotMade();
+                        if(hasHit) {
                             makeAiMove();
-                        } catch (Exception e) {
-                            if(callback != null) {
-                                callback.onError(e.getMessage());
-                            } else {
-                                e.printStackTrace();
-                            }
+                        } else {
+                            isWaitingForPlayersMove = true;
                         }
+                    } catch (Exception e) {
+                        if(callback != null) {
+                            callback.onError(e.getMessage());
+                        } else {
+                            e.printStackTrace();
+                        }
+                        isWaitingForPlayersMove = true;
                     }
+
                 });
             } catch (Exception e) {
                 if(callback != null) {
@@ -152,6 +160,7 @@ public class Game {
                 } else {
                     e.printStackTrace();
                 }
+                isWaitingForPlayersMove = true;
             }
         });
         thread.start();
