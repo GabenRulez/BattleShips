@@ -3,10 +3,6 @@ package pl.edu.agh.iisg.to.battleships.controller;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,7 +54,9 @@ public class LoginController {
         } else {
             progress.setVisible(true);
             new Thread(() -> {
-                Optional<Player> player = new HumanPlayerDao().findByMail(this.login.getText());
+                var dao = new HumanPlayerDao();
+                dao.create("admin", "admin@admin.com", LoginController.encryptPassword("admin"), true);
+                Optional<Player> player = dao.findByMail(this.login.getText());
 
                 Platform.runLater(() -> {
                     if (player.isEmpty() || !this.isAuthenticated(player.get(), this.password.getText())) {

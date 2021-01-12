@@ -35,6 +35,8 @@ public class Player {
     @Column(name ="rating")
     private Integer rating;
 
+    @Column(name ="isAdmin")
+    private Boolean isAdmin = false;
 
     public Player(String name, String mail, String password){
         super();
@@ -42,6 +44,11 @@ public class Player {
         this.password = password;
         this.name = name;
         this.rating = Config.DEFAULT_RATING;
+    }
+
+    public Player(String name, String mail, String password, Boolean isAdmin) {
+        this(name, mail, password);
+        this.isAdmin = isAdmin;
     }
 
     public Player(){}
@@ -64,6 +71,10 @@ public class Player {
 
     public String getPassword() {
         return password;
+    }
+
+    public Boolean isAdmin() {
+        return isAdmin;
     }
 
     public Integer updateRating(Integer level, Boolean result){
