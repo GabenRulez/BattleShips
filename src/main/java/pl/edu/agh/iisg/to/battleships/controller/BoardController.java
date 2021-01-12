@@ -171,7 +171,7 @@ public class BoardController implements Game.Callback {
         hardTt.setText("Ustawia wysoki poziom trudnosci");
         hard.setTooltip(hardTt);
         Tooltip start = new Tooltip();
-        start.setText("Uruchamia gre z podanymi przez uzytkownika poziomem trudnosci ");
+        start.setText("Uruchamia gre z podanymi przez uzytkownika statkami i poziomem trudnosci ");
       	startGame.setTooltip(start);
     }
     private void bindButtons(){
