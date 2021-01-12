@@ -18,6 +18,10 @@ public class BoardInitializer {
      *                   of length 2 will be created.
      */
     public static Board getBoardWithRandomlyPlacedShips(int boardSize, Map<Integer, Integer> shipCounts) {
+        return getBoardCreatorWithRandomlyPlacedShips(boardSize, shipCounts).getBoard();
+    }
+
+    public static BoardCreator getBoardCreatorWithRandomlyPlacedShips(int boardSize, Map<Integer, Integer> shipCounts) {
         var boardCreator = new BoardCreator(boardSize, shipCounts);
         var random = new Random();
 
@@ -31,7 +35,7 @@ public class BoardInitializer {
             }
         }
 
-        return boardCreator.getBoard();
+        return boardCreator;
     }
 
     private static boolean placeShipRandomly(BoardCreator boardCreator, Random random) {
