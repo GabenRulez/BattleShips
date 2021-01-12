@@ -2,7 +2,7 @@
 
 - [Szczegółowa dokumentacja M1](docs/m1_docs.md)
 - [Szczegółowa dokumentacja M2](docs/m2_docs.md)
-- [Szczegółowa dokumentacja M3](dosc/m3_docs.md)
+- [Szczegółowa dokumentacja M3](docs/m3_docs.md)
 
 ## M1:
 
