@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  */
 public class BoardCreator {
 
-    private final Board board;
+    private Board board;
     private final ObservableList<Integer> lengthsOfShipsYetToBePlaced;
 
     private final BoardCreatorCommandRegistry commandRegistry;
@@ -136,8 +136,31 @@ public class BoardCreator {
 
         var command = new PlaceShipCommand(board, lengthsOfShipsYetToBePlaced, new Ship(shipFields));
         commandRegistry.executeCommand(command);
-
         return true;
+    }
+
+    public boolean canPlaceShip(
+            Coordinates shipCoords,
+            int length,
+            Ship.Orientation orientation
+    ){
+        var shipFieldCoords = getFieldCoordsForShipAtPosition(shipCoords, length, orientation);
+        if(shipFieldCoords.stream().anyMatch(coords -> !board.areCoordsInRange(coords))) {
+            return false;
+        }
+        var shipFields = shipFieldCoords
+                .stream()
+                .map(board::getFieldOnPosition)
+                .collect(Collectors.toList());
+
+        var fieldsAroundShip = shipFields
+                .stream()
+                .map(board::getFieldsAround)
+                .flatMap(List::stream);
+
+        return Stream.concat(shipFields.stream(), fieldsAroundShip)
+                .noneMatch(field -> field.getFieldStatus() == FieldStatus.FIELD_SHIP_ACTIVE);
+
     }
 
     /**
@@ -166,6 +189,14 @@ public class BoardCreator {
         return true;
     }
 
+    public boolean setRandomBoard(int boardSize, Map<Integer, Integer> shipCounts) throws IllegalArgumentException {
+
+        this.board = BoardInitializer.getBoardWithRandomlyPlacedShips(boardSize, shipCounts);
+        commandRegistry.executeCommand(null);
+        return true;
+    }
+
+
     /**
      * Undoes last ship placement/removal action.
      */
@@ -180,7 +211,7 @@ public class BoardCreator {
         commandRegistry.redo();
     }
 
-    private List<Coordinates> getFieldCoordsForShipAtPosition(
+    public List<Coordinates> getFieldCoordsForShipAtPosition(
             Coordinates coords,
             int length,
             Ship.Orientation orientation

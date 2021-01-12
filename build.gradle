@@ -54,5 +54,6 @@ dependencies {
     compile group: 'org.fxmisc.easybind', name: 'easybind', version: '1.0.4-SNAPSHOT'
     compile "org.springframework.security:spring-security-web"
     compile "org.springframework.security:spring-security-config"
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
 }

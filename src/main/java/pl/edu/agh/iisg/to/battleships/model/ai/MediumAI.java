@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MediumAI implements AI {
+    final static double dumbFactor = 0.3;
     Random random = new Random();
     private ArrayList<Field> possibleShipFields = new ArrayList<>();
 
     @Override
     public Coordinates getNextAttackPosition(Board enemyBoard) {
+
+        if(Math.random() <= dumbFactor) return EasyAI.getRandomCoordinates(enemyBoard, random);     // Medium AI will sometimes be "dumb" and pick random location on the board instead
 
         updatePossibleShipFields(enemyBoard);
 

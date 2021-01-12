@@ -145,7 +145,6 @@ public class BoardController implements Game.Callback {
 
         this.bindButtons();
         this.refreshAllBoards();
-      	this.addTooltips();
     }
 
     private void bindButtons(){
@@ -156,32 +155,6 @@ public class BoardController implements Game.Callback {
         startGame.disableProperty().bind(Bindings.not(boardCreator.getCreationProcessFinishedProperty()));
         undoBtn.disableProperty().bind(Bindings.not(boardCreator.getUndoEnabledProperty()));
         redoBtn.disableProperty().bind(Bindings.not(boardCreator.getRedoEnabledProperty()));
-    }
-  
-  	private void addTooltips(){
-        Tooltip randTooltip = new Tooltip();
-        randTooltip.setText("Generuje losowe ustawienie statkow na planszy");
-        randomize.setTooltip(randTooltip);
-        Tooltip rotateTooltip = new Tooltip();
-        rotateTooltip.setText("Pozwala na obrocenie statku");
-        rotateBtn.setTooltip(rotateTooltip);
-        Tooltip redoTooltip = new Tooltip();
-        redoTooltip.setText("Powtarza ostatnia usunieta operacje");
-        redoBtn.setTooltip(redoTooltip);
-        Tooltip undoTooltip = new Tooltip();
-        undoTooltip.setText("Cofa ostatnia operacje");
-        undoBtn.setTooltip(undoTooltip);
-        Tooltip easyTt = new Tooltip();
-        easyTt.setText("Ustawia niski poziom trudonosci");
-        easy.setTooltip(easyTt);
-        Tooltip mediumTt = new Tooltip();
-        mediumTt.setText("Ustawia średni poziom trudnosci");
-        medium.setTooltip(mediumTt);
-        Tooltip hardTt = new Tooltip();
-        hardTt.setText("Ustawia wysoki poziom trudnosci");
-        hard.setTooltip(hardTt);
-        Tooltip start = new Tooltip();
-        start.setText("Uruchamia gre z podanymi przez uzytkownika poziomem trudnosci ");
     }
 
     private Paint calculateFieldColor(FieldStatus fieldStatus){
@@ -565,5 +538,4 @@ public class BoardController implements Game.Callback {
     }
 
 }
-
 

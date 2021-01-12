@@ -14,44 +14,28 @@ import javax.persistence.*;
 import java.util.Map;
 import java.util.Optional;
 
-@Entity
-@Table(name = Game.TABLE_NAME)
 public class Game {
-    public static final String TABLE_NAME = "games";
 
     public interface Callback {
         void onGameEnded(boolean hasPlayerWon);
         void onError(String errorMessage);
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
-    @ManyToOne
     private Player player;
 
-    @Transient
     private AI ai;
 
-    @Column(name = "playerWon")
-    private Boolean humanWon;
-
-    @Transient
     private GameStatus currentState;
 
-    @Column(name = "difficulty")
     private Integer difficultyLevel;
 
-    @Transient
     private Callback callback;
 
-    @Transient
     private Board playersBoard;
 
-    @Transient
     private Board aisBoard;
+
+    private Map<Integer, Integer> shipCounts;
 
     public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
         if(player == null){
@@ -59,19 +43,22 @@ public class Game {
         }
 
         this.currentState = GameStatus.NOT_STARTED;
-        humanWon = false;
 
         this.setAI(new MediumAI());
 
         this.player = player;
+        this.shipCounts = shipCounts;
         this.aisBoard = BoardInitializer.getBoardWithRandomlyPlacedShips(boardSize, shipCounts);
     }
+
+    public Map<Integer, Integer> getShipCounts() {
+        return shipCounts;
+    }
+
 
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
-
-    public Game(){};
 
     private Player getDefaultPlayer(){
 
@@ -80,7 +67,7 @@ public class Game {
         Player player;
         Optional<Player> defaultPlayer = playerDao.findByMail("a@a.com");
         if(defaultPlayer.isEmpty()){
-            defaultPlayer = playerDao.create("testowy", "a@a.com", "test");
+            defaultPlayer = playerDao.create("testowy", "a@a.com", "test"); //TODO: Debug Only. To delete later.
             player = defaultPlayer.orElseThrow(() -> new PersistenceException("Cannot create default player!"));
         }
         else{
@@ -94,6 +81,11 @@ public class Game {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void updatePlayerInDb(){
+        HumanPlayerDao playerDao = new HumanPlayerDao();
+        playerDao.updatePlayer(this.player);
     }
 
     public void start(Board playersBoard) {
@@ -126,10 +118,6 @@ public class Game {
         }
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Integer getDifficultyLevel() {
         return difficultyLevel;
     }
@@ -158,7 +146,6 @@ public class Game {
 
         if(hasPlayerWon || hasAiWon) {
             this.currentState = GameStatus.FINISHED;
-            this.humanWon = hasPlayerWon;
             if(callback != null) {
                 callback.onGameEnded(hasPlayerWon);
             }
