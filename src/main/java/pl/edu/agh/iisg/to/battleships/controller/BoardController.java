@@ -209,7 +209,7 @@ public class BoardController implements Game.Callback {
                 return Color.LIGHTBLUE;
             }
             case FIELD_SHIP_ACTIVE -> {
-                return Color.GREEN;     //TODO: Change to GREY; Debug only
+                return Color.LIGHTBLUE;
             }
             case FIELD_EMPTY_BLOCKED -> {
                 return Color.GREY;
