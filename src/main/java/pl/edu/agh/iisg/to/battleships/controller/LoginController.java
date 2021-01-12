@@ -3,6 +3,10 @@ package pl.edu.agh.iisg.to.battleships.controller;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +38,9 @@ public class LoginController {
 
     public void init(Stage stage){
         this.stage = stage;
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("Loguje uzytkownika z podanym adresem e-mail oraz haslem jesli uzytkownik istnieje w bazie");
+        loginButton.setTooltip(tooltip);
 
     }
 
