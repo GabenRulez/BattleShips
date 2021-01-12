@@ -10,8 +10,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,17 +22,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
 import org.fxmisc.easybind.EasyBind;
+import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.*;
 import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
 import pl.edu.agh.iisg.to.battleships.model.ai.HardAI;
 import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
+import pl.edu.agh.iisg.to.battleships.model.email.EmailSender;
 import pl.edu.agh.iisg.to.battleships.model.enums.FieldStatus;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class BoardController implements Game.Callback {
@@ -145,7 +145,7 @@ public class BoardController implements Game.Callback {
 
         this.bindButtons();
         this.refreshAllBoards();
-        this.addTooltips();
+      	this.addTooltips();
     }
 
     private void bindButtons(){
@@ -157,8 +157,8 @@ public class BoardController implements Game.Callback {
         undoBtn.disableProperty().bind(Bindings.not(boardCreator.getUndoEnabledProperty()));
         redoBtn.disableProperty().bind(Bindings.not(boardCreator.getRedoEnabledProperty()));
     }
-
-    private void addTooltips(){
+  
+  	private void addTooltips(){
         Tooltip randTooltip = new Tooltip();
         randTooltip.setText("Generuje losowe ustawienie statkow na planszy");
         randomize.setTooltip(randTooltip);
@@ -206,8 +206,11 @@ public class BoardController implements Game.Callback {
 
     private Paint calculateComputersFieldColor(FieldStatus fieldStatus) {
         switch (fieldStatus) {
-            case FIELD_EMPTY, FIELD_SHIP_ACTIVE -> {
+            case FIELD_EMPTY -> {
                 return Color.LIGHTBLUE;
+            }
+            case FIELD_SHIP_ACTIVE -> {
+                return Color.GREEN;     //TODO: Change to GREY; Debug only
             }
             case FIELD_EMPTY_BLOCKED -> {
                 return Color.GREY;
@@ -258,9 +261,14 @@ public class BoardController implements Game.Callback {
     }
 
     @FXML
+    Menu editMenu;
+
+    @FXML
     public void startGame() {
         this.statusText.setText("W trakcie gry");
         this.clearSettingsPanel();
+        this.editMenu.setDisable(true);
+
         game.start(boardCreator.getBoard());
         game.setCallback(this);
     }
@@ -338,6 +346,8 @@ public class BoardController implements Game.Callback {
         try {
             if(event.getButton() == MouseButton.SECONDARY) {
                 boardCreator.removeShip(coords);
+                this.refreshAllBoards();
+                this.onPlayersBoardHover(event);
             }
             else if(event.getButton() == MouseButton.MIDDLE){
                 this.toggleOrientation();
@@ -427,6 +437,7 @@ public class BoardController implements Game.Callback {
     public void onOpponentsBoardHoverExit(MouseEvent event) {
         this.onPlayersBoardHoverExit(event);
         this.stage.getScene().setCursor(Cursor.DEFAULT);
+        this.stage.getScene().setCursor(Cursor.DEFAULT);
     }
 
     public void onOpponentsBoardClick(MouseEvent event) {
@@ -459,11 +470,57 @@ public class BoardController implements Game.Callback {
     @Override
     public void onGameEnded(boolean hasPlayerWon) {
         this.statusText.setText("Zakonczono");
+
+        HashMap<Player,Integer> oldRatings = getCurrentPlayersRatings();
+
+        int oldPlayerRating = this.humanPlayer.getRating();
+        Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
+
         String message = hasPlayerWon ? "Gratulacje "+this.getHumanPlayer().getName()+"! Wygrana!" :
                 "Niestety, tym razem komputer okazal sie byc lepszy od Ciebie, "+this.getHumanPlayer().getName()+".";
+        message += ("\nRanking: "+this.humanPlayer.getRating());
+        message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
+        this.game.updatePlayerInDb();
+
         System.out.println("Wynik: " + hasPlayerWon);
         Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
+
+        sendEmailsToLosers( oldRatings, oldPlayerRating, oldPlayerRating + ratingChange, this.humanPlayer.getName() );
     }
+
+    private HashMap<Player, Integer> getCurrentPlayersRatings(){
+        List<Player> players = new HumanPlayerDao().getPlayersWithRating();
+        HashMap<Player, Integer> ratings = new HashMap<>();
+        for(Player player : players) if(player.getRating() != null) ratings.put(player, player.getRating());
+        return ratings;
+    }
+
+
+    private void sendEmailsToLosers(HashMap<Player,Integer> oldRatings, int oldRating, int newRating, String playingPlayerName){
+        if(newRating <= oldRating) return;  // As player didn't get any points, thus noone could be dethroned.
+        Optional<Integer> maxOldRating = oldRatings.values().stream().max(Comparator.naturalOrder());
+        if(maxOldRating.isEmpty() || maxOldRating.get().equals(Config.DEFAULT_RATING)) return;
+        Integer prevMaxRating = maxOldRating.get();
+
+        if(newRating > prevMaxRating && oldRating <= prevMaxRating ){
+
+            List<Player> previouslyFirst = oldRatings.keySet().stream().filter(e -> e.getRating().equals(prevMaxRating)).collect(Collectors.toList());
+            for(Player dethronedPlayer : previouslyFirst){
+                if(dethronedPlayer.getName().equals(playingPlayerName)) continue;
+                System.out.println("Debug: Dethroned player " + dethronedPlayer.getName() + " , rating: " + dethronedPlayer.getRating() + " is more than " + oldRating + " and less than " + newRating);
+                String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
+                EmailSender.sendEmailLater(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
+            }
+        }
+
+//        oldRatings.entrySet()
+//                .removeIf(
+//                    entry -> (entry.getValue() < oldRating || entry.getValue() >= newRating || entry.getValue().equals(Config.DEFAULT_RATING))
+//                );
+
+
+    }
+
 
     @Override
     public void onError(String errorMessage) {
@@ -500,6 +557,7 @@ public class BoardController implements Game.Callback {
         this.boardCreator = BoardInitializer.getBoardCreatorWithRandomlyPlacedShips(this.playersBoard.getLimit().getX(), this.game.getShipCounts());
         this.playersBoard = boardCreator.getBoard();
         this.bindButtons();
+        this.shipLength.setValue(0);
         this.refreshAllBoards();
 //        List<Ship> ships = newBoardSetting.getShips();
 //        this.boardCreator.getBoard().getShips().forEach(ship -> this.boardCreator.getBoard().removeShip(ship));
