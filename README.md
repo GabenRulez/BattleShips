@@ -2,6 +2,7 @@
 
 - [Szczegółowa dokumentacja M1](docs/m1_docs.md)
 - [Szczegółowa dokumentacja M2](docs/m2_docs.md)
+- [Szczegółowa dokumentacja M3](dosc/m3_dosc.md)
 
 ## M1:
 
@@ -22,6 +23,15 @@ Zostały zrealizowane następujące elementy:
 - Możliwość wyboru poziomu trudności przeciwnika komputerowego (trzy warianty)
 - Mechanizm autoryzacji i autentykacji użytkowników
 
+## M3:
+
+Zostały zrealizowane następujące elementy:
+
+- Dodanie listy rankingowej graczy
+- Wysyłanie podwiadomień e-mailem o utraceniu swojej pozycji w rankingu
+- Dodanie tooltipów do wybranych akcji
+- Generacja losowych plansz dla gracza
+- Drobne usprawnienia
 
 ## Uruchomienie programu:
 
@@ -40,11 +50,11 @@ Do poprawnego działania wymagana jest wersja Java w wersji >= 14
 ### Rejestracja
 ![](docs/ss06.png)
 ## Główny ekran przygotowania gry
-![](docs/ss01.png)
+![](docs/ss23.png)
 ## Rozgrywka
 ![](docs/ss07.png)
 ## Zakończenie
-![](docs/ss08.png)
+![](docs/ss24.png)
 
 ## Autorzy:
 
