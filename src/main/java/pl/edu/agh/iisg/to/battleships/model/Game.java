@@ -1,7 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.ai.AI;
 import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
@@ -10,7 +9,7 @@ import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 import pl.edu.agh.iisg.to.battleships.session.SessionService;
 
-import javax.persistence.*;
+import javax.persistence.PersistenceException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,7 +18,10 @@ public class Game {
     public interface Callback {
         void onGameEnded(boolean hasPlayerWon);
         void onError(String errorMessage);
+        void onShotMade();
     }
+
+    private static final int AI_MOVE_DELAY = 300;
 
     private Player player;
 
@@ -36,6 +38,8 @@ public class Game {
     private Board aisBoard;
 
     private Map<Integer, Integer> shipCounts;
+
+    private boolean isWaitingForPlayersMove = true;
 
     public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
         if(player == null){
@@ -102,20 +106,14 @@ public class Game {
 
     public void shoot(Coordinates coordinates) {
         if(currentState != GameStatus.IN_PROGRESS) return;
-        try {
+        if(!isWaitingForPlayersMove) return;
             if(aisBoard.shoot(coordinates)) {
                 updateGameEnded();
             } else {
-//                TODO Make computer move in another thread with delay, to improve visual effects.
+                isWaitingForPlayersMove = false;
                 makeAiMove();
             }
-        } catch (Exception e) {
-            if(callback != null) {
-                callback.onError(e.getMessage());
-            } else {
-                e.printStackTrace();
-            }
-        }
+            callback.onShotMade();
     }
 
     public Integer getDifficultyLevel() {
@@ -130,14 +128,42 @@ public class Game {
         return aisBoard;
     }
 
-    private void makeAiMove() throws InterruptedException {
+    private void makeAiMove() {
         if(currentState != GameStatus.IN_PROGRESS) return;
-        Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
-        boolean hasHit = playersBoard.shoot(positionToBeShot);
-        updateGameEnded();
-        if(hasHit) {
-            makeAiMove();
-        }
+        var thread = new Thread(() -> {
+            try {
+                Thread.sleep(AI_MOVE_DELAY);
+                Platform.runLater(() -> {
+                    try {
+                        Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
+                        boolean hasHit = playersBoard.shoot(positionToBeShot);
+                        updateGameEnded();
+                        callback.onShotMade();
+                        if(hasHit) {
+                            makeAiMove();
+                        } else {
+                            isWaitingForPlayersMove = true;
+                        }
+                    } catch (Exception e) {
+                        if(callback != null) {
+                            callback.onError(e.getMessage());
+                        } else {
+                            e.printStackTrace();
+                        }
+                        isWaitingForPlayersMove = true;
+                    }
+
+                });
+            } catch (Exception e) {
+                if(callback != null) {
+                    callback.onError(e.getMessage());
+                } else {
+                    e.printStackTrace();
+                }
+                isWaitingForPlayersMove = true;
+            }
+        });
+        thread.start();
     }
 
     private void updateGameEnded() {

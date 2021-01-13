@@ -9,6 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -18,7 +22,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.edu.agh.iisg.to.battleships.Main;
-import org.fxmisc.easybind.EasyBind;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.*;
 import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
@@ -142,9 +145,8 @@ public class BoardController implements Game.Callback {
 
         this.bindButtons();
         this.refreshAllBoards();
-        this.addTooltips();
+     	this.addTooltips();
     }
-
     private void addTooltips(){
         Tooltip randTooltip = new Tooltip();
         randTooltip.setText("Generuje losowe ustawienie statkow na planszy");
@@ -169,9 +171,8 @@ public class BoardController implements Game.Callback {
         hard.setTooltip(hardTt);
         Tooltip start = new Tooltip();
         start.setText("Uruchamia gre z podanymi przez uzytkownika statkami i poziomem trudnosci ");
-        startGame.setTooltip(start);
+      	startGame.setTooltip(start);
     }
-
     private void bindButtons(){
         setupShipButtonEnabled(shipPlace1, 1);
         setupShipButtonEnabled(shipPlace2, 2);
@@ -208,7 +209,7 @@ public class BoardController implements Game.Callback {
                 return Color.LIGHTBLUE;
             }
             case FIELD_SHIP_ACTIVE -> {
-                return Color.LIGHTBLUE;     //TODO: Change to GREY; Debug only
+                return Color.LIGHTBLUE;
             }
             case FIELD_EMPTY_BLOCKED -> {
                 return Color.GREY;
@@ -450,7 +451,6 @@ public class BoardController implements Game.Callback {
         try {
             this.game.shoot(coords);
         } catch (Exception ignored) {}
-        this.refreshAllBoards();
     }
 
     private void setupShipButtonEnabled(Button button, int shipLength) {
@@ -523,6 +523,11 @@ public class BoardController implements Game.Callback {
     @Override
     public void onError(String errorMessage) {
         System.out.println("Błąd: " + errorMessage);
+    }
+
+    @Override
+    public void onShotMade() {
+        this.refreshAllBoards();
     }
 
     private void clearSettingsPanel(){
