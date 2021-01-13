@@ -2,6 +2,7 @@
 
 - [Szczegółowa dokumentacja M1](docs/m1_docs.md)
 - [Szczegółowa dokumentacja M2](docs/m2_docs.md)
+- [Szczegółowa dokumentacja M3](docs/m3_docs.md)
 
 ## M1:
 
@@ -22,9 +23,41 @@ Zostały zrealizowane następujące elementy:
 - Możliwość wyboru poziomu trudności przeciwnika komputerowego (trzy warianty)
 - Mechanizm autoryzacji i autentykacji użytkowników
 
+## M3:
+
+Zostały zrealizowane następujące elementy:
+
+- Dodanie listy rankingowej graczy
+- Wysyłanie powiadomień e-mailem o rejestracji i utraceniu pierwszej pozycji w rankingu
+- Mechanizm autoryzacji użytkowników - rola administratora umożliwia zerowanie listy rankingowej
+- Dodanie pomocy kontekstowej (tooltipy) do wybranych akcji
+- Generowanie losowych plansz dla gracza
+- Usprawnienia UX/UI.
+
+
+
+## Konto administratora
+
+W grze stworzyliśmy konto administratora, które jest dostępne od początku gry. Pozwala ono na resetowanie rankingu wszystkich użytkowników na etapie wyświetlania listy rankingowej. Aby zalogować się do niego należy podczas logowania podać następujące dane
+
+- login: admin@admin.com
+- hasło: admin
 
 ## Uruchomienie programu:
 
+### Konfiguracja serwera SMTP
+
+W celu poprawnego wysyłania emalii na maile graczy należy skonfigurować serwer STMP w pliku `src\java\resources\emailConfig`. 
+Przykładowa konfiguracja pliku znajduje się poniżej:
+
+```
+email = somemail@gmail.com
+password = topsecretpassword
+smtp_port = 587
+smtp_server = smtp.gmail.com
+```
+
+### Uruchomienie
 W głównym katalogu projektu:
 
 ```bash
@@ -40,11 +73,11 @@ Do poprawnego działania wymagana jest wersja Java w wersji >= 14
 ### Rejestracja
 ![](docs/ss06.png)
 ## Główny ekran przygotowania gry
-![](docs/ss01.png)
+![](docs/ss23.png)
 ## Rozgrywka
 ![](docs/ss07.png)
 ## Zakończenie
-![](docs/ss08.png)
+![](docs/ss24.png)
 
 ## Autorzy:
 
