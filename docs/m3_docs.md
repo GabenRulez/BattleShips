@@ -66,6 +66,22 @@ W grze dodaliśmy mechanizm uprawnień, w którym to admin będzie miał możliw
 
 Odpowiedzialny za tę funkcje był **Marcin Kozubek**. 
 
+Ekran końcowy dla admina
+
+![](ss28.png)
+
+Ekran końcowy dla gracza
+
+![](ss27.png)
+
+## Dodanie opóźnienia ruchu komputera
+
+Wprowadziliśmy opóźnienie w ruchu komputera oraz jednocześnie zablokowaliśmy możliwość wykonywania strzału przez gracza podczas tury komputera w celu zwiększenia przejrzystości gry.
+
+
+
+Odpowiedzialny za tą część był **Marcin Kozubek**.
+
 ## Dodanie obsługi gry myszką
 
 W widoku początkowym gry dodaliśmy nowe opcje sterowania myszką:
@@ -84,6 +100,6 @@ Odpowiedzialny za te funkcje był **Jacek Nitychoruk**.
 
 ## Efekt końcowy
 
-![image-20210112222353762](C:\Users\PK\Documents\GitHub\sr-1250-weebs\docs\ss25.png)
+![](ss25.png)
 
-![image-20210112222531824](C:\Users\PK\Documents\GitHub\sr-1250-weebs\docs\ss26.png)
+![](ss26.png)
