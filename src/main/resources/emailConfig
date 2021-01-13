@@ -2,7 +2,7 @@
 #To make it work you need to fill those properties
 
 [Email_data] # Email was generated at 'mailgun.com' and is a temporary one.
-email = postmaster@sandboxa246183cedbb4ef099313065a7a62c69.mailgun.org
-password = abf6b7241c667ccbb0c879b6ITS_CUT_FOR_SAFETY
+email = agh.cs.oop.weebs@gmail.com
+password = tafEas8tyC4ceCAzX
 smtp_port = 587
-smtp_server = smtp.mailgun.org
+smtp_server = smtp.gmail.com
