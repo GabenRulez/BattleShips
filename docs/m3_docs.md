@@ -5,19 +5,13 @@
 
 Po zakończeniu gry, przedstawiany jest ekran podsumowujący rozgrywkę, na którym zamieszczono obecną ilość punktów, ich zmianę oraz ranking.
 
-Ponieważ przy porażce punkty gracza są odejmowane postanowiliśmy, że początkowo każdy gracz będzie miał 1000 punktów. Oprócz tego dodaliśmy możliwość resetowania liczby punktów dla wszystkich graczy. Ranking jest zmieniany w podobny sposób do rankingu ELO.
+Ponieważ przy porażce punkty gracza są odejmowane postanowiliśmy, że początkowo każdy gracz będzie miał 1000 punktów. Oprócz tego dodaliśmy możliwość resetowania liczby punktów dla wszystkich graczy. Ranking jest zmieniany w podobny sposób do rankingu ELO - w zależności od obecnego rankingu i poziomu trudności przeciwnika.
 
-Ranking każdego gracza jest przechowywany w tabeli Player w bazie danych.
+Ranking każdego gracza jest przechowywany w tabeli `Player `w bazie danych.
 
-Obsługa rankingu została zrealizowana przez przez **Jacka Nitychoruka**.
+Obsługa rankingu została zrealizowana przez przez **Jacka Nitychoruk**.
 
-### Widok po zakończeniu gry
-![](ss09.png)
-
-### Ekran porażki
-![](ss10.png)
-
-### Zakończenie gry na poziomie łatwym
+### Widok z listą rankingową po zakończeniu gry
 ![](ss11.png)
 
 ## Dodanie tooltipów z pomocą kontekstową
@@ -42,18 +36,20 @@ Za tą część odpowiedzialny był **Paweł Kiełbasa**.
 ### Tooltip do uruchomienia gry
 ![](ss16.png)
 
-## Stworzenie usługi wysyłania maile do użytkownika
+## Wysyłanie maili do użytkownika
 
 Do wysyłania maili wykorzystaliśmy protokół SMTP oraz bibliotekę JavaMail. Maile wysyłane są każdorazowo przy rejestracji nowego użytkownika oraz przy byciu pobitym przez innego gracza. Ze względu na mocne spowolnienie działania programu przez tą funkcję postanowiliśmy wykonywać ją w osobnym wątku. Oprócz tego usunęliśmy wszystkie polskie znaki ze względu na brak obsługi ich.
 
+Domyślna konfiguracja serwera SMTP została umieszczona w kodzie w repozytorium, więc funkcjonalność powinna być dostępna od razu po uruchomieniu programu. W przeciwnym razie, należy edytować plik `src\java\resources\emailConfig` w celu dodania poprawnej konfiguracji serwera SMTP do wysyłania maili.
+
 Za stworzenie kodu do wysyłania maili odpowiedzialny był **Wojciech Kosztyła**.
 
-### Przykładowy mail z informacją o byciu pobitym
+### Przykładowy mail z o utraceniu pierwszej pozycji na liście rankingowej
 ![](ss21.png)
 
 ## Dodanie możliwości losowego wybrania położenia statków
 
-Do głównego ekranu gry dodaliśmy przycisk generujący nam losowe rozmieszczenie statków gracza na planszy. W tym przypadku główne metody znajdują się w klasie BoardInitializer, która pozwala nam na stworzenie statku o dostępnej i losowej długości w dostępnym miejscu.
+Do głównego ekranu gry dodaliśmy przycisk generujący nam losowe rozmieszczenie statków gracza na planszy. W tym przypadku główne metody znajdują się w klasie `BoardInitializer,` która pozwala nam na stworzenie statku o dostępnej i losowej długości w dostępnym miejscu.
 
 Odpowiedzialny za te funkcje był **Jacek Nitychoruk**.
 
@@ -66,25 +62,23 @@ W grze dodaliśmy mechanizm uprawnień, w którym to admin będzie miał możliw
 
 Odpowiedzialny za tę funkcje był **Marcin Kozubek**. 
 
-Ekran końcowy dla admina
+Ekran końcowy dla użytkownika z uprawnieniami administratora:
 
 ![](ss28.png)
 
-Ekran końcowy dla gracza
+Ekran końcowy dla standardowego gracza:
 
 ![](ss27.png)
 
 ## Dodanie opóźnienia ruchu komputera
 
-Wprowadziliśmy opóźnienie w ruchu komputera oraz jednocześnie zablokowaliśmy możliwość wykonywania strzału przez gracza podczas tury komputera w celu zwiększenia przejrzystości gry.
-
-
+Wprowadziliśmy opóźnienie w ruchu komputera oraz jednocześnie zablokowaliśmy możliwość wykonywania strzału przez gracza podczas tury komputera w celu zwiększenia przejrzystości gry. Dzięki temu rozgrywka wygląda bardziej naturalnie i użytkownik zdąży zauważyć wszystkie ruchy komputera.
 
 Odpowiedzialny za tą część był **Marcin Kozubek**.
 
 ## Dodanie obsługi gry myszką
 
-W widoku początkowym gry dodaliśmy nowe opcje sterowania myszką:
+W widoku konfiguracji gry dodaliśmy nowe opcje sterowania myszką:
 
 - LPM : umieszcza statek na wskazanej pozycji
 - ŚPM: zmienia orientację umieszczanego statku

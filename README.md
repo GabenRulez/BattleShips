@@ -28,25 +28,36 @@ Zostały zrealizowane następujące elementy:
 Zostały zrealizowane następujące elementy:
 
 - Dodanie listy rankingowej graczy
-- Wysyłanie powiadomień e-mailem o utraceniu swojej pozycji w rankingu
-- Utworzono mechanizm autoryzacji użytkowników
-- Dodanie tooltipów do wybranych akcji
-- Generacja losowych plansz dla gracza
-- Drobne usprawnienia
+- Wysyłanie powiadomień e-mailem o rejestracji i utraceniu pierwszej pozycji w rankingu
+- Mechanizm autoryzacji użytkowników - rola administratora umożliwia zerowanie listy rankingowej
+- Dodanie pomocy kontekstowej (tooltipy) do wybranych akcji
+- Generowanie losowych plansz dla gracza
+- Usprawnienia UX/UI.
 
-## Konfiguracja emailów
 
-W celu poprawnego wysyłania emalii na maile graczy należy skonfigurować serwer STMP w pliku  emailConfig. Ponieważ serwisy ograniczają dostęp do STMP ze względu na konieczność ograniczenia spamu. Koniczne było ręczne potwierdzanie każdego maila w celu umożliwienia wysyłania maili na nie.
 
 ## Konto administratora
 
- W grze stworzyliśmy konto administratora, które jest dostępne od początku gry. Pozwala ono na resetowanie rankingu wszystkich użytkowników. Aby zalogować się do niego należy podczas logowania podać następujące dane
+W grze stworzyliśmy konto administratora, które jest dostępne od początku gry. Pozwala ono na resetowanie rankingu wszystkich użytkowników na etapie wyświetlania listy rankingowej. Aby zalogować się do niego należy podczas logowania podać następujące dane
 
 - login: admin@admin.com
 - hasło: admin
 
 ## Uruchomienie programu:
 
+### Konfiguracja serwera SMTP
+
+W celu poprawnego wysyłania emalii na maile graczy należy skonfigurować serwer STMP w pliku `src\java\resources\emailConfig`. 
+Przykładowa konfiguracja pliku znajduje się poniżej:
+
+```
+email = somemail@gmail.com
+password = topsecretpassword
+smtp_port = 587
+smtp_server = smtp.gmail.com
+```
+
+### Uruchomienie
 W głównym katalogu projektu:
 
 ```bash
