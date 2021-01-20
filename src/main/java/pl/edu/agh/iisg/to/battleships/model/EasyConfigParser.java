@@ -1,5 +1,7 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
+import gabenrulez.helper.texter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -38,20 +40,23 @@ public class EasyConfigParser {
 
                 if(dataLine.charAt(0) == '#') continue; // Skip comments
 
-
-
                 if(dataLine.charAt(0) == '['){
                     active_section = parseSectionName(dataLine);
                     continue;
                 }
 
-                String[] keyValuePair = parseNormalLine(dataLine);
-                addNewEntry(active_section, keyValuePair[0], keyValuePair[1]);
+                String[] keyValuePair;
+                try{
+                    keyValuePair = parseNormalLine(dataLine);
+                    addNewEntry(active_section, keyValuePair[0], keyValuePair[1]);
+                }
+                catch (IllegalArgumentException e){
+                    texter.printErrorMessage("EasyConfigParser.java", e.getMessage());
+                }
             }
         }
         catch (FileNotFoundException e){
-            System.out.println("Nie odnaleziono pliku o sciezce " + filepath);
-            e.printStackTrace();
+            texter.printErrorMessage("EasyConfigParser.java", "No file found at '" + filepath + "'.");
         }
     }
 
@@ -65,10 +70,9 @@ public class EasyConfigParser {
 
     private String[] parseNormalLine(String dataLine){
         String[] strings = dataLine.strip().split("#")[0].split("=");
-        if(strings.length > 2) System.out.println("W linijce '" + dataLine + "' pojawilo sie wiecej znakow '=' niz powinno. Pomijam wszystko po drugim takim znaku.");
-        if(strings.length < 2){
-            throw new IllegalArgumentException("Can't read config line '" + dataLine + "'. Reason: can't find '=' sign.");
-        }
+        if(strings.length > 2) texter.printErrorMessage("EasyConfigParser.java > parseNormalLine", "In line \n" + dataLine + "\n there were more '=' characters than allowed. Skipping everything after the second '='.");
+        if(strings.length < 2) throw new IllegalArgumentException("Can't read config line '" + dataLine + "'. Reason: can't find '=' sign.");
+
         String[] resultStrings = new String[2];
         resultStrings[0] = strings[0].strip();
         resultStrings[1] = strings[1].strip();
@@ -101,13 +105,15 @@ public class EasyConfigParser {
     }
 
     public void listConfig(){
-        System.out.println("Listing config parser current values...");
+        texter.printCharLine('-');
+        texter.printTabbed("Listing config parser current values...");
+
         for(String sectionName : configMap.keySet()){
-            System.out.println("Section: " + sectionName);
+            texter.printTabbed("Section: " + sectionName);
 
             HashMap<String, String> sectionHashMap = configMap.get(sectionName);
             for(Map.Entry<String, String> entry : sectionHashMap.entrySet()){
-                System.out.println("\t" + entry.getKey() + " = " + entry.getValue());
+                texter.printTabbed(entry.getKey() + " = " + entry.getValue(), 2);
             }
         }
     }
