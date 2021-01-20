@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="247.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.iisg.to.battleships.controller.RegisterController">
    <children>
-      <Label layoutX="61.0" text="Battleships: Rejestracja" textAlignment="CENTER">
+      <Label layoutX="61.0" text="Battleships: Register" textAlignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
@@ -14,14 +14,14 @@
       <TextField fx:id="mail" layoutX="137.0" layoutY="68.0" />
       <TextField fx:id="username" layoutX="137.0" layoutY="114.0" />
       <PasswordField fx:id="password" layoutX="137.0" layoutY="161.0" />
-      <Button fx:id="registerButton" layoutX="137.0" layoutY="193.0" mnemonicParsing="false" onAction="#registerClickHandle" prefHeight="25.0" prefWidth="149.0" text="Zarejestruj się" />
-      <Label fx:id="mailLabel" layoutX="178.0" layoutY="50.0" text="Adres e-mail" />
-      <Label fx:id="usernameLabel" layoutX="158.0" layoutY="96.0" text="Nazwa uzytkownika" />
-      <Label fx:id="passwordLabel" layoutX="196.0" layoutY="143.0" text="Hasło" />
+      <Button fx:id="registerButton" layoutX="137.0" layoutY="193.0" mnemonicParsing="false" onAction="#registerClickHandle" prefHeight="25.0" prefWidth="149.0" text="Register" />
+      <Label fx:id="mailLabel" layoutX="173.0" layoutY="50.0" text="E-mail address" />
+      <Label fx:id="usernameLabel" layoutX="184.0" layoutY="96.0" text="Username" />
+      <Label fx:id="passwordLabel" layoutX="187.0" layoutY="143.0" text="Password" />
       <Label fx:id="message" alignment="CENTER" layoutX="4.0" layoutY="225.0" prefHeight="17.0" prefWidth="350.0" />
-      <Label fx:id="registerSuccessful" alignment="CENTER" layoutX="40.0" layoutY="85.0" prefHeight="17.0" prefWidth="340.0" text="Zarejestrowano pomyślnie!" visible="false" />
-      <Button fx:id="returnButton" layoutX="137.0" layoutY="148.0" mnemonicParsing="false" onAction="#returnClickHandle" prefHeight="25.0" prefWidth="149.0" text="Powrót" visible="false" />
-      <Button fx:id="returnSmallButton" layoutX="361.0" layoutY="214.0" mnemonicParsing="false" onAction="#returnClickHandle" prefHeight="17.0" prefWidth="49.0" text="Powrót">
+      <Label fx:id="registerSuccessful" alignment="CENTER" layoutX="40.0" layoutY="85.0" prefHeight="17.0" prefWidth="340.0" text="Registration successful!" visible="false" />
+      <Button fx:id="returnButton" layoutX="137.0" layoutY="148.0" mnemonicParsing="false" onAction="#returnClickHandle" prefHeight="25.0" prefWidth="149.0" text="Return" visible="false" />
+      <Button fx:id="returnSmallButton" layoutX="361.0" layoutY="214.0" mnemonicParsing="false" onAction="#returnClickHandle" prefHeight="17.0" prefWidth="49.0" text="Return">
          <font>
             <Font size="10.0" />
          </font></Button>

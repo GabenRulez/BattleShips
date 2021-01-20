@@ -86,7 +86,7 @@ public class Main extends Application {
             controller.init(primaryStage);
             var scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Logowanie");
+            primaryStage.setTitle("Log in" /*"Logowanie"*/);
             primaryStage.setResizable(false);
             primaryStage.show();
 
@@ -105,7 +105,7 @@ public class Main extends Application {
             controller.init(primaryStage, player, message, gameStage);
             var scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Zakonczono rozgrywke");
+            primaryStage.setTitle("Finished the matchup" /*"Zakonczono rozgrywke"*/);
             primaryStage.setResizable(false);
             primaryStage.show();
 
@@ -125,7 +125,7 @@ public class Main extends Application {
             controller.init(primaryStage);
             var scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Rejestracja");
+            primaryStage.setTitle("Register" /*"Rejestracja"*/);
             primaryStage.setResizable(false);
             primaryStage.show();
 

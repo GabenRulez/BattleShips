@@ -34,7 +34,7 @@ public class LoginController {
     public void init(Stage stage){
         this.stage = stage;
         Tooltip tooltip = new Tooltip();
-        tooltip.setText("Loguje uzytkownika z podanym adresem e-mail oraz haslem jesli uzytkownik istnieje w bazie");
+        tooltip.setText("Logs user in, if the user is registered in the database." /*"Loguje uzytkownika z podanym adresem e-mail oraz haslem jesli uzytkownik istnieje w bazie"*/);
         loginButton.setTooltip(tooltip);
     }
 
@@ -47,7 +47,7 @@ public class LoginController {
     public void loginClickHandle(ActionEvent event) {
         this.message.setText("");
         if (this.login.getText().equals("") || this.password.getText().equals("")) {
-            this.message.setText("Podaj adres e-mail i haslo!");
+            this.message.setText("Specify email address and the password." /*"Podaj adres e-mail i haslo!"*/);
         } else {
             progress.setVisible(true);
             new Thread(() -> {
@@ -57,7 +57,7 @@ public class LoginController {
 
                 Platform.runLater(() -> {
                     if (player.isEmpty() || !this.isAuthenticated(player.get(), this.password.getText())) {
-                        this.message.setText("Nieprawidlowe haslo lub adres e-mail!");
+                        this.message.setText("Incorrect email address or password." /*"Nieprawidlowe haslo lub adres e-mail!"*/);
                     } else {
                         this.login(player.get());
                     }

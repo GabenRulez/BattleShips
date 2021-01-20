@@ -70,12 +70,12 @@ public class RegisterController {
     @FXML
     public void registerClickHandle(ActionEvent event) {
         if(!validateEmail(this.mail.getText())){
-            this.message.setText("Niepoprawna postac adresu e-mail!");
+            this.message.setText("Wrong email address format!" /*"Niepoprawna postac adresu e-mail!"*/);
             return;
         }
 
         if(this.mail.getText().equals("") || this.password.getText().equals("") || this.username.getText().equals("") ){
-            this.message.setText("Wszystkie pola musza byc wypelnione!");
+            this.message.setText("Specify email address and the password." /*"Wszystkie pola musza byc wypelnione!"*/);
             return;
         }
 
@@ -86,7 +86,7 @@ public class RegisterController {
             this.registerSuccessful();
         }
 
-        this.message.setText("Nie udalo sie zarejestrowac. Sprobuj inny adres e-mail");
+        this.message.setText("Couldn't register. Try different email address." /*"Nie udalo sie zarejestrowac. Sprobuj inny adres e-mail"*/);
    }
 
 

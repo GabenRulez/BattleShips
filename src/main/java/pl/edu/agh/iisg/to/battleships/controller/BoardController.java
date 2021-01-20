@@ -126,11 +126,11 @@ public class BoardController implements Game.Callback {
 
         instruction.textProperty().bind(Bindings.createStringBinding(() -> {
             if(shipLength.get() <= 0) {
-                return "Ustaw statki na planszy";
+                return "Place battleships on the board";    //"Ustaw statki na planszy";
             }
             return String.format(
-                    "Ustawiam %d-masztowiec %s",
-                    shipLength.get(), isPlacingShipHorizontally.get() ? "poziomo" : "pionowo"
+                    "I'm placing %d-battleship %s",     //"Ustawiam %d-masztowiec %s",
+                    shipLength.get(), isPlacingShipHorizontally.get() ? "horizontally" : "vertically"   //"poziomo" : "pionowo"
             );
         }, shipLength, isPlacingShipHorizontally));
 
@@ -140,28 +140,28 @@ public class BoardController implements Game.Callback {
     }
     private void addTooltips(){
         Tooltip randTooltip = new Tooltip();
-        randTooltip.setText("Generuje losowe ustawienie statkow na planszy");
+        randTooltip.setText("Generating random ship placement on the board" /*"Generuje losowe ustawienie statkow na planszy"*/);
         randomize.setTooltip(randTooltip);
         Tooltip rotateTooltip = new Tooltip();
-        rotateTooltip.setText("Pozwala na obrocenie statku");
+        rotateTooltip.setText("Allows to rotate the ship" /*"Pozwala na obrocenie statku"*/);
         rotateBtn.setTooltip(rotateTooltip);
         Tooltip redoTooltip = new Tooltip();
-        redoTooltip.setText("Powtarza ostatnia usunieta operacje");
+        redoTooltip.setText("Repeats previously used operation" /*"Powtarza ostatnia usunieta operacje"*/);
         redoBtn.setTooltip(redoTooltip);
         Tooltip undoTooltip = new Tooltip();
-        undoTooltip.setText("Cofa ostatnia operacje");
+        undoTooltip.setText("Undoes previous operation" /*"Cofa ostatnia operacje"*/);
         undoBtn.setTooltip(undoTooltip);
         Tooltip easyTt = new Tooltip();
-        easyTt.setText("Ustawia niski poziom trudonosci");
+        easyTt.setText("Sets difficulty level to easy" /*"Ustawia niski poziom trudnosci"*/);
         easy.setTooltip(easyTt);
         Tooltip mediumTt = new Tooltip();
-        mediumTt.setText("Ustawia sredni poziom trudnosci");
+        mediumTt.setText("Sets difficulty level to medium" /*"Ustawia sredni poziom trudnosci"*/);
         medium.setTooltip(mediumTt);
         Tooltip hardTt = new Tooltip();
-        hardTt.setText("Ustawia wysoki poziom trudnosci");
+        hardTt.setText("Sets difficulty level to hard" /*"Ustawia wysoki poziom trudnosci"*/);
         hard.setTooltip(hardTt);
         Tooltip start = new Tooltip();
-        start.setText("Uruchamia gre z podanymi przez uzytkownika statkami i poziomem trudnosci ");
+        start.setText("Starts the game with current configuration" /*"Uruchamia gre z podanymi przez uzytkownika statkami i poziomem trudnosci "*/);
       	startGame.setTooltip(start);
     }
     private void bindButtons(){
@@ -255,7 +255,7 @@ public class BoardController implements Game.Callback {
 
     @FXML
     public void startGame() {
-        this.statusText.setText("W trakcie gry");
+        this.statusText.setText("In the middle of the game"/*"W trakcie gry"*/);
         this.clearSettingsPanel();
         this.editMenu.setDisable(true);
 
@@ -456,17 +456,24 @@ public class BoardController implements Game.Callback {
 
     @Override
     public void onGameEnded(boolean hasPlayerWon) {
-        this.statusText.setText("Zakonczono");
+        this.statusText.setText("Finished" /*"Zakonczono"*/);
 
         HashMap<Player,Integer> oldRatings = getCurrentPlayersRatings();
 
         int oldPlayerRating = this.humanPlayer.getRating();
         Integer ratingChange = humanPlayer.updateRating(this.game.getDifficultyLevel(), hasPlayerWon);
 
+        /*
         String message = hasPlayerWon ? "Gratulacje "+this.getHumanPlayer().getName()+"! Wygrana!" :
                 "Niestety, tym razem komputer okazal sie byc lepszy od Ciebie, "+this.getHumanPlayer().getName()+".";
         message += ("\nRanking: "+this.humanPlayer.getRating());
         message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
+        */
+        String message = hasPlayerWon ? "Congratulations " + this.getHumanPlayer().getName() + "! You've won!" :
+                "Unfortunately, this time the AI was better than you, " + this.getHumanPlayer().getName() + ".";
+        message += ("\nRanking: " + this.humanPlayer.getRating() );
+        message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
+
         this.game.updatePlayerInDb();
 
         texter.printMessage("Result of the finished match: " + (hasPlayerWon ? "Player has won!" : "Player has lost!"));

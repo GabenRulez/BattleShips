@@ -131,26 +131,6 @@ public class HardAI implements AI{
                     }
                 }
                 probabilityDensityValues.put(field.getPosition(), fieldWeight);
-//                    for(Direction direction : Direction.values()){
-//                        if(direction == Direction.DIFFERENT) continue;
-//
-//                        ArrayList<Field> shipFields = new ArrayList<>();
-//                        shipFields.add(field);
-//                        for(int i = 1; i <= shipLength; i++){
-//                            Field veryTempField = enemyBoard.getFieldInDirection(field, direction, i);
-//                            if(veryTempField != null) shipFields.add( veryTempField );
-//                        }
-//
-//                        shipFields.removeIf(Field::wasShot);
-//
-//                        if(shipFields.size() == shipLength){    // So we didn't remove any ships => All positions are correct
-//                            for(int i = 0; i < shipLength; i++) {
-//                                Coordinates cords = shipFields.get(i).getPosition();
-//                                probabilityDensityValues.merge(cords, 1, Integer::sum);
-//
-//                            }
-//                        }
-//                    }
             }
         }
         Integer maxValue = Collections.max(probabilityDensityValues.values());

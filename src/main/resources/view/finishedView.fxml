@@ -6,26 +6,26 @@
 
 <AnchorPane prefHeight="435.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.iisg.to.battleships.controller.FinishedController">
    <children>
-      <Button layoutX="135.0" layoutY="176.0" mnemonicParsing="false" onAction="#restartClickHandle" prefHeight="25.0" prefWidth="149.0" text="Nowa gra" />
+      <Button layoutX="135.0" layoutY="176.0" mnemonicParsing="false" onAction="#restartClickHandle" prefHeight="25.0" prefWidth="149.0" text="New game" />
       <Label layoutX="138.0" layoutY="14.0" text="Battleships" textAlignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Button layoutX="357.0" layoutY="391.0" mnemonicParsing="false" onAction="#exit" text="Wyjście">
+      <Button layoutX="357.0" layoutY="391.0" mnemonicParsing="false" onAction="#exit" text="Exit">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="93.0" layoutY="66.0" prefHeight="14.0" prefWidth="234.0" text="Gra zakończona!" textAlignment="CENTER" wrapText="true" />
+      <Label alignment="CENTER" layoutX="93.0" layoutY="66.0" prefHeight="14.0" prefWidth="234.0" text="Game finished!" textAlignment="CENTER" wrapText="true" />
       <Label fx:id="message" alignment="CENTER" layoutX="81.0" layoutY="93.0" prefHeight="61.0" prefWidth="257.0" text="" textAlignment="CENTER" wrapText="true" />
       <ListView fx:id="ratingList" layoutX="116.0" layoutY="237.0" prefHeight="178.0" prefWidth="187.0" />
-      <Label layoutX="151.0" layoutY="208.0" text="Lista rankingowa">
+      <Label layoutX="151.0" layoutY="208.0" text="Ranking">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="resetButton" layoutX="5.0" layoutY="391.0" mnemonicParsing="false" onAction="#resetRatings" prefHeight="23.0" prefWidth="103.0" text="Resetuj rankingi">
+      <Button fx:id="resetButton" layoutX="5.0" layoutY="391.0" mnemonicParsing="false" onAction="#resetRatings" prefHeight="23.0" prefWidth="103.0" text="Reset the ranking">
          <font>
             <Font size="10.0" />
          </font>

@@ -27,7 +27,7 @@ public class Ship {
 
     public Ship(List<Field> shipElements){
         if(shipElements == null){
-            throw new IllegalArgumentException("Ship must consist of elements");
+            throw new IllegalArgumentException("Ship must consist of some elements");
         }
         this.shipElements = shipElements;
         this.status = ShipStatus.SHIP_ACTIVE;

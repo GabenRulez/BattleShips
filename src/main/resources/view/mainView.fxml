@@ -10,18 +10,18 @@
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
-                <Menu mnemonicParsing="false" text="Plik">
+                <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#menuNewGame" text="Nowa gra" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuNewGame" text="New game" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuLogout" text="Wyloguj" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuClose" text="Zamknij" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuLogout" text="Log out" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuClose" text="Close" />
                     </items>
                 </Menu>
-                <Menu fx:id="editMenu" mnemonicParsing="false" text="Edycja">
+                <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#undo" text="Cofnij" />
-                        <MenuItem mnemonicParsing="false" onAction="#redo" text="Powtórz" />
+                        <MenuItem mnemonicParsing="false" onAction="#undo" text="Undo" />
+                        <MenuItem mnemonicParsing="false" onAction="#redo" text="Redo" />
                     </items>
                 </Menu>
 <!--                <Menu mnemonicParsing="false" text="Pomoc">-->
@@ -35,7 +35,7 @@
             <children>
                 <AnchorPane prefHeight="550.0" prefWidth="550.0">
                     <children>
-                        <Label fx:id="playerName" alignment="CENTER" layoutX="249.0" layoutY="1.0" style="&#10;" text="Gracz:" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Label fx:id="playerName" alignment="CENTER" layoutX="249.0" layoutY="1.0" style="&#10;" text="Player:" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="18.0" fx:id="x7" />
                             </font>
@@ -60,28 +60,28 @@
                                 <Insets />
                             </opaqueInsets>
                         </Label>
-                        <Button fx:id="shipPlace1" layoutX="33.0" layoutY="72.0" mnemonicParsing="false" onAction="#place1Ship" prefHeight="25.0" prefWidth="116.0" text="1-masztowiec" />
-                        <Button fx:id="startGame" layoutX="9.0" layoutY="496.0" mnemonicParsing="false" onAction="#startGame" prefHeight="48.0" prefWidth="188.0" text="Rozpocznij grę" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Button fx:id="shipPlace2" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" onAction="#place2Ship" prefHeight="25.0" prefWidth="116.0" text="2-masztowiec" />
-                        <Button fx:id="shipPlace3" layoutX="33.0" layoutY="149.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-masztowiec" />
-                        <Button fx:id="shipPlace4" layoutX="33.0" layoutY="188.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-masztowiec" />
-                        <Button fx:id="rotateBtn" layoutX="32.0" layoutY="284.0" mnemonicParsing="false" onAction="#toggleOrientation" prefHeight="25.0" prefWidth="116.0" text="Obróć" />
-                        <Button fx:id="randomize" layoutX="14.0" layoutY="235.0" mnemonicParsing="false" onAction="#setPlayersShipsRandom" prefHeight="34.0" prefWidth="153.0" text="Losuj ustawienie" />
-                        <Button fx:id="undoBtn" layoutX="33.0" layoutY="332.0" mnemonicParsing="false" onAction="#undo" prefHeight="25.0" prefWidth="116.0" text="Cofnij" />
-                        <Button fx:id="redoBtn" layoutX="33.0" layoutY="364.0" mnemonicParsing="false" onAction="#redo" prefHeight="25.0" prefWidth="116.0" text="Powtórz" />
-                        <RadioButton id="easy" fx:id="easy" layoutX="57.0" layoutY="414.0" mnemonicParsing="false" onAction="#setEasy" text="Łatwy">
+                        <Button fx:id="shipPlace1" layoutX="33.0" layoutY="72.0" mnemonicParsing="false" onAction="#place1Ship" prefHeight="25.0" prefWidth="116.0" text="1-battleship" />
+                        <Button fx:id="startGame" layoutX="9.0" layoutY="496.0" mnemonicParsing="false" onAction="#startGame" prefHeight="48.0" prefWidth="188.0" text="Start the game" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Button fx:id="shipPlace2" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" onAction="#place2Ship" prefHeight="25.0" prefWidth="116.0" text="2-battleship" />
+                        <Button fx:id="shipPlace3" layoutX="33.0" layoutY="149.0" mnemonicParsing="false" onAction="#place3Ship" prefHeight="25.0" prefWidth="116.0" text="3-battleship" />
+                        <Button fx:id="shipPlace4" layoutX="33.0" layoutY="188.0" mnemonicParsing="false" onAction="#place4Ship" prefHeight="25.0" prefWidth="116.0" text="4-battleship" />
+                        <Button fx:id="rotateBtn" layoutX="32.0" layoutY="284.0" mnemonicParsing="false" onAction="#toggleOrientation" prefHeight="25.0" prefWidth="116.0" text="Rotate" />
+                        <Button fx:id="randomize" layoutX="14.0" layoutY="235.0" mnemonicParsing="false" onAction="#setPlayersShipsRandom" prefHeight="34.0" prefWidth="153.0" text="Randomize positions" />
+                        <Button fx:id="undoBtn" layoutX="33.0" layoutY="332.0" mnemonicParsing="false" onAction="#undo" prefHeight="25.0" prefWidth="116.0" text="Undo" />
+                        <Button fx:id="redoBtn" layoutX="33.0" layoutY="364.0" mnemonicParsing="false" onAction="#redo" prefHeight="25.0" prefWidth="116.0" text="Redo" />
+                        <RadioButton id="easy" fx:id="easy" layoutX="57.0" layoutY="414.0" mnemonicParsing="false" onAction="#setEasy" text="Easy">
                             <toggleGroup>
                                 <ToggleGroup fx:id="level" />
                             </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="medium" layoutX="57.0" layoutY="436.0" mnemonicParsing="false" onAction="#setMedium" selected="true" text="Średni" toggleGroup="$level" />
-                        <RadioButton fx:id="hard" layoutX="57.0" layoutY="458.0" mnemonicParsing="false" onAction="#setHard" text="Trudny" toggleGroup="$level" />
-                        <Label fx:id="levelLabel" layoutX="45.0" layoutY="389.0" text="Poziom trudności" />
+                        <RadioButton fx:id="medium" layoutX="57.0" layoutY="436.0" mnemonicParsing="false" onAction="#setMedium" selected="true" text="Medium" toggleGroup="$level" />
+                        <RadioButton fx:id="hard" layoutX="57.0" layoutY="458.0" mnemonicParsing="false" onAction="#setHard" text="Hard" toggleGroup="$level" />
+                        <Label fx:id="levelLabel" layoutX="45.0" layoutY="389.0" text="Difficulty level" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="550.0" prefWidth="550.0">
                     <children>
-                        <Label alignment="CENTER" layoutX="249.0" layoutY="1.0" style="&#10;" text="Komputer:" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Label alignment="CENTER" layoutX="249.0" layoutY="1.0" style="&#10;" text="AI:" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="18.0" fx:id="x71" />
                             </font>
@@ -97,7 +97,7 @@
         </HBox>
         <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
             <children>
-                <Label fx:id="statusText" maxHeight="1.7976931348623157E308" prefHeight="16.0" prefWidth="653.0" text="Oczekiwanie na ustawienie statków" HBox.hgrow="ALWAYS">
+                <Label fx:id="statusText" maxHeight="1.7976931348623157E308" prefHeight="16.0" prefWidth="653.0" text="Awaiting for battleships to be placed on the board" HBox.hgrow="ALWAYS">
                     <font>
                         <Font size="11.0" fx:id="x3" />
                     </font>
@@ -105,7 +105,7 @@
                         <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
                     </textFill>
                 </Label>
-                <Label alignment="CENTER_RIGHT" font="$x3" prefHeight="16.0" prefWidth="657.0" text="Pozostałych statków do zniszczenia: --" textAlignment="RIGHT" textFill="$x4" visible="false" HBox.hgrow="NEVER" />
+                <Label alignment="CENTER_RIGHT" font="$x3" prefHeight="16.0" prefWidth="657.0" text="Enemy battleships left: --" textAlignment="RIGHT" textFill="$x4" visible="false" HBox.hgrow="NEVER" />
             </children>
             <padding>
                 <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
