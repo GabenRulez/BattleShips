@@ -37,7 +37,7 @@ public class texter {
     }
 
     public static String createCentered(String text){
-        if(text.length() > texter.consoleWidth) return text;
+        if(text.length() > texter.consoleWidth) return createTabbed(text);
         return createCharLine(' ', (texter.consoleWidth - text.length())/2) + text;
     }
 
@@ -81,8 +81,12 @@ public class texter {
         System.out.println(createCentered(text));
     }
 
+    public static void printTabbed(String text, int amount){
+        System.out.println(createTabbed(text, amount));
+    }
+
     public static void printTabbed(String text){
-        System.out.println(createTabbed(text));
+        printTabbed(text, 1);
     }
 
     public static void printNewLines(int amount){
@@ -94,10 +98,10 @@ public class texter {
     }
 
     public static void printMessage(String messageText){
-        System.out.println(createNewLine() + createCharLine('#') + createNewLine() + createCentered(messageText) + createNewLine() + createCharLine('#') + createNewLine());
+        System.out.println(createNewLine() + createCharLine('#') + createNewLines(2) + createCentered(messageText) + createNewLines(2) + createCharLine('#') + createNewLine());
     }
 
     public static void printErrorMessage(String errorSource, String errorMessage){
-        System.out.println(createNewLine() + createCharLine('*') + createNewLine() + createTabbed("Error from '" + errorSource + "': " + errorMessage) + createNewLine() + createCharLine('*') + createNewLine());
+        System.out.println(createNewLine() + createCharLine('*') + createNewLines(2) + createTabbed("Error from '" + errorSource + "': ") + createNewLine() + createTabbed(errorMessage) + createNewLines(2) + createCharLine('*') + createNewLine());
     }
 }
