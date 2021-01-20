@@ -1,5 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.model.email;
 
+import gabenrulez.helper.texter;
 import javafx.application.Platform;
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.model.EasyConfigParser;
@@ -17,13 +18,6 @@ public class EmailSender {
 
     static EasyConfigParser parser = new EasyConfigParser( Main.class.getResource(emailConfigPathResource).getPath().replace("%20", " ") );
 
-    /*public EmailSender(){
-        // Serwisy SMTP w darmowych pakietach umożliwiają wysyłać maile jedynie do zatwierdzonych adresów email
-        // Musicie mi je podać, żebym je dodał, żeby możliwe było wysyłanie na nie maili
-
-        sendEmail("kubakub2@wp.pl", "BattleShips App Notification", createTemplateHtmlEmail("Zostałeś pokonany przez takeshi69", "Wojciech"));
-    }*/
-
     public static void sendEmailLater(String recipient_address, String subject, String data){
         new Thread(() -> {
             Platform.runLater(() -> {
@@ -33,7 +27,10 @@ public class EmailSender {
     }
 
     public static void sendEmail(String recipient_address, String subject, String data){
-        System.out.println("Email nr. " + (++sentEmails) + ": Sending an email to '" + recipient_address + "'.");
+        texter.printNewLine();
+        texter.printCharLine('-');
+        texter.printTabbed("Email nr. " + (++sentEmails) + ": Sending an email to '" + recipient_address + "'.");
+
         Properties session_properties = System.getProperties();
 
         String smtp_host = parser.getFromKey("smtp_server");
@@ -65,13 +62,16 @@ public class EmailSender {
 
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-            System.out.println("Email nr. " + (sentEmails) + ": Sent successfully.");
+
+            texter.printTabbed("Email nr. " + (sentEmails) + ": Sent successfully.");
+            texter.printCharLine('-');
 
         } catch (javax.mail.SendFailedException e){
-            System.out.println("Email nr. " + (sentEmails) + ": " + recipient_address + " is not a valid email address.");
+            texter.printErrorMessage("EmailSender.java", "Email nr. " + (sentEmails) + ": " + recipient_address + " is not a valid email address.");
         }catch(javax.mail.AuthenticationFailedException e){
-            System.out.println("Email service configuration in 'emailConfig' is incorrect and wasn't accepted by the SMTP server (" + smtp_host + ").");
+            texter.printErrorMessage("EmailSender.java", "Email service configuration in 'emailConfig' is incorrect and wasn't accepted by the SMTP server (" + smtp_host + ").");
         }catch (MessagingException | IllegalStateException e) {
+            texter.printErrorMessage("EmailSender.java", "Unknown error (yet not experienced by devs).");
             e.printStackTrace();
         }
     }
