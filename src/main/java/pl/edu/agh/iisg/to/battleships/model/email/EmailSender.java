@@ -69,6 +69,8 @@ public class EmailSender {
 
         } catch (javax.mail.SendFailedException e){
             System.out.println("Email nr. " + (sentEmails) + ": " + recipient_address + " is not a valid email address.");
+        }catch(javax.mail.AuthenticationFailedException e){
+            System.out.println("Email service configuration in 'emailConfig' is incorrect and wasn't accepted by the SMTP server (" + smtp_host + ").");
         }catch (MessagingException | IllegalStateException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 # Email properties for the app to send emails with notifications
 #To make it work you need to fill those properties
 
-[Email_data] # Email was generated at 'mailgun.com' and is a temporary one.
+[Email_data]
 email = agh.cs.oop.weebs@gmail.com
 password = tafEas8tyC4ceCAzX
 smtp_port = 587
