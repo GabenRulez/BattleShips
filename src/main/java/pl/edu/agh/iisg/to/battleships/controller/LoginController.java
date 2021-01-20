@@ -1,22 +1,23 @@
 package pl.edu.agh.iisg.to.battleships.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.agh.iisg.to.battleships.Main;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
-import pl.edu.agh.iisg.to.battleships.model.*;
+import pl.edu.agh.iisg.to.battleships.model.Player;
 
 import java.util.Optional;
 
 public class LoginController {
 
     private Stage stage;
+
+    @FXML
+    public ProgressIndicator progress;
 
     @FXML
     public Button loginButton;
@@ -33,6 +34,9 @@ public class LoginController {
 
     public void init(Stage stage){
         this.stage = stage;
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("Loguje uzytkownika z podanym adresem e-mail oraz haslem jesli uzytkownik istnieje w bazie");
+        loginButton.setTooltip(tooltip);
 
     }
 
@@ -44,20 +48,26 @@ public class LoginController {
 
     @FXML
     public void loginClickHandle(ActionEvent event) {
-        if(this.login.getText().equals("") || this.password.getText().equals("")){
+        this.message.setText("");
+        if (this.login.getText().equals("") || this.password.getText().equals("")) {
             this.message.setText("Podaj adres e-mail i haslo!");
-            return;
+        } else {
+            progress.setVisible(true);
+            new Thread(() -> {
+                var dao = new HumanPlayerDao();
+                dao.create("admin", "admin@admin.com", LoginController.encryptPassword("admin"), true);
+                Optional<Player> player = dao.findByMail(this.login.getText());
+
+                Platform.runLater(() -> {
+                    if (player.isEmpty() || !this.isAuthenticated(player.get(), this.password.getText())) {
+                        this.message.setText("Nieprawidlowe haslo lub adres e-mail!");
+                    } else {
+                        this.login(player.get());
+                    }
+                    progress.setVisible(false);
+                });
+            }).start();
         }
-
-        Optional<Player> player = new HumanPlayerDao().findByMail(this.login.getText());
-
-        if(player.isEmpty() || !this.isAuthenticated(player.get(), this.password.getText())){
-            this.message.setText("Nieprawidlowe haslo lub adres e-mail!");
-            return;
-        }
-        this.login(player.get());
-
-
     }
 
     private boolean isAuthenticated(Player player, String password){

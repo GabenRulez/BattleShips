@@ -1,7 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.model;
 
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import pl.edu.agh.iisg.to.battleships.dao.HumanPlayerDao;
 import pl.edu.agh.iisg.to.battleships.model.ai.AI;
 import pl.edu.agh.iisg.to.battleships.model.ai.EasyAI;
@@ -10,48 +9,37 @@ import pl.edu.agh.iisg.to.battleships.model.ai.MediumAI;
 import pl.edu.agh.iisg.to.battleships.model.enums.GameStatus;
 import pl.edu.agh.iisg.to.battleships.session.SessionService;
 
-import javax.persistence.*;
+import javax.persistence.PersistenceException;
 import java.util.Map;
 import java.util.Optional;
 
-@Entity
-@Table(name = Game.TABLE_NAME)
 public class Game {
-    public static final String TABLE_NAME = "games";
 
     public interface Callback {
         void onGameEnded(boolean hasPlayerWon);
         void onError(String errorMessage);
+        void onShotMade();
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+    private static final int AI_MOVE_DELAY = 300;
 
-    @ManyToOne
     private Player player;
 
-    @Transient
     private AI ai;
 
-    @Column(name = "playerWon")
-    private Boolean humanWon;
-
-    @Transient
     private GameStatus currentState;
 
-    @Column(name = "difficulty")
     private Integer difficultyLevel;
 
-    @Transient
     private Callback callback;
 
-    @Transient
     private Board playersBoard;
 
-    @Transient
     private Board aisBoard;
+
+    private Map<Integer, Integer> shipCounts;
+
+    private boolean isWaitingForPlayersMove = true;
 
     public Game(Player player, int boardSize, Map<Integer, Integer> shipCounts){
         if(player == null){
@@ -59,19 +47,22 @@ public class Game {
         }
 
         this.currentState = GameStatus.NOT_STARTED;
-        humanWon = false;
 
         this.setAI(new MediumAI());
 
         this.player = player;
+        this.shipCounts = shipCounts;
         this.aisBoard = BoardInitializer.getBoardWithRandomlyPlacedShips(boardSize, shipCounts);
     }
+
+    public Map<Integer, Integer> getShipCounts() {
+        return shipCounts;
+    }
+
 
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
-
-    public Game(){};
 
     private Player getDefaultPlayer(){
 
@@ -80,7 +71,7 @@ public class Game {
         Player player;
         Optional<Player> defaultPlayer = playerDao.findByMail("a@a.com");
         if(defaultPlayer.isEmpty()){
-            defaultPlayer = playerDao.create("testowy", "a@a.com", "test");
+            defaultPlayer = playerDao.create("testowy", "a@a.com", "test"); //TODO: Debug Only. To delete later.
             player = defaultPlayer.orElseThrow(() -> new PersistenceException("Cannot create default player!"));
         }
         else{
@@ -94,6 +85,11 @@ public class Game {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void updatePlayerInDb(){
+        HumanPlayerDao playerDao = new HumanPlayerDao();
+        playerDao.updatePlayer(this.player);
     }
 
     public void start(Board playersBoard) {
@@ -110,24 +106,14 @@ public class Game {
 
     public void shoot(Coordinates coordinates) {
         if(currentState != GameStatus.IN_PROGRESS) return;
-        try {
+        if(!isWaitingForPlayersMove) return;
             if(aisBoard.shoot(coordinates)) {
                 updateGameEnded();
             } else {
-//                TODO Make computer move in another thread with delay, to improve visual effects.
+                isWaitingForPlayersMove = false;
                 makeAiMove();
             }
-        } catch (Exception e) {
-            if(callback != null) {
-                callback.onError(e.getMessage());
-            } else {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public Long getId() {
-        return id;
+            callback.onShotMade();
     }
 
     public Integer getDifficultyLevel() {
@@ -142,14 +128,42 @@ public class Game {
         return aisBoard;
     }
 
-    private void makeAiMove() throws InterruptedException {
+    private void makeAiMove() {
         if(currentState != GameStatus.IN_PROGRESS) return;
-        Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
-        boolean hasHit = playersBoard.shoot(positionToBeShot);
-        updateGameEnded();
-        if(hasHit) {
-            makeAiMove();
-        }
+        var thread = new Thread(() -> {
+            try {
+                Thread.sleep(AI_MOVE_DELAY);
+                Platform.runLater(() -> {
+                    try {
+                        Coordinates positionToBeShot = ai.getNextAttackPosition(playersBoard);
+                        boolean hasHit = playersBoard.shoot(positionToBeShot);
+                        updateGameEnded();
+                        callback.onShotMade();
+                        if(hasHit) {
+                            makeAiMove();
+                        } else {
+                            isWaitingForPlayersMove = true;
+                        }
+                    } catch (Exception e) {
+                        if(callback != null) {
+                            callback.onError(e.getMessage());
+                        } else {
+                            e.printStackTrace();
+                        }
+                        isWaitingForPlayersMove = true;
+                    }
+
+                });
+            } catch (Exception e) {
+                if(callback != null) {
+                    callback.onError(e.getMessage());
+                } else {
+                    e.printStackTrace();
+                }
+                isWaitingForPlayersMove = true;
+            }
+        });
+        thread.start();
     }
 
     private void updateGameEnded() {
@@ -158,7 +172,6 @@ public class Game {
 
         if(hasPlayerWon || hasAiWon) {
             this.currentState = GameStatus.FINISHED;
-            this.humanWon = hasPlayerWon;
             if(callback != null) {
                 callback.onGameEnded(hasPlayerWon);
             }
