@@ -84,8 +84,6 @@ public class BoardController implements Game.Callback {
     }
 
     public void controllerInit(){
-//        playerName.textProperty().bind(game.getHuman().getNameProperty());
-
         int rowNum = this.playersBoard.getLimit().getY();
         int colNum = this.playersBoard.getLimit().getX();
         playerBoard.setHgap(0);
@@ -102,9 +100,6 @@ public class BoardController implements Game.Callback {
                 rec.setOnMouseExited(this::onPlayersBoardHoverExit);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
-//                Field field = this.playersBoard.getFieldOnPosition(new Coordinates(row, col));
-//                rec.fillProperty().bind(
-//                        EasyBind.map(field.fieldStatusProperty(), this::calculateFieldColor));
                 this.playersBoardRectangles.put(new Coordinates(row,col), rec);
                 playerBoard.add(rec, row, col);
             }
@@ -112,7 +107,6 @@ public class BoardController implements Game.Callback {
 
         computerBoard.setHgap(0);
         computerBoard.setVgap(0);
-        var computersBoard = game.getOpponentsBoard();
         for(int row = 0; row < rowNum; row++){
             for(int col = 0; col < colNum; col++){
                 Rectangle rec = new Rectangle();
@@ -125,10 +119,6 @@ public class BoardController implements Game.Callback {
                 rec.setOnMouseExited(this::onOpponentsBoardHoverExit);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
-//                Field field = computersBoard.getFieldOnPosition(new Coordinates(row, col));
-//                rec.fillProperty().bind(
-//                        EasyBind.map(field.fieldStatusProperty(), this::calculateComputersFieldColor));
-
                 this.computersBoardRectangles.put(new Coordinates(row, col), rec);
                 computerBoard.add(rec, row, col);
             }
@@ -523,13 +513,6 @@ public class BoardController implements Game.Callback {
 
     private void clearSettingsPanel(){
         this.centerPanel.setVisible(false);
-//        this.shipPlace2.setVisible(false);
-//        this.shipPlace3.setVisible(false);
-//        this.shipPlace4.setVisible(false);
-//        this.startGame.setVisible(false);
-//        this.redoBtn.setVisible(false);
-//        this.undoBtn.setVisible(false);
-//        this.undoBtn.setVisible(false);
     }
 
     @FXML
@@ -547,16 +530,11 @@ public class BoardController implements Game.Callback {
 
     @FXML
     private void setPlayersShipsRandom(){
-//        this.playersBoard = BoardInitializer.getBoardWithRandomlyPlacedShips(this.playersBoard.getLimit().getX(), this.game.getShipCounts());
         this.boardCreator = BoardInitializer.getBoardCreatorWithRandomlyPlacedShips(this.playersBoard.getLimit().getX(), this.game.getShipCounts());
         this.playersBoard = boardCreator.getBoard();
         this.bindButtons();
         this.shipLength.setValue(0);
         this.refreshAllBoards();
-//        List<Ship> ships = newBoardSetting.getShips();
-//        this.boardCreator.getBoard().getShips().forEach(ship -> this.boardCreator.getBoard().removeShip(ship));
-//        ships.forEach(ship -> this.boardCreator.getBoard().addShip(ship));
     }
-
 }
 

@@ -1,5 +1,6 @@
 package pl.edu.agh.iisg.to.battleships;
 
+import gabenrulez.helper.texter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -24,24 +25,12 @@ import java.util.Map;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-
-//        showBoard(primaryStage, );
+    public void start(Stage primaryStage) {
         showLoginDialog(primaryStage);
-
     }
 
     public static void showBoard(Stage primaryStage, Player player){
         try {
-//            SessionService.openSession();
-//            HumanPlayerDao playerDao = new HumanPlayerDao();
-//            GameDao gameDao = new GameDao();
-//            Game testGame = new Game(null);
-//            playerDao.create("Test4", "a6@a.com", "aaa");
-//
-//            gameDao.saveToDb(testGame);
-//            SessionService.closeSession();
-
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
@@ -64,23 +53,20 @@ public class Main extends Application {
             var boardCreator = new BoardCreator(Config.BOARD_SIZE.getX(), shipCounts);
             var game = new Game(player, Config.BOARD_SIZE.getX(), shipCounts);
             BoardController controller = loader.getController();
-//            controller.setModel(game);
+
             controller.initialize(primaryStage, player);
             controller.setModel(boardCreator, game);
             controller.controllerInit();
+
             // add layout to a scene and show them all
-//            configureStage(primaryStage, rootLayout);
             var scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Battleships");
             primaryStage.setResizable(false);
             primaryStage.show();
-//            Game game = new Game(null);
-//            game.start();
-
-
 
         } catch (IOException e) {
+            texter.printErrorMessage("Main.java", e.getMessage());
             e.printStackTrace();
         }
     }

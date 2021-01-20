@@ -11,11 +11,8 @@ public class Field {
 
     private final ObjectProperty<FieldStatus> fieldStatus;
 
-//    private ObjectProperty<Paint> color;
-
     public Field(Coordinates position){
         this.position = position;
-//        this.color = new SimpleObjectProperty<>();
         this.fieldStatus = new SimpleObjectProperty<>();
         this.setFieldStatus(FieldStatus.FIELD_EMPTY);
     }

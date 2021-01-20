@@ -51,9 +51,7 @@ public class RegisterController {
 
     public void init(Stage stage){
         this.stage = stage;
-
     }
-
 
     @FXML
     public boolean register(String username, String mail, String password){

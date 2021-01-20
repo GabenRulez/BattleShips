@@ -69,7 +69,6 @@ public class Board {
                     if(this.areCoordsInRange(toCheck)){
                         result.add(this.getFieldOnPosition(toCheck));
                     }
-
                 }
             }
         }

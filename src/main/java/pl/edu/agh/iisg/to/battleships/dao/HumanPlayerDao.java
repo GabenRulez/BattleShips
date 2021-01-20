@@ -1,5 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.dao;
 
+import gabenrulez.helper.texter;
 import pl.edu.agh.iisg.to.battleships.model.Player;
 import pl.edu.agh.iisg.to.battleships.session.SessionService;
 
@@ -34,6 +35,7 @@ public class HumanPlayerDao extends GenericDao<Player> {
             player = query.getSingleResult();
 
         } catch (PersistenceException e) {
+            texter.printErrorMessage("HumanPlayerDao.java", e.getMessage());
         }
         SessionService.closeSession();
         return Optional.ofNullable(player);
@@ -43,8 +45,8 @@ public class HumanPlayerDao extends GenericDao<Player> {
         SessionService.openSession();
         try {
             this.update(player);
-
         } catch (PersistenceException e) {
+            texter.printErrorMessage("HumanPlayerDao.java", e.getMessage());
         }
         SessionService.closeSession();
     }
@@ -58,13 +60,10 @@ public class HumanPlayerDao extends GenericDao<Player> {
             players = query.getResultList();
 
         } catch (PersistenceException e) {
+            texter.printErrorMessage("HumanPlayerDao.java", e.getMessage());
         }
         SessionService.closeSession();
 
         return players;
     }
-
-
-
-
 }

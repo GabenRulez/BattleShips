@@ -31,15 +31,12 @@ public class LoginController {
     @FXML
     public Label message;
 
-
     public void init(Stage stage){
         this.stage = stage;
         Tooltip tooltip = new Tooltip();
         tooltip.setText("Loguje uzytkownika z podanym adresem e-mail oraz haslem jesli uzytkownik istnieje w bazie");
         loginButton.setTooltip(tooltip);
-
     }
-
 
     @FXML
     public void register(){
