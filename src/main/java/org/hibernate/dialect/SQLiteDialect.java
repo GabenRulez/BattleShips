@@ -147,12 +147,6 @@ public class SQLiteDialect extends Dialect {
         return false;
     }
 
-  /*
-    @Override
-  public boolean dropTemporaryTableAfterUse() {
-    return true; // temporary tables are only dropped when the connection is closed. If the connection is pooled...
-  }
-  */
 
     // current timestamp support ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -281,12 +275,6 @@ public class SQLiteDialect extends Dialect {
     public boolean supportsIfExistsBeforeTableName() {
         return true;
     }
-
-  /* not case insensitive for unicode characters by default (ICU extension needed)
-	public boolean supportsCaseInsensitiveLike() {
-    return true;
-  }
-  */
 
     @Override
     public boolean doesReadCommittedCauseWritersToBlockReaders() {

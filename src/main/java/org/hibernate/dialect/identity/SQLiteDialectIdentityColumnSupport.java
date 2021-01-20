@@ -6,27 +6,12 @@ public class SQLiteDialectIdentityColumnSupport extends IdentityColumnSupportImp
         return true;
     }
 
-  /*
-    public boolean supportsInsertSelectIdentity() {
-    return true; // As specified in NHibernate dialect
-  }
-  */
-
     @Override
     public boolean hasDataTypeInIdentityColumn() {
         // As specified in NHibernate dialect
         // FIXME true
         return false;
     }
-
-  /*
-    public String appendIdentitySelectToInsert(String insertString) {
-    return new StringBuffer(insertString.length()+30). // As specified in NHibernate dialect
-      append(insertString).
-      append("; ").append(getIdentitySelectString()).
-      toString();
-  }
-  */
 
     @Override
     public String getIdentitySelectString(String table, String column, int type) {
