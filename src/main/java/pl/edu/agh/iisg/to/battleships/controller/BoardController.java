@@ -1,5 +1,6 @@
 package pl.edu.agh.iisg.to.battleships.controller;
 
+import gabenrulez.helper.texter;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -339,7 +340,6 @@ public class BoardController implements Game.Callback {
         Node clickedNode = event.getPickResult().getIntersectedNode();
         Integer colIndex = GridPane.getColumnIndex(clickedNode);
         Integer rowIndex = GridPane.getRowIndex(clickedNode);
-        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
 
         var coords = new Coordinates(colIndex, rowIndex);
         try {
@@ -376,7 +376,7 @@ public class BoardController implements Game.Callback {
                 }
             }
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            texter.printErrorMessage("BoardController.java", e.getMessage());
         }
 
     }
@@ -445,7 +445,6 @@ public class BoardController implements Game.Callback {
         Node clickedNode = event.getPickResult().getIntersectedNode();
         Integer colIndex = GridPane.getColumnIndex(clickedNode);
         Integer rowIndex = GridPane.getRowIndex(clickedNode);
-        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
 
         var coords = new Coordinates(colIndex, rowIndex);
         try {
@@ -480,7 +479,7 @@ public class BoardController implements Game.Callback {
         message += ratingChange >= 0 ? (" (+"+ratingChange+")") : (" ("+ratingChange+")");
         this.game.updatePlayerInDb();
 
-        System.out.println("Wynik: " + hasPlayerWon);
+        texter.printMessage("Result of the finished match: " + (hasPlayerWon ? "Player has won!" : "Player has lost!"));
         Main.showFinishedDialog(new Stage(), this.getHumanPlayer(), message, this.stage);
 
         sendEmailsToLosers( oldRatings, oldPlayerRating, oldPlayerRating + ratingChange, this.humanPlayer.getName() );
@@ -505,24 +504,16 @@ public class BoardController implements Game.Callback {
             List<Player> previouslyFirst = oldRatings.keySet().stream().filter(e -> e.getRating().equals(prevMaxRating)).collect(Collectors.toList());
             for(Player dethronedPlayer : previouslyFirst){
                 if(dethronedPlayer.getName().equals(playingPlayerName)) continue;
-                System.out.println("Debug: Dethroned player " + dethronedPlayer.getName() + " , rating: " + dethronedPlayer.getRating() + " is more than " + oldRating + " and less than " + newRating);
                 String message = "You were overrun in ranking by " + playingPlayerName + ". <br> Your rating: " + dethronedPlayer.getRating() + "<br> " + playingPlayerName + " rating: " + newRating;
                 EmailSender.sendEmailLater(dethronedPlayer.getMail(), "Battleships App - You've been defeated!", EmailSender.createTemplateHtmlEmail(message, dethronedPlayer.getName()));
             }
         }
-
-//        oldRatings.entrySet()
-//                .removeIf(
-//                    entry -> (entry.getValue() < oldRating || entry.getValue() >= newRating || entry.getValue().equals(Config.DEFAULT_RATING))
-//                );
-
-
     }
 
 
     @Override
     public void onError(String errorMessage) {
-        System.out.println("Błąd: " + errorMessage);
+        texter.printErrorMessage("BoardController.java", errorMessage);
     }
 
     @Override

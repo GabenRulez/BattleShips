@@ -14,10 +14,8 @@ public class EasyConfigParser {
     * Created by Wojciech Kosztyła.
     * */
 
-
     // Section - Name - Value
     HashMap<String, HashMap<String,String>> configMap = new HashMap<>();
-
 
     public EasyConfigParser(String filepath){
         parseFile(filepath);

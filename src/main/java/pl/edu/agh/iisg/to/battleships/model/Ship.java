@@ -7,6 +7,19 @@ import java.util.List;
 public class Ship {
     public enum Orientation {
         VERTICAL, HORIZONTAL;
+
+        @Override
+        public String toString(){
+            switch(this){
+                case HORIZONTAL -> {
+                    return "horizontal";
+                }
+                case VERTICAL -> {
+                    return "vertical";
+                }
+            }
+            return "";
+        }
     }
 
     private final List<Field> shipElements;
